@@ -229,6 +229,401 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/11/three-way-handshake/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/11/three-way-handshake/" itemprop="url">三次握手四次挥手</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T15:19:18+08:00">
+                2018-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="TCP-Header"><a href="#TCP-Header" class="headerlink" title="TCP Header"></a>TCP Header</h2><img src="/2018/12/11/three-way-handshake/tcp-header.png">
+<p>上图是一个 TCP header 来自 <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="noopener">wikipedia</a> </p>
+<ul>
+<li><p>Source port (16 bits)</p>
+<p>标识发送方端口号</p>
+</li>
+<li><p>Destination port (16 bits)</p>
+<p>标识目的地端口号</p>
+</li>
+<li><p>Sequence number (32 bits)</p>
+<p>具有双重作用：</p>
+<ul>
+<li>如果 SYN 位置为了 1，那么这就是初始序列号。实际的第一个数据字节的序号和相应 ACK 中确认的序号就是这个序号加 1。</li>
+<li>如果 SYN 位置为了 0，那么这就是当前会话中该包的第一个数据字节的累加序列号。</li>
+</ul>
+</li>
+<li><p>Acknowledgment number (32 bits)</p>
+<p>如果 ACK 位置为了 1，那么该字段的值就是发送方期望收到的下一个序列号。这表示确认收到了先前所有的字节。两端各发送的第一个 ACK 标志(1) 确认收到了对方的初始序号，但是此时还没有实际的数据。</p>
+</li>
+<li><p>Data offset (4 bits)</p>
+<p>指定 TCP header 的大小为 32 位（4 字节，也可以表示为 word，<a href="ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_9.html" target="_blank" rel="noopener">这里</a>有解释）。最小的 header 是 5 words （即 20 字节），最大的是 15 words（即 60 字节）。其实这里的最大和最小的差别里填充的都是 options（如图所示）。这个字段同时代表 TCP 包起始位置到实际数据的偏移量。</p>
+</li>
+<li><p>Reserved (3 bits)</p>
+<p>保留位，预防以后用得到。默认都应该设置为零。</p>
+</li>
+</ul>
+<p>再来一张图，一图胜千文。这张图是用 keynote 照着 TCP/IP详解（英文版 • 第2版）第 596 页图画的。本篇短文就围绕这张图展开讨论。</p>
+<img src="/2018/12/11/three-way-handshake/three-way-handshake-and-four-way-waving-goodbey.png">
+<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p>我们知道，笼统地说，网络中传输数据就是装包和拆包的过程。整体而言，从上到下，TCP/IP 五层协议：应用层、传输层、网络层、数据链路层、物理层。而一个数据包从应用层 (HTTP) 出发，途经下面三层，在经过每一层时加上这层的 Protocol Header 变成包。最后，在物理层将数字信号转化成光信号。到了另一端就是从下到上拆包。也就是这样：</p>
+<img src="/2018/12/11/three-way-handshake/segment-process.png">
+<p>如图 <strong>Active Opener</strong>（主动连接者）代表 <strong>Client</strong> 端，<strong>Passive Opener</strong>（被动连接者）代表 <strong>Server</strong> 端。下文简写为 C 和 S。忽略非必要的 options 具体握手过程解释如下：</p>
+<ol>
+<li>C 向 S 发送一个 SYN（即 SYN 位置为了 1）包，表示是一个请求建立连接的包。而 Seq = ISN(c) 表示发送了初始的 Sequence Number。</li>
+<li>S 收到 C 发来的 SYN 包，拆包后发现 SYN 位是 1，因此知道这是 C 请求建立连接包。为了表示确认收到了 C 发来的包，S 会给 C 发送一个 SYN+ACK（SYN 和 ACK 位都置为 1）包，这个包的作用既表明收到了 C 的包，同时也是包含了自己的初始 Sequence Number（Seq = ISN(s)。ACK = ISN(c) + 1，即 C 发来的 SYN 包里面的 Sequence Number 值加 1。这个 ACK 值恰好是 C 期望收到的发送下个包能使用的 Sequence Number。至此，C 和 S 请求建立连接的第一个包都发完了。C 发出了一个包并收到了一个确认包，但 S 却无法得知自己发出的包是否丢失。</li>
+<li>C 再向 S 发送一个 ACK 包，Seq = ISN(c) + 1，ACK = ISN(s) + 1。这里的 Seq = ISN(c) + 1 正是刚刚 S 发过来的包里的 ACK 值，而 ACK = ISN(s) + 1 则是刚刚 S 发过来的包里的 Sequence Number（ ISN(s) ）加 1，这正是 S 期望收到的确认。</li>
+</ol>
+<blockquote>
+<p>终于，三次握手完成了，这时就正式建立了连接，可以进行真正的数据传输了。</p>
+</blockquote>
+<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p>数据传输完成了，就挥手再见。</p>
+<ol>
+<li>C 向 S 发一个 FIN+ACK 包，FIN 位置为 1，表示发送的是最后一个包。Seq = K，ACK = L。</li>
+<li>S 收到 C 发来的 FIN+ACK 包，拆包后发现 FIN 位为 1，知道是 C 请求关闭连接。这时 S 会首先向 C 发送一个 ACK 包。C 收到这个 <font color="dd0000">ACK</font> 包时会意识到 S 已经执行了关闭连接。通常情况下，此时应用程序会初始化关闭操作，随时准备关闭连接。（就相当于只是 new 了一个关闭操作的实体，具体关闭动作还要等调用具体实现）</li>
+<li>紧接着<strong>被动</strong>连接的 S 端变为<strong>主动</strong>连接向 C 发一个 FIN+ACK 包，这个包和 <font color="dd0000">ACK</font> 包唯一区别只是将 FIN 位置为了 1。（和请求建立连接一样，C 向 S 请求关闭连接需要得到确认，同样 S 也要向 C 发出关闭连接请求并得到确认。）</li>
+<li>C 收到 S 发出来的 FIN 包后，随后发出 ACK 包，这也是本次连接的最后一个包。如果 S 发出的 FIN 包在一定时间内未收到确认包就会认为丢失，将会继续重传，直到收到为止（当然这里也肯定有最大时间限制，否则会造成很大的浪费）。如果 C 在一段时间内没有收到<strong>重传</strong>的 FIN 包，则执行断开连接。</li>
+</ol>
+<blockquote>
+<p>挥手完了，上面有些地方是我个人的理解，如果有错的话希望大家指出（如果这篇短文有幸被您看到的话）。</p>
+</blockquote>
+<h3 id="温习一下关键缩写"><a href="#温习一下关键缩写" class="headerlink" title="温习一下关键缩写"></a>温习一下关键缩写</h3><p>SYN — Synchronize sequence numbers.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Synchronize sequence numbers. Only the first packet sent from each end should have this flag set. Some other flags and fields change meaning based on this flag, and some are only valid when it is set, and others when it is clear.</span><br></pre></td></tr></table></figure>
+<p>ACK — Acknowledgement.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">indicates that the Acknowledgment field is significant. All packets after the initial SYN packet sent by the client should have this flag set.</span><br></pre></td></tr></table></figure>
+<p>FIN — Final connection.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Last packet from sender.</span><br></pre></td></tr></table></figure>
+<p>Seq — Sequence numbers.</p>
+<p>ISN(c) — Initial Sequence Numbers( Client End ).</p>
+<p>ISN(s) — initial Sequence Numbers( Server End ).</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Transmission_Control_Protocol</a></p>
+<p><a href="ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_9.html" target="_blank" rel="noopener">ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_9.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/11/operating-system-basics/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/11/operating-system-basics/" itemprop="url">操作系统部分基础知识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:58:46+08:00">
+                2018-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）</p>
+</blockquote>
+<h4 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h4><p>Concurrent 并发：同一时间段内执行多条指令<br>Parallel 并行：同一时刻执行多条指令</p>
+<h4 id="读写数据"><a href="#读写数据" class="headerlink" title="读写数据"></a>读写数据</h4><p>读写数据操作不是由 CPU 负责，而是由 CUP 发一条指令给磁盘控制器，等待着由控制器来完成，这用到了 CUP 的中断。当控制器完成操作后通知 CUP，让 CUP 接着进行相应未完成的操作。控制器有一块缓存区，用于临时存放从磁盘读入的数据。</p>
+<h4 id="中断源和中断"><a href="#中断源和中断" class="headerlink" title="中断源和中断"></a>中断源和中断</h4><p>中断源：引起中断的事件叫中断源。</p>
+<p>中断：中断发生时，保持中断状态（处理程序的入口地址）的值，通过任务完成时返回中断限量值来继续执行任务。中断分为多种优先级，可以嵌套。</p>
+<p>Trap：自陷，是程序的自我中断，是一种主动发生的情况。</p>
+<p>系统通过 polling，即 CUP 轮询的方式来查看中断源，进行需要执行的任务。（这是一种老式的处理方式）</p>
+<p>现在通常使用保存在 RAM 高地址上的限制变量来方便地获取到中断发生的入口地址。</p>
+<h4 id="RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access"><a href="#RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access" class="headerlink" title="RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)"></a>RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)</h4><p>RAM，断电即丢失数据<br>SRAM：静态 RAM<br>DRAM：动态 RAM</p>
+<p>ROM：一次写入，反复读取。分为一次性固话，光擦除，电擦除。</p>
+<p>DMA：直接访问内存，包括磁盘、U盘、硬盘等都是这样的处理方式。</p>
+<blockquote>
+<p>速度（由高到低）</p>
+</blockquote>
+<p>Disk - Memory - Cache - Register</p>
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>操作系统是一个全时运行的程序，管理控制系统资源，合理组织计算机工作流程，方便用户使用计算机程序集合。</p>
+<p><strong>分时系统和实时系统</strong></p>
+<p>分时系统：通用系统<br>交互性：多道<br>及时性：独占性</p>
+<p>实时操作系统：专用系统<br>时间要求非常严格，分为硬实时和软实时<br>交互性：多道<br>及时性：独占性</p>
+<p>卫生发射等对时间精确要求严格的任务使用实时系统，一般来说使用双工，即两台一模一样的计算机同时工作，同一时间执行相同的指令，相当于备份。</p>
+<p><strong>双模式</strong><br>1.用户模式/用户态  2.kernel模式/管理态</p>
+<p><strong>指令</strong><br>1.特权指令  2.非特权指令</p>
+<p><strong>PCB</strong><br>PCB（Process Control Block）包括了 Base Address 和 Address Length</p>
+<h4 id="操作系统服务"><a href="#操作系统服务" class="headerlink" title="操作系统服务"></a>操作系统服务</h4><ul>
+<li>用户接口 <ul>
+<li>Command Line Interface (<strong>CLI</strong>)</li>
+<li>Graphics User Interface (<strong>GUI</strong>) </li>
+<li>Batch （批处理）</li>
+</ul>
+</li>
+<li>Program execution</li>
+<li>I/O operations</li>
+<li>File-system manipulation</li>
+<li>Communications</li>
+<li>Error detection</li>
+</ul>
+<p><strong>系统调用（system call）</strong></p>
+<p>所有库函数都是由系统调用的</p>
+<ul>
+<li>fork</li>
+<li>exec</li>
+</ul>
+<h4 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h4><p>程序是指令的集合，进程 = 程序 + 数据 + PCB</p>
+<p>进程：是具有独立功能的程序，关于某个数据集合的一次运行过程。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">区别</th>
+<th style="text-align:center">进程</th>
+<th style="text-align:center">程序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">相同点</td>
+<td style="text-align:center">Ready waiting  Running</td>
+<td style="text-align:center">Ready waiting  Running</td>
+</tr>
+<tr>
+<td style="text-align:center">不同点</td>
+<td style="text-align:center">动态、生命周期、进程=程序+数据+PCB、一个进程可包含多个程序</td>
+<td style="text-align:center">静态、永久存在、一个程序可以对应多个进程</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>三个基本状态<ul>
+<li>Running 正在运行的状态</li>
+<li>Waiting 等待事件发生</li>
+<li>Ready 准备就绪的状态</li>
+</ul>
+</li>
+<li>PCB ( process control block ) 是一个程序控制块，它有结构主存区，包含进程执行所有信息，系统通过 PCB 感知进程，是进程存在的唯一标志。它随进程的创建而发生，随进程的消亡而消亡。PCB 可以保存中断等一系列状态信息。进程运行时候进入系统里面，创建相应的 PCB，PCB 在系统的队列里排队，受系统调度控制程序。</li>
+</ul>
+<h4 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h4><ul>
+<li>new 创建</li>
+<li>ready 就绪等待，除 CUP 外一切资源都分配完成</li>
+<li>waiting 还没有准备好，无法执行事情</li>
+<li>running 获得 CPU 并且运行</li>
+<li>terminate 终止</li>
+</ul>
+<blockquote>
+<p><strong>一个进程创建另外一个进程，分配资源（分配内存，创建 PCB）然后放到就绪队列。</strong></p>
+</blockquote>
+<h4 id="撤销进程"><a href="#撤销进程" class="headerlink" title="撤销进程"></a>撤销进程</h4><ul>
+<li>回收 PCB</li>
+<li>回收资源，例如：内存、输入输出</li>
+</ul>
+<h4 id="编译、链接、装载"><a href="#编译、链接、装载" class="headerlink" title="编译、链接、装载"></a>编译、链接、装载</h4><ul>
+<li><p>编译器将源代码编译成汇编代码，汇编器将汇编代码转换成多个可执行文件，链接器将可执行文件链接成单个可执行程序，装载器再将可执行程序加载到内存并准备执行。内存中的程序将会获得操作系统的调用运行。</p>
+</li>
+<li><p>在汇编器将汇编代码转换成多个可执行文件时，会将源代码中的符号地址绑定为可重定位的地址，在链接的过程中，将可重定位的地址映射为绝对地址。</p>
+</li>
+</ul>
+<p>下期再见。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/11/mysql-part-one/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -569,7 +964,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

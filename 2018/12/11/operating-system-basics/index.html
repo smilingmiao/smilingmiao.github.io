@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）  并发与并行Concurrent 并发：同一时间段内执行多条指令Parallel 并行：同一时刻执行多条指令 读写数据读写数据操作不是由 CPU 负责，而是由 CUP 发一条指令给磁盘控制器，等待着由控制器来完成，这用到了 CUP 的中断。当控制器完成操作后通知 CUP，让 CUP 接着进行相应未完成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统部分基础知识">
+<meta property="og:url" content="https://github.com/smilingmiao/2018/12/11/operating-system-basics/index.html">
+<meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）  并发与并行Concurrent 并发：同一时间段内执行多条指令Parallel 并行：同一时刻执行多条指令 读写数据读写数据操作不是由 CPU 负责，而是由 CUP 发一条指令给磁盘控制器，等待着由控制器来完成，这用到了 CUP 的中断。当控制器完成操作后通知 CUP，让 CUP 接着进行相应未完成">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-11T07:00:33.638Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统部分基础知识">
+<meta name="twitter:description" content="很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）  并发与并行Concurrent 并发：同一时间段内执行多条指令Parallel 并行：同一时刻执行多条指令 读写数据读写数据操作不是由 CPU 负责，而是由 CUP 发一条指令给磁盘控制器，等待着由控制器来完成，这用到了 CUP 的中断。当控制器完成操作后通知 CUP，让 CUP 接着进行相应未完成">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/smilingmiao/2018/12/11/operating-system-basics/">
+
+
+
+
+
+  <title>操作系统部分基础知识 | smilingmiao</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">smilingmiao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/11/operating-system-basics/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">操作系统部分基础知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:58:46+08:00">
+                2018-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）</p>
+</blockquote>
+<h4 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h4><p>Concurrent 并发：同一时间段内执行多条指令<br>Parallel 并行：同一时刻执行多条指令</p>
+<h4 id="读写数据"><a href="#读写数据" class="headerlink" title="读写数据"></a>读写数据</h4><p>读写数据操作不是由 CPU 负责，而是由 CUP 发一条指令给磁盘控制器，等待着由控制器来完成，这用到了 CUP 的中断。当控制器完成操作后通知 CUP，让 CUP 接着进行相应未完成的操作。控制器有一块缓存区，用于临时存放从磁盘读入的数据。</p>
+<h4 id="中断源和中断"><a href="#中断源和中断" class="headerlink" title="中断源和中断"></a>中断源和中断</h4><p>中断源：引起中断的事件叫中断源。</p>
+<p>中断：中断发生时，保持中断状态（处理程序的入口地址）的值，通过任务完成时返回中断限量值来继续执行任务。中断分为多种优先级，可以嵌套。</p>
+<p>Trap：自陷，是程序的自我中断，是一种主动发生的情况。</p>
+<p>系统通过 polling，即 CUP 轮询的方式来查看中断源，进行需要执行的任务。（这是一种老式的处理方式）</p>
+<p>现在通常使用保存在 RAM 高地址上的限制变量来方便地获取到中断发生的入口地址。</p>
+<h4 id="RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access"><a href="#RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access" class="headerlink" title="RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)"></a>RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)</h4><p>RAM，断电即丢失数据<br>SRAM：静态 RAM<br>DRAM：动态 RAM</p>
+<p>ROM：一次写入，反复读取。分为一次性固话，光擦除，电擦除。</p>
+<p>DMA：直接访问内存，包括磁盘、U盘、硬盘等都是这样的处理方式。</p>
+<blockquote>
+<p>速度（由高到低）</p>
+</blockquote>
+<p>Disk - Memory - Cache - Register</p>
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>操作系统是一个全时运行的程序，管理控制系统资源，合理组织计算机工作流程，方便用户使用计算机程序集合。</p>
+<p><strong>分时系统和实时系统</strong></p>
+<p>分时系统：通用系统<br>交互性：多道<br>及时性：独占性</p>
+<p>实时操作系统：专用系统<br>时间要求非常严格，分为硬实时和软实时<br>交互性：多道<br>及时性：独占性</p>
+<p>卫生发射等对时间精确要求严格的任务使用实时系统，一般来说使用双工，即两台一模一样的计算机同时工作，同一时间执行相同的指令，相当于备份。</p>
+<p><strong>双模式</strong><br>1.用户模式/用户态  2.kernel模式/管理态</p>
+<p><strong>指令</strong><br>1.特权指令  2.非特权指令</p>
+<p><strong>PCB</strong><br>PCB（Process Control Block）包括了 Base Address 和 Address Length</p>
+<h4 id="操作系统服务"><a href="#操作系统服务" class="headerlink" title="操作系统服务"></a>操作系统服务</h4><ul>
+<li>用户接口 <ul>
+<li>Command Line Interface (<strong>CLI</strong>)</li>
+<li>Graphics User Interface (<strong>GUI</strong>) </li>
+<li>Batch （批处理）</li>
+</ul>
+</li>
+<li>Program execution</li>
+<li>I/O operations</li>
+<li>File-system manipulation</li>
+<li>Communications</li>
+<li>Error detection</li>
+</ul>
+<p><strong>系统调用（system call）</strong></p>
+<p>所有库函数都是由系统调用的</p>
+<ul>
+<li>fork</li>
+<li>exec</li>
+</ul>
+<h4 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h4><p>程序是指令的集合，进程 = 程序 + 数据 + PCB</p>
+<p>进程：是具有独立功能的程序，关于某个数据集合的一次运行过程。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">区别</th>
+<th style="text-align:center">进程</th>
+<th style="text-align:center">程序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">相同点</td>
+<td style="text-align:center">Ready waiting  Running</td>
+<td style="text-align:center">Ready waiting  Running</td>
+</tr>
+<tr>
+<td style="text-align:center">不同点</td>
+<td style="text-align:center">动态、生命周期、进程=程序+数据+PCB、一个进程可包含多个程序</td>
+<td style="text-align:center">静态、永久存在、一个程序可以对应多个进程</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>三个基本状态<ul>
+<li>Running 正在运行的状态</li>
+<li>Waiting 等待事件发生</li>
+<li>Ready 准备就绪的状态</li>
+</ul>
+</li>
+<li>PCB ( process control block ) 是一个程序控制块，它有结构主存区，包含进程执行所有信息，系统通过 PCB 感知进程，是进程存在的唯一标志。它随进程的创建而发生，随进程的消亡而消亡。PCB 可以保存中断等一系列状态信息。进程运行时候进入系统里面，创建相应的 PCB，PCB 在系统的队列里排队，受系统调度控制程序。</li>
+</ul>
+<h4 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h4><ul>
+<li>new 创建</li>
+<li>ready 就绪等待，除 CUP 外一切资源都分配完成</li>
+<li>waiting 还没有准备好，无法执行事情</li>
+<li>running 获得 CPU 并且运行</li>
+<li>terminate 终止</li>
+</ul>
+<blockquote>
+<p><strong>一个进程创建另外一个进程，分配资源（分配内存，创建 PCB）然后放到就绪队列。</strong></p>
+</blockquote>
+<h4 id="撤销进程"><a href="#撤销进程" class="headerlink" title="撤销进程"></a>撤销进程</h4><ul>
+<li>回收 PCB</li>
+<li>回收资源，例如：内存、输入输出</li>
+</ul>
+<h4 id="编译、链接、装载"><a href="#编译、链接、装载" class="headerlink" title="编译、链接、装载"></a>编译、链接、装载</h4><ul>
+<li><p>编译器将源代码编译成汇编代码，汇编器将汇编代码转换成多个可执行文件，链接器将可执行文件链接成单个可执行程序，装载器再将可执行程序加载到内存并准备执行。内存中的程序将会获得操作系统的调用运行。</p>
+</li>
+<li><p>在汇编器将汇编代码转换成多个可执行文件时，会将源代码中的符号地址绑定为可重定位的地址，在链接的过程中，将可重定位的地址映射为绝对地址。</p>
+</li>
+</ul>
+<p>下期再见。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    smilingmiao
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://github.com/smilingmiao/2018/12/11/operating-system-basics/" title="操作系统部分基础知识">https://github.com/smilingmiao/2018/12/11/operating-system-basics/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/11/mysql-part-one/" rel="next" title="MySQL">
+                <i class="fa fa-chevron-left"></i> MySQL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/11/three-way-handshake/" rel="prev" title="三次握手四次挥手">
+                三次握手四次挥手 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">smilingmiao</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/smilingmiao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.weibo.com/6709909308/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#并发与并行"><span class="nav-number">1.</span> <span class="nav-text">并发与并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读写数据"><span class="nav-number">2.</span> <span class="nav-text">读写数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断源和中断"><span class="nav-number">3.</span> <span class="nav-text">中断源和中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access"><span class="nav-number">4.</span> <span class="nav-text">RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作系统"><span class="nav-number">5.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作系统服务"><span class="nav-number">6.</span> <span class="nav-text">操作系统服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基础概念"><span class="nav-number">7.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的状态"><span class="nav-number">8.</span> <span class="nav-text">进程的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#撤销进程"><span class="nav-number">9.</span> <span class="nav-text">撤销进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译、链接、装载"><span class="nav-number">10.</span> <span class="nav-text">编译、链接、装载</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
