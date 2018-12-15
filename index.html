@@ -885,6 +885,22 @@
 <img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/cocoapods-installation.png">
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/tom/.gem/ruby/2.3.0/bin/pod setup</span><br></pre></td></tr></table></figure>
 <p>以后操作 update 或者 install 等等都需要 <code>/Users/tom/.gem/ruby/2.3.0/bin/pod</code> 后接具体命令参数。虽然这样挺麻烦的，但是我还是喜欢这种，改成全局的未免是什么好事，这样其实能加深一些理解。</p>
+<p>更新：</p>
+<p>用了几天还是觉得每次执行<code>pod</code>命令出现<code>zsh: command not found: pod</code>然后再执行<code>/Users/tom/.gem/ruby/2.3.0/bin/pod + 命令</code>很麻烦。花二十分钟解决了一下这个问题。原因是：当前命令的<a href="https://baike.baidu.com/item/%E8%BD%AF%E9%93%BE%E6%8E%A5" target="_blank" rel="noopener">软链接</a>（例如 Windows 桌面的快捷方式）已经创建，但是软链接所在的<code>*/bin</code>路径还没有被 export。比如<code>/Users/tom/.gem/ruby/2.3.0/bin/</code>还没被 export。一句话描述：还没有配置环境变量。</p>
+<ul>
+<li><p>解决问题步骤：</p>
+<ul>
+<li>在终端输入<code>gem which cocoapods</code></li>
+</ul>
+<img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/gem-which-cocoapods.png">
+<ul>
+<li>执行<code>ln -s /Users/smilingmiao/.gem/ruby/2.3.0/bin/pod /usr/local/bin</code></li>
+<li>再执行<code>source ~/.zshrc</code></li>
+</ul>
+</li>
+</ul>
+<p>  Done.</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://www.jianshu.com/p/bba968ca3957" target="_blank" rel="noopener">https://www.jianshu.com/p/bba968ca3957</a></p>
 <p>下期再见。</p>
 
           
