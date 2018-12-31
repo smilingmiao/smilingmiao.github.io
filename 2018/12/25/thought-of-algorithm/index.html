@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="冒泡排序特点：简单粗暴，上来直接比。两层for循环嵌套，外层共执行n次，内层随外层执行的次数逐渐递减，总次数就是n平方数量级，因此时间复杂度是 O(n2)，空间复杂度 O(1)。 步骤：  取到外层循环当前的元素 Ei = array[i] 内层从 i+1 开始递增遍历所有元素与 Ei 比较并交换  123456789101112func sort(_ array: inout [Int]) &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部分常见算法的思路">
+<meta property="og:url" content="https://github.com/smilingmiao/2018/12/25/thought-of-algorithm/index.html">
+<meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="冒泡排序特点：简单粗暴，上来直接比。两层for循环嵌套，外层共执行n次，内层随外层执行的次数逐渐递减，总次数就是n平方数量级，因此时间复杂度是 O(n2)，空间复杂度 O(1)。 步骤：  取到外层循环当前的元素 Ei = array[i] 内层从 i+1 开始递增遍历所有元素与 Ei 比较并交换  123456789101112func sort(_ array: inout [Int]) &amp;#">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-31T15:52:20.785Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="部分常见算法的思路">
+<meta name="twitter:description" content="冒泡排序特点：简单粗暴，上来直接比。两层for循环嵌套，外层共执行n次，内层随外层执行的次数逐渐递减，总次数就是n平方数量级，因此时间复杂度是 O(n2)，空间复杂度 O(1)。 步骤：  取到外层循环当前的元素 Ei = array[i] 内层从 i+1 开始递增遍历所有元素与 Ei 比较并交换  123456789101112func sort(_ array: inout [Int]) &amp;#">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/smilingmiao/2018/12/25/thought-of-algorithm/">
+
+
+
+
+
+  <title>部分常见算法的思路 | smilingmiao</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">smilingmiao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/25/thought-of-algorithm/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">部分常见算法的思路</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-25T16:05:17+08:00">
+                2018-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><p>特点：简单粗暴，上来直接比。两层<code>for</code>循环嵌套，外层共执行<code>n</code>次，内层随外层执行的次数逐渐递减，总次数就是<code>n</code>平方数量级，因此时间复杂度是 O(n2)，空间复杂度 O(1)。</p>
+<p>步骤：</p>
+<ol>
+<li>取到外层循环当前的元素 Ei = array[i]</li>
+<li>内层从 i+1 开始递增遍历所有元素与 Ei 比较并交换</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sort</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int])</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> temp = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> ..&lt; array.<span class="built_in">count</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> i + <span class="number">1</span> ..&lt; array.<span class="built_in">count</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> array[i] &gt; array[j] &#123;</span><br><span class="line">                temp = array[i]</span><br><span class="line">                array[i] = array[j]</span><br><span class="line">                array[j] = temp</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h1><p>特点：也比较简单直接，两层<code>for</code>循环嵌套，内层遍历数组内剩余元素并找出最小的，并装进另外一个数组中，同时从原来的数组中移除。时间复杂度也是 O(n2)，空间复杂度 O(n)。</p>
+<p>步骤：</p>
+<ol>
+<li>每次取得最小的元素，装进另外一个数组，从原来的数组移除，最后另外一个数组按下标取就是排好序的。</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">selectionSort</span><span class="params">(unsorted array: <span class="keyword">inout</span> [Int])</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> array.<span class="built_in">count</span> &gt; <span class="number">1</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> sortedArray = [<span class="type">Int</span>]()</span><br><span class="line">        <span class="keyword">let</span> <span class="built_in">count</span> = array.<span class="built_in">count</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span> ... <span class="built_in">count</span> - <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">var</span> (index, <span class="built_in">min</span>) = (<span class="number">0</span>, array[<span class="number">0</span>])</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="number">1</span> ... <span class="built_in">count</span> - i &#123;</span><br><span class="line">                <span class="keyword">if</span> array[j] &gt;= <span class="built_in">min</span> &#123;</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                &#125;</span><br><span class="line">                (index, <span class="built_in">min</span>) = (j, array[j])</span><br><span class="line">            &#125;</span><br><span class="line">            array.remove(at: index)</span><br><span class="line">            sortedArray.append(<span class="built_in">min</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        array = sortedArray</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p>特点：遍历取每一个元素并和前一个元素比较，如果需要交换则执行交换，并且递归调用交换方法检查前面的元素是否需要交换。最坏的情况是，一个降序的数组要排列升序的，这时候时间复杂度就是 O(n2)，空间复杂度是 O(1)。</p>
+<p>步骤：</p>
+<ol>
+<li>遍历每次取得当前元素和前一个比</li>
+<li>需要交换就交换，并且递归遍历交换前面需要交换的元素</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sort</span><span class="params">(<span class="number">_</span> array: [Int])</span></span> -&gt; [<span class="type">Int</span>] &#123;</span><br><span class="line">        <span class="keyword">guard</span> array.<span class="built_in">count</span> &gt; <span class="number">1</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> array</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> previous = array[<span class="number">0</span>], array = array</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span> ..&lt; array.<span class="built_in">count</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> array[i] &lt; previous &#123;</span><br><span class="line">                <span class="built_in">swap</span>(&amp;array, i - <span class="number">1</span>, i)</span><br><span class="line">            &#125;</span><br><span class="line">            previous = array[i]</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> array</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// [4, 3, 2, 1]</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int], <span class="number">_</span> <span class="keyword">left</span>: Int, <span class="number">_</span> <span class="keyword">right</span>: Int)</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">left</span> = <span class="keyword">left</span>, <span class="keyword">right</span> = <span class="keyword">right</span>, temp = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">left</span> &gt;= <span class="number">0</span> &amp;&amp; array[<span class="keyword">left</span>] &gt; array[<span class="keyword">right</span>]  &#123;</span><br><span class="line">            temp = array[<span class="keyword">left</span>]</span><br><span class="line">            array[<span class="keyword">left</span>] = array[<span class="keyword">right</span>]</span><br><span class="line">            array[<span class="keyword">right</span>] = temp</span><br><span class="line">            <span class="keyword">left</span> -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">right</span> -= <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p>特点：分而治之。选定第一个元素为基准值 P，头指针 L 指向第二个元素，尾指针 R 指向最后一个元素，只要 L &lt;= R 的情况下，递归遍历找出 L 指向大于 P 的值，R 指向小于 P 的值并进行交换，这就把 P 当成一个分水岭，P 左边的是小于 P 的，右边的是大于 P 的（升序情况下）。最后再把每一部分拆成更小的两部分进行处理。</p>
+<p>步骤：</p>
+<ol>
+<li>选定基准值 Pivot</li>
+<li>后行指针和前行指针同时移动</li>
+<li>分别找出大于基准值的和小于基准值的并交换</li>
+<li>将交换基准值左右两边的元素拆分为更小子问题递归解决</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickSort</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int], <span class="number">_</span> low: Int, <span class="number">_</span> high: Int)</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> low &lt; high <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> pivot = array[low]</span><br><span class="line">        <span class="keyword">var</span> <span class="type">L</span> = low + <span class="number">1</span></span><br><span class="line">        <span class="keyword">var</span> <span class="type">R</span> = high</span><br><span class="line">        <span class="keyword">var</span> temp = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> <span class="type">L</span> &lt;= <span class="type">R</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> <span class="type">L</span> &lt;= high &amp;&amp; array[<span class="type">L</span>] &lt; pivot &#123;</span><br><span class="line">                <span class="type">L</span> += <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> <span class="type">L</span> &lt;= <span class="type">R</span> &amp;&amp; array[<span class="type">R</span>] &gt;= pivot &#123;</span><br><span class="line">                <span class="type">R</span> -= <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> <span class="type">L</span> &gt; <span class="type">R</span> &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            temp = array[<span class="type">L</span>]</span><br><span class="line">            array[<span class="type">L</span>] = array[<span class="type">R</span>]</span><br><span class="line">            array[<span class="type">R</span>] = temp</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/// 执行到这里时因为 L &gt; R 了，此时 R 一定小于 Pivot</span></span><br><span class="line">        temp = array[<span class="type">R</span>]</span><br><span class="line">        array[<span class="type">R</span>] = array[low]</span><br><span class="line">        array[low] = temp</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">quickSort</span>(&amp;array, low, <span class="type">R</span> - <span class="number">1</span>)</span><br><span class="line">        <span class="built_in">quickSort</span>(&amp;array, <span class="type">R</span> + <span class="number">1</span>, high)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><p>特点：分而治之。不停地将一组数据分为两份数据，再将两份数据分为四份，再分为八份…直到分为不能再分开的最小单位，然后再逆向地不断将两部分排序并合并使之有序，直到整个数组里的数据都成为有序的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mergeSort</span><span class="params">(<span class="number">_</span> array: [Int])</span></span> -&gt; [<span class="type">Int</span>] &#123;</span><br><span class="line">        <span class="keyword">var</span> helper = <span class="type">Array</span>(repeating: <span class="number">0</span>, <span class="built_in">count</span>: array.<span class="built_in">count</span>), array = array</span><br><span class="line">        mergeSort(&amp;array, &amp;helper, <span class="number">0</span>, array.<span class="built_in">count</span> - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> array</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">mergeSort</span><span class="params">(<span class="number">_</span> original: <span class="keyword">inout</span> [Int], <span class="number">_</span> helper: <span class="keyword">inout</span> [Int], <span class="number">_</span> low: Int, <span class="number">_</span> high: Int)</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> low &lt; high <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> mid = low + (high - low) / <span class="number">2</span></span><br><span class="line">        mergeSort(&amp;original, &amp;helper, low, mid)</span><br><span class="line">        mergeSort(&amp;original, &amp;helper, mid + <span class="number">1</span>, high)</span><br><span class="line">        merge(&amp;original, &amp;helper, low, mid, high)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">merge</span><span class="params">(<span class="number">_</span> original: <span class="keyword">inout</span> [Int], <span class="number">_</span> helper: <span class="keyword">inout</span> [Int], <span class="number">_</span> low: Int, <span class="number">_</span> mid: Int, <span class="number">_</span> high: Int)</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> low ... high &#123;</span><br><span class="line">            helper[i] = original[i]</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">var</span> helperLeft = low, helperRight = mid + <span class="number">1</span>, current = low</span><br><span class="line">        <span class="keyword">while</span> helperLeft &lt;= mid &amp;&amp; helperRight &lt;= high &#123;</span><br><span class="line">            <span class="keyword">if</span> helper[helperLeft] &lt; helper[helperRight] &#123;</span><br><span class="line">                original[current] = helper[helperLeft]</span><br><span class="line">                helperLeft += <span class="number">1</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                original[current] = helper[helperRight]</span><br><span class="line">                helperRight += <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">            current += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">guard</span> helperLeft &lt;= mid <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> ... mid - helperLeft &#123;</span><br><span class="line">            original[current + i] = helper[helperLeft + i]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><p>特点：分而治之。</p>
+<p>步骤：找到最小值<code>min</code>和最大值<code>max</code>；确定桶的数量；计算出步长；遍历数组并计算将元素插入到不用序号的桶中；根据桶序号从小到大遍历取出元素并装进新的数组。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">bucketSort</span><span class="params">(<span class="number">_</span> array: [Int])</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> array.<span class="built_in">count</span> &gt; <span class="number">1</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> array = array, <span class="built_in">min</span> = array[<span class="number">0</span>], <span class="built_in">max</span> = array[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> element <span class="keyword">in</span> array &#123;</span><br><span class="line">            <span class="keyword">if</span> element &lt; <span class="built_in">min</span> &#123;</span><br><span class="line">                <span class="built_in">min</span> = element</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> element &gt; <span class="built_in">max</span> &#123;</span><br><span class="line">                <span class="built_in">max</span> = element</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">max</span> == <span class="built_in">min</span> &#123; <span class="comment">// 最大值和最小值一样，说明数组中元素值都相同，不需要排序</span></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 规定需要桶的数量为 10</span></span><br><span class="line">        <span class="keyword">let</span> bucketSize = <span class="number">10</span></span><br><span class="line">        <span class="comment">// 计算步长，即每个桶里容纳的数值范围</span></span><br><span class="line">        <span class="keyword">let</span> <span class="built_in">stride</span> = (<span class="built_in">max</span> - <span class="built_in">min</span>) / bucketSize + <span class="number">1</span></span><br><span class="line">        <span class="comment">// 创建一个二位数组，包含 10 个空桶</span></span><br><span class="line">        <span class="keyword">var</span> buckets: [[<span class="type">Int</span>]] = <span class="type">Array</span>(repeating: [], <span class="built_in">count</span>: bucketSize)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> element <span class="keyword">in</span> array &#123;</span><br><span class="line">            <span class="keyword">let</span> pos = element / <span class="built_in">stride</span></span><br><span class="line">            insert(&amp;buckets[pos], element)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        array.removeAll()</span><br><span class="line">        <span class="keyword">for</span> bucket <span class="keyword">in</span> buckets &#123;</span><br><span class="line">            <span class="keyword">if</span> bucket.isEmpty &#123;</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> num <span class="keyword">in</span> bucket &#123;</span><br><span class="line">                array.append(num)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(array)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">insert</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int], <span class="number">_</span> val: Int)</span></span> &#123;</span><br><span class="line">        array.append(val)</span><br><span class="line">        <span class="keyword">if</span> array.<span class="built_in">count</span> == <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">0</span> ..&lt; array.<span class="built_in">count</span>).reversed() &#123;</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span> || array[i] &gt;= array[i - <span class="number">1</span>] &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> temp = array[i]</span><br><span class="line">                array[i] = array[i - <span class="number">1</span>]</span><br><span class="line">                array[i - <span class="number">1</span>] = temp</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><p>特点：分而治之。秉承了桶排序的一些思路。</p>
+<p>步骤：取出最小<code>min</code>和最大<code>max</code>值；计算出最小最大的差值并加1（作为容纳不同元素的个数的数组容量值）；</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">countingSort</span><span class="params">(unsorted array: <span class="keyword">inout</span> [Int])</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> array.<span class="built_in">count</span> &gt; <span class="number">0</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> (<span class="built_in">min</span>, <span class="built_in">max</span>) = (array[<span class="number">0</span>], array[<span class="number">0</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> e <span class="keyword">in</span> array &#123;</span><br><span class="line">            <span class="keyword">if</span> e &lt; <span class="built_in">min</span> &#123;</span><br><span class="line">                <span class="built_in">min</span> = e</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> e &gt; <span class="built_in">max</span> &#123;</span><br><span class="line">                <span class="built_in">max</span> = e</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> k = <span class="built_in">max</span> - <span class="built_in">min</span> + <span class="number">1</span></span><br><span class="line">        <span class="comment">// counting array</span></span><br><span class="line">        <span class="keyword">var</span> <span class="built_in">c</span> = <span class="type">Array</span>(repeating: <span class="number">0</span>, <span class="built_in">count</span>: k)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> ..&lt; array.<span class="built_in">count</span> &#123;</span><br><span class="line">            <span class="built_in">c</span>[array[i] - <span class="built_in">min</span>] += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span> ..&lt; <span class="built_in">c</span>.<span class="built_in">count</span> &#123;</span><br><span class="line">            <span class="built_in">c</span>[i] = <span class="built_in">c</span>[i] + <span class="built_in">c</span>[i - <span class="number">1</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> result = <span class="type">Array</span>(repeating: <span class="number">0</span>, <span class="built_in">count</span>: array.<span class="built_in">count</span>)</span><br><span class="line">        <span class="keyword">var</span> lastIndex: <span class="type">Int</span>?</span><br><span class="line">        <span class="keyword">var</span> currentIndex: <span class="type">Int</span>?</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">0</span> ..&lt; array.<span class="built_in">count</span>).reversed() &#123;</span><br><span class="line">            currentIndex = <span class="built_in">c</span>[array[i] - <span class="built_in">min</span>] - <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> lastIndex != <span class="literal">nil</span> &amp;&amp; lastIndex == currentIndex &#123;</span><br><span class="line">                result[currentIndex! - <span class="number">1</span>] = array[i]</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                result[currentIndex!] = array[i]</span><br><span class="line">            &#125;</span><br><span class="line">            lastIndex = currentIndex!</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(result)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>bu</p>
+<p>te</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    smilingmiao
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://github.com/smilingmiao/2018/12/25/thought-of-algorithm/" title="部分常见算法的思路">https://github.com/smilingmiao/2018/12/25/thought-of-algorithm/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/21/about-hash/" rel="next" title="关于哈希函数">
+                <i class="fa fa-chevron-left"></i> 关于哈希函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">smilingmiao</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/smilingmiao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/smilingmiao" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.weibo.com/6709909308/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:smiling.miao@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-mail"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#冒泡排序"><span class="nav-number">1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择排序"><span class="nav-number">2.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插入排序"><span class="nav-number">3.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速排序"><span class="nav-number">4.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#归并排序"><span class="nav-number">5.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#桶排序"><span class="nav-number">6.</span> <span class="nav-text">桶排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#计数排序"><span class="nav-number">7.</span> <span class="nav-text">计数排序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
