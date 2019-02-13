@@ -358,8 +358,7 @@
 <p>第一行指向 tree graph，tree object 的哈希值代表了工作副本。它就是 <code>alpha</code> 目录。最后一行是 commit 信息。<br><img src="/2019/01/31/translate-git-from-the-inside-out/2-a1-commit.png"></p>
 <center><font size="2"><code>a1</code> commit object 指向它的树图</font></center>
 
-<p>#####当前分支指向新的 commit</p>
-<p>最终，commit 命令将当前分支指向新的 commit object。哪一个是当前分支？到 <code>.git/HEAD</code> 下面发现：</p>
+<h5 id="当前分支指向新的-commit"><a href="#当前分支指向新的-commit" class="headerlink" title="当前分支指向新的 commit"></a>当前分支指向新的 commit</h5><p>最终，commit 命令将当前分支指向新的 commit object。哪一个是当前分支？到 <code>.git/HEAD</code> 下面发现：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  alpha git:(master) cat .git/HEAD</span><br><span class="line">ref: refs/heads/master</span><br></pre></td></tr></table></figure>
 <p>这也就是说 <code>HEAD</code> 是指向 <code>master</code> 的。<code>master</code> 是当前分支。</p>
 <p><code>HEAD</code> 和 <code>master</code> 都是引用。引用是 Git 或是使用者用来确认指定 commit 的一个标签。</p>
