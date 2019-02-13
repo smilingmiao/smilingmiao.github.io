@@ -358,7 +358,7 @@
 <p>第一行指向 tree graph，tree object 的哈希值代表了工作副本。它就是 <code>alpha</code> 目录。最后一行是 commit 信息。<br><img src="/2019/01/31/translate-git-from-the-inside-out/2-a1-commit.png"></p>
 <center><font size="2"><code>a1</code> commit object 指向它的树图</font></center>
 
-<p><strong>当前分支指向新的 commit</strong></p>
+<p>#####当前分支指向新的 commit</p>
 <p>最终，commit 命令将当前分支指向新的 commit object。哪一个是当前分支？到 <code>.git/HEAD</code> 下面发现：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  alpha git:(master) cat .git/HEAD</span><br><span class="line">ref: refs/heads/master</span><br></pre></td></tr></table></figure>
 <p>这也就是说 <code>HEAD</code> 是指向 <code>master</code> 的。<code>master</code> 是当前分支。</p>
@@ -370,7 +370,7 @@
 <center><font size="2"><code>HEAD</code> 指向 <code>master</code>，<code>master</code> 指向 <code>a1</code> commit</font></center>
 
 <p><code>HEAD</code> 指向 <code>master</code>，和 commit 之前一样。但是 <code>master</code> 现在存在并指向新的 commit object（<code>a1</code>）。</p>
-<h3 id="再做一个-commit（不是第一次）"><a href="#再做一个-commit（不是第一次）" class="headerlink" title="再做一个 commit（不是第一次）"></a>再做一个 commit（不是第一次）</h3><p>下面是 <code>a1</code> commit 后的 Git 图，包含工作副本和 index。<br><img src="/2019/01/31/translate-git-from-the-inside-out/4-a1-wc-and-index.png"></p>
+<h3 id="再做一次-commit（不是第一次）"><a href="#再做一次-commit（不是第一次）" class="headerlink" title="再做一次 commit（不是第一次）"></a>再做一次 commit（不是第一次）</h3><p>下面是 <code>a1</code> commit 后的 Git 图，包含工作副本和 index。<br><img src="/2019/01/31/translate-git-from-the-inside-out/4-a1-wc-and-index.png"></p>
 <center><font size="2">显示 <code>a1</code> commit 的工作副本和索引</font></center>
 
 <p>注意到现在工作副本，index 和 <code>a1</code> commit 都有关于 <code>data/letter.txt</code> 和 <code>data/number.txt</code> 相同的内容。index 和 <code>HEAD</code> commit 都使用哈希去引用 blob object，但是工作副本内容以文本的方式存放在不同的位置。</p>
