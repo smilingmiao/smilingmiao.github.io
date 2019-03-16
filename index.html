@@ -229,6 +229,144 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/16/mac-tips-set/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/16/mac-tips-set/" itemprop="url">Mac Tips 集合</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-16T17:46:28+08:00">
+                2019-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p><b><font size="5" color="#EE3B3B"> 解决 gitk 在 Mac Retina 屏幕模糊的问题</font></b></p>
+</blockquote>
+<h5 id="先给-Mac-开启系统完整性保护（System-Integrity-Protection-SIP）"><a href="#先给-Mac-开启系统完整性保护（System-Integrity-Protection-SIP）" class="headerlink" title="先给 Mac 开启系统完整性保护（System Integrity Protection, SIP）"></a>先给 Mac 开启系统完整性保护（System Integrity Protection, SIP）</h5><ol>
+<li>在终端中输入 <code>csrutil status</code> 并回车，检查当前状态是是 <code>enabled</code> 还是 <code>disabled</code>。</li>
+<li>如果是 <code>enabled</code> 的话，重启 Mac，按住 command+R 进入恢复模式</li>
+<li>打开终端，输入 <code>csrutil disable 回车</code></li>
+<li>重启 Mac 后重复步骤1验证一下如果开启继续执行下面的步骤</li>
+</ol>
+<h5 id="修改-Wish-app-的-Info-plist"><a href="#修改-Wish-app-的-Info-plist" class="headerlink" title="修改 Wish.app 的 Info.plist"></a>修改 Wish.app 的 Info.plist</h5><ol>
+<li><p>进入 <code>/System/Library/Frameworks/Tk.framework/Version/8.5/Resources/</code> 下面（直接键入这条完整命令，而不是前面加 <code>cd</code>），在 info.plist 中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;NSHighResolutionCapable&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启 Mac 进入恢复模式再改回 <code>csrutil enabled</code> 状态，然后再重启就 OK 啦。</p>
+</li>
+</ol>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="https://superuser.com/questions/620824/is-it-possible-to-have-git-gui-gitk-look-good-on-a-retina-macbook-pro" target="_blank" rel="noopener">Is-it-possible-to-have-git-gui-gitk-look-good-on-a-retina-macbook-pro</a></p>
+<p><a href="http://www.voidcn.com/article/p-omsfkaew-bkd.html" target="_blank" rel="noopener">Mac Retina解决gitk模糊的问题</a></p>
+<p><a href="https://www.jianshu.com/p/fe78d2036192" target="_blank" rel="noopener">Mac开启关闭SIP（系统完整性保护）</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/01/iOS-Tips-in-Development/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1996,7 +2134,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
