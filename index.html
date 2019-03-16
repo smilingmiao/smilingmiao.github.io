@@ -316,9 +316,15 @@
 <li><p>重启 Mac 进入恢复模式再改回 <code>csrutil enabled</code> 状态，然后再重启就 OK 啦。</p>
 </li>
 </ol>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="https://superuser.com/questions/620824/is-it-possible-to-have-git-gui-gitk-look-good-on-a-retina-macbook-pro" target="_blank" rel="noopener">Is-it-possible-to-have-git-gui-gitk-look-good-on-a-retina-macbook-pro</a></p>
-<p><a href="http://www.voidcn.com/article/p-omsfkaew-bkd.html" target="_blank" rel="noopener">Mac Retina解决gitk模糊的问题</a></p>
-<p><a href="https://www.jianshu.com/p/fe78d2036192" target="_blank" rel="noopener">Mac开启关闭SIP（系统完整性保护）</a></p>
+<p>*<font size="4" color="orange">更新</font></p>
+<p>照着上面的步骤一顿操作还是不起作用。然后你 【gitk Mac 模糊】的时候满屏出来的都是上面的解决方案。大概是过时了吧，现在的 macOS Mojave 已经不再支持了。</p>
+<p>所以新的方法如下：</p>
+<ol>
+<li>下载 <strong><a href="http://retinizer.mikelpr.com/" target="_blank" rel="noopener">Retinizer</a></strong> ，解压后打开软件</li>
+<li>将 /System/Library/Frameworks/Tk.framework/Version/8.5/Resources/ 下面的 Wish.app 拖入 <strong>Retinizer</strong> 软件中，It works，Over</li>
+</ol>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="https://superuser.com/questions/620824/is-it-possible-to-have-git-gui-gitk-look-good-on-a-retina-macbook-pro" target="_blank" rel="noopener">Is-it-possible-to-have-git-gui-gitk-look-good-on-a-retina-macbook-pro</a><br><a href="http://www.voidcn.com/article/p-omsfkaew-bkd.html" target="_blank" rel="noopener">Mac Retina解决gitk模糊的问题</a><br><a href="https://www.jianshu.com/p/fe78d2036192" target="_blank" rel="noopener">Mac开启关闭SIP（系统完整性保护）</a></p>
+<p>*更新<br><a href="https://zyfdegh.github.io/post/201806-gitk-retina/" target="_blank" rel="noopener">让 macOS 中的 gitk 支持高清显示</a><br><a href="http://retinizer.mikelpr.com/" target="_blank" rel="noopener">http://retinizer.mikelpr.com/</a></p>
 
           
         
