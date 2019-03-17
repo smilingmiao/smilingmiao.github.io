@@ -229,6 +229,236 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/18/git-newbie/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/18/git-newbie/" itemprop="url">Git</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-18T00:58:32+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Git-概述"><a href="#Git-概述" class="headerlink" title=" Git 概述 "></a><font color="#32CD32"> Git 概述 </font></h4><p><strong>Git</strong> 是一个<strong>分布式版本控制软件</strong>，最初由林纳斯·托瓦兹创作，于 2005 年以 GPL 发布。林纳斯·托瓦兹自嘲地取了这个名字 “git”，该词源自英国俚语，意思大约是“混账”。完整的学习资料可以在 <a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">这里</a> 找到。软件可以在 <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">这里</a> 找到。</p>
+<h4 id="Git-配置"><a href="#Git-配置" class="headerlink" title=" Git 配置 "></a><font color="#32CD32"> Git 配置 </font></h4><h6 id="Git-配置分为三种：local-和-global-以及-system"><a href="#Git-配置分为三种：local-和-global-以及-system" class="headerlink" title="Git 配置分为三种：local 和 global 以及 system"></a>Git 配置分为三种：<code>local</code> 和 <code>global</code> 以及 <code>system</code></h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## 添加配置</span><br><span class="line">git config [--local | --global | --system] user.name &apos;Your name&apos;</span><br><span class="line">git config [--local | --global | --system] user.email &apos;Your email&apos;</span><br><span class="line"></span><br><span class="line">## 查看配置</span><br><span class="line">git config --list [--local | --global | --system]</span><br><span class="line"></span><br><span class="line">## 区别</span><br><span class="line">local: 作用于本仓库</span><br><span class="line">global: 作用于当前用户的所有仓库</span><br><span class="line">system: 作用于本系统的所有用户的所有仓库</span><br></pre></td></tr></table></figure>
+<p>需要说明的是，<code>git config</code> 遵循最小配置原则，也就是如果同时设置了 <code>local</code> 和 <code>global</code> 的话，那么只有 <code>local</code> 会起作用。</p>
+<h4 id="创建-Git-仓库"><a href="#创建-Git-仓库" class="headerlink" title=" 创建 Git 仓库 "></a><font color="#32CD32"> 创建 Git 仓库 </font></h4><h6 id="建仓库分为两种场景："><a href="#建仓库分为两种场景：" class="headerlink" title="建仓库分为两种场景："></a>建仓库分为两种场景：</h6><ul>
+<li>将已有的项目使用 Git 管理</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd 项目所在文件夹</span><br><span class="line">git init</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新建项目并用 Git 管理</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd 将要存放项目的文件夹</span><br><span class="line">git init project_directory</span><br><span class="line">cd project_directory</span><br></pre></td></tr></table></figure>
+<h4 id="Git-文件重命名"><a href="#Git-文件重命名" class="headerlink" title=" Git 文件重命名 "></a><font color="#32CD32"> Git 文件重命名 </font></h4><h6 id="重命名比较简单，直接执行"><a href="#重命名比较简单，直接执行" class="headerlink" title="重命名比较简单，直接执行"></a>重命名比较简单，直接执行</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git mv original_filename new_filename</span><br></pre></td></tr></table></figure>
+<h4 id="Git-删除不想要的分支"><a href="#Git-删除不想要的分支" class="headerlink" title=" Git 删除不想要的分支 "></a><font color="#32CD32"> Git 删除不想要的分支 </font></h4><h6 id="找到分支名，执行删除命令"><a href="#找到分支名，执行删除命令" class="headerlink" title="找到分支名，执行删除命令"></a>找到分支名，执行删除命令</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -av</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -D branch_name</span><br></pre></td></tr></table></figure>
+<h4 id="修改-commit-message"><a href="#修改-commit-message" class="headerlink" title=" 修改 commit message "></a><font color="#32CD32"> 修改 commit message </font></h4><ul>
+<li>修改最新的 <code>commit message</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit --amend</span><br></pre></td></tr></table></figure>
+<p>​    在交互式界面中修改完 <code>commit message</code> 保存退出来即可。</p>
+<ul>
+<li>修改旧的 <code>commit message</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i base_commit_id</span><br></pre></td></tr></table></figure>
+<p>​    在交互式界面中根据 <code>Comment</code> 提示信息基于 base commit 执行 reword 修改，保存退出。</p>
+<h4 id="整理-commit"><a href="#整理-commit" class="headerlink" title=" 整理 commit "></a><font color="#32CD32"> 整理 commit </font></h4><ul>
+<li>整理连续的几个 commit</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i base_commit_id</span><br></pre></td></tr></table></figure>
+<p>​    在交互式界面中基于 base commit 执行 squash 修改，保存退出。</p>
+<ul>
+<li>整理间隔的几个 commit</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i base_commit_id</span><br></pre></td></tr></table></figure>
+<p>​    在交互式界面中，将 base_commit_id 复制到首行，并且把需要和 base_commit 合并的 commit_id 剪切到首行下面。然后执行 squash 操作，保存退出。</p>
+<h4 id="比较暂存区和-HEAD-指向文件的差异"><a href="#比较暂存区和-HEAD-指向文件的差异" class="headerlink" title=" 比较暂存区和 HEAD 指向文件的差异 "></a><font color="#32CD32"> 比较暂存区和 HEAD 指向文件的差异 </font></h4><p>这里是比较的暂存区和 HEAD 指向分支最新 <code>commit</code> 的区别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+<h4 id="比较工作区和暂存区的差异"><a href="#比较工作区和暂存区的差异" class="headerlink" title=" 比较工作区和暂存区的差异 "></a><font color="#32CD32"> 比较工作区和暂存区的差异 </font></h4><ul>
+<li>比较全部的差异</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
+<ul>
+<li>比较某几个文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff -- fileA fileB fileC fileD</span><br></pre></td></tr></table></figure>
+<h4 id="暂存区恢复成和-HEAD-一样"><a href="#暂存区恢复成和-HEAD-一样" class="headerlink" title=" 暂存区恢复成和 HEAD 一样 "></a><font color="#32CD32"> 暂存区恢复成和 HEAD 一样 </font></h4><ul>
+<li>通过重置 HEAD 使得暂存区 Stage 内容恢复到工作区</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查是否恢复成功</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+<h4 id="工作区的文件恢复为与暂存区一样"><a href="#工作区的文件恢复为与暂存区一样" class="headerlink" title=" 工作区的文件恢复为与暂存区一样 "></a><font color="#32CD32"> 工作区的文件恢复为与暂存区一样 </font></h4><ul>
+<li>先查看状态</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+<ul>
+<li>根据提示丢弃掉工作区的内容</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout --filename</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查一下是否恢复成功</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --filename</span><br></pre></td></tr></table></figure>
+<h4 id="取消暂存区部分文件的更改"><a href="#取消暂存区部分文件的更改" class="headerlink" title=" 取消暂存区部分文件的更改 "></a><font color="#32CD32"> 取消暂存区部分文件的更改 </font></h4><ul>
+<li>和【暂存区恢复成和 HEAD 一样】略有不同</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD --fileA fileB fileC fileD</span><br></pre></td></tr></table></figure>
+<h4 id="消除最近几次提交"><a href="#消除最近几次提交" class="headerlink" title=" 消除最近几次提交 "></a><font color="#32CD32"> 消除最近几次提交 </font></h4><ul>
+<li>使用 —hard 命令</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard specific_commit_id</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <code>gitk</code> 或者 <code>git log</code> 查看</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitk --all</span><br></pre></td></tr></table></figure>
+<h4 id="比较不同提交的差异"><a href="#比较不同提交的差异" class="headerlink" title=" 比较不同提交的差异 "></a><font color="#32CD32"> 比较不同提交的差异 </font></h4><p>比较两个分支的差异</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff branch1 branch2</span><br></pre></td></tr></table></figure>
+<p>比较两个分支的同一个文件的差异</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff branch1 branch2 --filename</span><br></pre></td></tr></table></figure>
+<p>​    或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff 分支1的commit_id 分支2的commit_id</span><br></pre></td></tr></table></figure>
+<h4 id="删除文件"><a href="#删除文件" class="headerlink" title=" 删除文件 "></a><font color="#32CD32"> 删除文件 </font></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm filename</span><br></pre></td></tr></table></figure>
+<p>备注：可以使用 <code>git reset —hard HEAD</code> 可以让工作区和暂存区恢复成与 HEAD 一样。</p>
+<h4 id="临时加塞紧急任务，保存好当前的状态"><a href="#临时加塞紧急任务，保存好当前的状态" class="headerlink" title=" 临时加塞紧急任务，保存好当前的状态 "></a><font color="#32CD32"> 临时加塞紧急任务，保存好当前的状态 </font></h4><p>将当前未完成的工作区以及暂存区的状态暂时存储起来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br></pre></td></tr></table></figure>
+<p>查看当前存储的状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash list</span><br></pre></td></tr></table></figure>
+<p>临时紧急任务完成后，再把存储起来的状态恢复出来。这里有 <code>apply</code> 和 <code>pop</code> 两种方式，区别是：apply 的话，原来 stash 的状态还保留，pop 的话就会把把状态从原来的 stash 中删除。</p>
+<h4 id="添加忽略文件"><a href="#添加忽略文件" class="headerlink" title=" 添加忽略文件 "></a><font color="#32CD32"> 添加忽略文件 </font></h4><p>使用 <code>vim</code> 命令新建并编辑 <code>.gitignore</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .gitignore</span><br></pre></td></tr></table></figure>
+<p>添加需要忽略的文件，<a href="https://github.com/github/gitignore">这里</a> 有各种语言的模板，复制下来加到自己的 .gitignore 里面即可。</p>
+<p>eg:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.dSYM</span><br></pre></td></tr></table></figure>
+<p>如果是已经提交仓库的文件想要执行忽略操作，可以先把文件名添加到 <code>.gitignore</code>，然后再这么做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached filename</span><br></pre></td></tr></table></figure>
+<h4 id="本地备份"><a href="#本地备份" class="headerlink" title=" 本地备份 "></a><font color="#32CD32"> 本地备份 </font></h4><p>进入到存在备份文件的目录下，执行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --bare file:///path_of_source/.git name_of_backup.git</span><br></pre></td></tr></table></figure>
+<p><code>file:///</code> 是文件协议，即 scheme。</p>
+<p><strong>当前开发的项目与远端关联</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add name_of_what_you_like file:///path_of_destination/name_of_backup.git</span><br></pre></td></tr></table></figure>
+<h4 id="同步本地仓库到-GitHub"><a href="#同步本地仓库到-GitHub" class="headerlink" title=" 同步本地仓库到 GitHub "></a><font color="#32CD32"> 同步本地仓库到 GitHub </font></h4><p>先配置一下公私钥，具体操作前往 <a href="https://help.github.com/en" target="_blank" rel="noopener">GitHub Help</a> 搜索 <code>ssh</code> 来寻找需要的答案</p>
+<p>在 GitHub 建一个空仓库，并复制仓库的 ssh 地址，在终端执行下面的命令来把本地和 GitHub 的仓库关联起来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add github git@github.com:smilingmiao/Python.git</span><br></pre></td></tr></table></figure>
+<p>再执行 <code>push</code> 操作，把本地的文件推到 GitHub</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push github --all</span><br></pre></td></tr></table></figure>
+<p>不出意外的话，这个时候会出现 <code>master</code> 分支 <code>push</code> 失败的错误提示，这个时候照着提示操作 <code>fetch</code> 一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch github master</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge --allow-unrelated-histories github/master</span><br></pre></td></tr></table></figure>
+<p>进入交互界面可以改也可以不改，保存退出。</p>
+<p>然后再执行 <code>push</code> 操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push github master</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/16/mac-tips-set/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1915,188 +2145,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="smilingmiao">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="smilingmiao">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/" itemprop="url">记一次 CocoaPods 安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-14T18:09:53+08:00">
-                2018-11-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="什么是-CocoaPods-？"><a href="#什么是-CocoaPods-？" class="headerlink" title="什么是 CocoaPods ？"></a>什么是 CocoaPods ？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 54 thousand libraries and is used in over 3 million apps. CocoaPods can help you scale your projects elegantly.</span><br></pre></td></tr></table></figure>
-<p>CocoaPods 是 Swift 和 Objective-C 项目的一个依赖管理工具。它有超过 54000 个库，已经被应用于超过三百万个 app。CocoaPods 能帮助你优雅地扩展你的项目。</p>
-<p><a href="https://www.youtube.com/watch?v=iEAjvNRdZa0&amp;spfreload=10" target="_blank" rel="noopener">这里</a> 有个视频可以帮助你更好的理解和使用 <a href="https://cocoapods.org/" target="_blank" rel="noopener">CocoaPods</a></p>
-<h3 id="替换-ruby-源"><a href="#替换-ruby-源" class="headerlink" title="替换 ruby 源"></a>替换 ruby 源</h3><p>为什么要替换？因为你在中国大陆。所以要乖乖用<a href="https://gems.ruby-china.com/" target="_blank" rel="noopener">国内的源</a></p>
-<p>在终端输入 <code>gem sources -l</code> 看一下，如果显示一片空白，那就输入下面的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/</span><br></pre></td></tr></table></figure>
-<p>或者如果显示的是<code>https://rubygems.org/</code> 那就输入下面的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/</span><br></pre></td></tr></table></figure>
-<p><strong>这个时候你在终端输入<code>gem sources -l</code> 一定是显示的<code>https://gems.ruby-china.com/</code> 了</strong></p>
-<h3 id="安装-CocoaPods"><a href="#安装-CocoaPods" class="headerlink" title="安装 CocoaPods"></a>安装 CocoaPods</h3><p>当你在终端输入<code>gem install cocoapods</code> 回车的时候，显示的一定是报错信息。你可能看到是权限不足，于是你在网上搜到了要加上<code>sudo</code>，然后输入<code>sudo gem install cocoapods</code> 时候发现还是报错，信息还是权限不足。这个时候两个办法：</p>
-<p>1 关闭系统的 SIP 解决。这不在本文讨论的重点，但还是说一下。SIP（System Integrity Protection） 就是系统完整性保护，你可以自己手动开启和关闭。</p>
-<p>具体步骤：</p>
-<ul>
-<li><p>⌘ + R 进入恢复模式，打开终端输入 <code>csrutil disable</code> 关闭 SIP。</p>
-</li>
-<li><p>⌘ + R 进入恢复模式，打开终端输入 <code>csrutil enable</code> 开启 SIP。</p>
-</li>
-</ul>
-<p>2 不给 RubyGems 特权 <a href="https://guides.cocoapods.org/using/getting-started.html#getting-started" target="_blank" rel="noopener">Sudo-less installation</a></p>
-<p>If you do <em>not</em> want to grant RubyGems admin privileges for this process, you can tell RubyGems to install into your user directory by passing either the <code>--user-install</code> flag to <code>gem install</code> or by configuring the RubyGems environment. The latter is in our opinion the best solution. To do this, create or edit the <code>.profile</code> file in your home directory and add or amend it to include these lines:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME=$HOME/.gem</span><br><span class="line">export PATH=$GEM_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>Note that if you choose to use the <code>--user-install</code> option, you will still have to configure your <code>.profile</code> file to set the <code>PATH</code> or use the command prepended by the full path. You can find out where a gem is installed with <code>gem which cocoapods</code>. E.g.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ gem install cocoapods --user-install</span><br><span class="line">$ gem which cocoapods</span><br><span class="line">/Users/eloy/.gem/ruby/2.0.0/gems/cocoapods-0.29.0/lib/cocoapods.rb</span><br><span class="line">$ /Users/eloy/.gem/ruby/2.0.0/bin/pod install</span><br></pre></td></tr></table></figure>
-<p>上面归纳一下步骤就是：</p>
-<ul>
-<li><p>在终端输入<code>sudo gem install cocoapods --user-install</code></p>
-</li>
-<li><p>在 tom 目录下创建一个<code>.profile</code> 的文件，比如 <code>cocoapods.profile</code>。直接打开终端输入 <code>touch cocoapods.profile</code> 即可。</p>
-</li>
-<li><p>在 <code>cocoapods.profile</code> 文件中填入 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME=$HOME/.gem</span><br><span class="line">export PATH=$GEM_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>终端输入 <code>gem which cocoapods</code> 命令后会出现 CocoaPods 的目录位置，比如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/tom/.gem/ruby/2.3.0/gems/cocoapods-1.5.3/lib/cocoapods.rb</span><br></pre></td></tr></table></figure>
-<p>这时候你只需要用版本号之前的路径 <code>/Users/tom/.gem/ruby/2.3.0</code> 把文件 <code>cocoapods.profile</code> 中第一行的 $HOME/.gem 替换掉即可。比如替换后为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME=/Users/tom/.gem/ruby/2.3.0</span><br><span class="line">export PATH=$GEM_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>也可看<a href="https://github.com/rubygems/rubygems/issues/1310">这里</a> 的讨论</p>
-<p>终于可以执行一下 pod setup 了，不过你需要到这个目录 bin 下执行</p>
-<img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/cocoapods-installation.png">
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/tom/.gem/ruby/2.3.0/bin/pod setup</span><br></pre></td></tr></table></figure>
-<p>以后操作 update 或者 install 等等都需要 <code>/Users/tom/.gem/ruby/2.3.0/bin/pod</code> 后接具体命令参数。虽然这样挺麻烦的，但是我还是喜欢这种，改成全局的未免是什么好事，这样其实能加深一些理解。</p>
-<p>更新：</p>
-<p>用了几天还是觉得每次执行<code>pod</code>命令出现<code>zsh: command not found: pod</code>然后再执行<code>/Users/tom/.gem/ruby/2.3.0/bin/pod + 命令</code>很麻烦。花二十分钟解决了一下这个问题。原因是：当前命令的<a href="https://baike.baidu.com/item/%E8%BD%AF%E9%93%BE%E6%8E%A5" target="_blank" rel="noopener">软链接</a>（例如 Windows 桌面的快捷方式）已经创建，但是软链接所在的<code>*/bin</code>路径还没有被 export。比如<code>/Users/tom/.gem/ruby/2.3.0/bin/</code>还没被 export。一句话描述：还没有配置环境变量。</p>
-<ul>
-<li><p>解决问题步骤：</p>
-<ul>
-<li>在终端输入<code>gem which cocoapods</code></li>
-</ul>
-<img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/gem-which-cocoapods.png">
-<ul>
-<li>执行<code>ln -s /Users/smilingmiao/.gem/ruby/2.3.0/bin/pod /usr/local/bin</code></li>
-<li>再执行<code>source ~/.zshrc</code></li>
-</ul>
-</li>
-</ul>
-<p>  Done.</p>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://www.jianshu.com/p/bba968ca3957" target="_blank" rel="noopener">https://www.jianshu.com/p/bba968ca3957</a></p>
-<p>下期再见。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2140,7 +2195,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
