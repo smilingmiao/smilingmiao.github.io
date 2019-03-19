@@ -229,6 +229,153 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/11/mysql-part-one/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/11/mysql-part-one/" itemprop="url">MySQL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:37:20+08:00">
+                2018-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>很早之前的笔记</p>
+</blockquote>
+<p>Mac 自带的终端就可以直接执行 SQL 语句进行数据库 sqlite 数据库的创建。</p>
+<p>1、检查环境。在 Mac 终端里输入 <code>sqlite3 --version</code> 并回车来查看一下 Mac 是否有 <code>sqlite</code> 环境，出现如图的界面就说明是有的。</p>
+<img src="/2018/12/11/mysql-part-one/step01.png">
+<p>2、建数据库。随便在一个文件夹目录下输入 <code>sqlite3 sqlite.db</code> 并回车来创建一个名为 <code>sqlite</code> 的数据库。此时在文件夹下是看不到这个数据库的，因为这个数据库是空的，存在没有意义。如果想知道具体的一些 SQL 语句可以根据提示输入 <code>.help</code> 回车查看。</p>
+<img src="/2018/12/11/mysql-part-one/step02.png">
+<p>3、建表。顺着第 2 步继续输入 <code>CREATE TABLE IF NOT EXISTS customs(id VARCHAR(20) PRIMARY KEY NOT NULL, name TEXT NOT NULL, age INT CHECK(age&gt;5), height FLOAT(3,2) DEFAULT 000.00);</code> 进行建表。如果不确定 MySQL 的一些数据类型，可以在 <a href="http://www.w3school.com.cn/sql/sql_datatypes.asp" target="_blank" rel="noopener">这里</a> 查看。</p>
+<img src="/2018/12/11/mysql-part-one/step03.png">
+<p>至此，你的表已经建好了。由于建好了表，上面建的数据库这时候也显示出来了。如果想查看这个表的结构，你可以用可视化工具 <a href="http://sqlitebrowser.org/" target="_blank" rel="noopener">DB Browser for SQLite</a> 来查看。</p>
+<img src="/2018/12/11/mysql-part-one/step04.png">
+<p>这里有必要说一下，如果你中途退出了终端，想要继续对数据库进行 SQL 语句操作，那么仍只需要执行一下 <code>sqlite3 sqlite.db</code> 即可。<code>sqlite.db</code> 就是之前我们创建好的数据库。</p>
+<p><strong>插入数据。</strong>（增）</p>
+<p>输入 <code>INSERT INTO customs(id, name, age, height) VALUES(000001, Tom, 23, 178.88);</code> 回车后发现 <code>Error</code> 了。</p>
+<img src="/2018/12/11/mysql-part-one/step05.png">
+<p>这是因为 <code>name</code> 列是 <code>TEXT</code> 数据类型的，我们在插入数据值时要加上引号才行。</p>
+<img src="/2018/12/11/mysql-part-one/step06.png">
+<p>执行成功了，这时候用可视化工具看一下，发现刚才的数据已经插入了表中。这里当然你可以执行 SQL 语句查询。</p>
+<img src="/2018/12/11/mysql-part-one/step07.png">
+<p>一次插入多条数据。</p>
+<img src="/2018/12/11/mysql-part-one/step08.png">
+<p><strong>查询数据。</strong></p>
+<p>通过 <code>.help</code> 命令会出现很多的语句，可以根据需要来执行操作。</p>
+<p>使用 SQL 语句查询数据，首先我们调一下显示的 <code>mode</code>，分别有 <code>.mode.line</code> 和 <code>.mode.column</code> 以及 <code>.mode.list</code>。按个人喜好的格式显示即可。</p>
+<p>当然了，你还可以使用 <code>.header on</code> 或者 <code>.header off</code> 来显示或者隐藏表中的列名。</p>
+<img src="/2018/12/11/mysql-part-one/step09.png">
+<p>下期再见。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -445,7 +592,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
