@@ -87,7 +87,7 @@
 <meta property="og:description" content="Masonry在戴铭老师的专栏第三篇文章，评论中有人提到使用 AutoLayout 布局来实现 UITableViewCell 高度自适应的问题。在评论中，戴铭老师给出了解决方案。我经过自己写 demo 实践了一下的确是可以的，当然直接使用 Xib 布局好加载到 UITableView 中也行。在读 Masonry 源码过程中，我惊叹于作者使用 block 的巧妙思路，简直可以叫 Blockson">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/2019/03/20/Self-adaptive-UITableViewCell-Height/leading-vs-left-and-trailing-vs-right.jpg">
-<meta property="og:updated_time" content="2019-03-19T17:17:31.460Z">
+<meta property="og:updated_time" content="2019-03-20T13:26:20.513Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UITableViewCell 自适应高度">
 <meta name="twitter:description" content="Masonry在戴铭老师的专栏第三篇文章，评论中有人提到使用 AutoLayout 布局来实现 UITableViewCell 高度自适应的问题。在评论中，戴铭老师给出了解决方案。我经过自己写 demo 实践了一下的确是可以的，当然直接使用 Xib 布局好加载到 UITableView 中也行。在读 Masonry 源码过程中，我惊叹于作者使用 block 的巧妙思路，简直可以叫 Blockson">
@@ -347,6 +347,7 @@
 <h5 id="Discussion-1"><a href="#Discussion-1" class="headerlink" title="Discussion"></a>Discussion</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Use this anchor to create constraints with the view’s left edge. You can combine this anchor only with a subset of the NSLayoutXAxisAnchor anchors. You can combine a UIView with another leftAnchor, a rightAnchor, or a centerXAnchor. For more information, see NSLayoutAnchor.</span><br></pre></td></tr></table></figure>
 <p>对比这上面看了后发现并没有什么不同。于是在官方文档中一顿找，终于在 <a href="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/AnatomyofaConstraint.html#//apple_ref/doc/uid/TP40010853-CH9-SW1" target="_blank" rel="noopener">Anatomy of a Constraint</a> 找到了区别的对比表。一目了然，原来是和布局方向有关。</p>
 <img src="/2019/03/20/Self-adaptive-UITableViewCell-Height/leading-vs-left-and-trailing-vs-right.jpg">
+<p><b><font size="4," color="#32CD32"> Demo 地址 <a href="https://github.com/smilingmiao/UITableViewFittingHeight">GitHub</a> </font></b></p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/AnatomyofaConstraint.html#//apple_ref/doc/uid/TP40010853-CH9-SW1" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/AnatomyofaConstraint.html#//apple_ref/doc/uid/TP40010853-CH9-SW1</a></p>
 
       
