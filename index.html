@@ -229,6 +229,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/23/the-linker-load-process/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/23/the-linker-load-process/" itemprop="url">链接器：动态库加载实践过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-23T00:57:24+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="step-1"><a href="#step-1" class="headerlink" title="step 1"></a>step 1</h4><p>现有三个文件，代码分别如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Boy.h</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">@interface Boy : NSObject</span><br><span class="line">- (void)say;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Boy.m</span><br><span class="line">#import &quot;Boy.h&quot;</span><br><span class="line">@implementation Boy</span><br><span class="line">- (void)say</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;hi there again!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// main.m</span><br><span class="line">#import &quot;Boy.h&quot;</span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        Boy *boy = [[Boy alloc] init];</span><br><span class="line">        [boy say];</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="step-2"><a href="#step-2" class="headerlink" title="step 2"></a>step 2</h4><p>编译 <code>.m</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun clang -c Boy.m main.m</span><br></pre></td></tr></table></figure>
+<p>产物</p>
+<img src="/2019/03/23/the-linker-load-process/compile-derived.png">
+<h4 id="step-3"><a href="#step-3" class="headerlink" title="step 3"></a>step 3</h4><p>将编译后的 <code>.o</code> 文件链接起来生成 <code>a.out</code> 可执行文件（<code>a.out</code> 是编译器的默认名字）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun clang main.o Boy.o -Wl,`xcrun --show-sdk-path`/System/Library/Frameworks/Foundation.framework/Foundation</span><br></pre></td></tr></table></figure>
+<p>产物</p>
+<img src="/2019/03/23/the-linker-load-process/link-derived.png">
+<h4 id="step-4"><a href="#step-4" class="headerlink" title="step 4"></a>step 4</h4><p>使用 <code>nm</code> 命令查看符号表规定的符号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nm main.o</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                 U _OBJC_CLASS_$_Boy</span><br><span class="line">0000000000000000 T _main</span><br><span class="line">                 U _objc_autoreleasePoolPop</span><br><span class="line">                 U _objc_autoreleasePoolPush</span><br><span class="line">                 U _objc_msgSend</span><br></pre></td></tr></table></figure>
+<p>看得人云里雾里，只看到了些符号，似乎缺少一些信息。比如 <code>U</code> 和 <code>T</code> 分别代表什么，再试试别的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun nm -nm main.o</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                 (undefined) external _OBJC_CLASS_$_Boy</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPop</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPush</span><br><span class="line">                 (undefined) external _objc_msgSend</span><br><span class="line">0000000000000000 (__TEXT,__text) external _main</span><br></pre></td></tr></table></figure>
+<p>除了把 <code>U</code> 替换成我们能看懂的单词 <code>undefined-未定义</code> 以及 <code>T</code> 变成 <code>TEXT</code> 外，还在原来的信息上又多了 <code>external</code> 代表 “非私有”。<code>external _main</code> 表示 <code>main()</code> 函数处理 0 地址，记录在 <code>TEXT</code> 段 <code>__text</code> 里。</p>
+<p>再看下 <code>Boy.o</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun nm -nm Boy.o</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">                 (undefined) external _NSLog</span><br><span class="line">                 (undefined) external _OBJC_CLASS_$_NSObject</span><br><span class="line">                 (undefined) external _OBJC_METACLASS_$_NSObject</span><br><span class="line">                 (undefined) external ___CFConstantStringClassReference</span><br><span class="line">                 (undefined) external __objc_empty_cache</span><br><span class="line">0000000000000000 (__TEXT,__text) non-external -[Boy say]</span><br><span class="line">0000000000000060 (__DATA,__objc_const) non-external l_OBJC_METACLASS_RO_$_Boy</span><br><span class="line">00000000000000a8 (__DATA,__objc_const) non-external l_OBJC_$_INSTANCE_METHODS_Boy</span><br><span class="line">00000000000000c8 (__DATA,__objc_const) non-external l_OBJC_CLASS_RO_$_Boy</span><br><span class="line">0000000000000110 (__DATA,__objc_data) external _OBJC_METACLASS_$_Boy</span><br><span class="line">0000000000000138 (__DATA,__objc_data) external _OBJC_CLASS_$_Boy</span><br></pre></td></tr></table></figure>
+<p>上面的 <code>undefined</code> 符号表示该文件类未定义，因此在目标文件和 <code>Foundation framework</code> 动态链接库进行链接时候，链接器会尝试解析所有的 <code>undefined</code> 符号。</p>
+<h4 id="step-5"><a href="#step-5" class="headerlink" title="step 5"></a>step 5</h4><p>使用 <code>nm</code> 命令查看一下 <code>a.out</code> 符号表，对比着 <code>Boy.o</code> 看看连接器解析符号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun nm -nm a.out</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                 (undefined) external _NSLog (from Foundation)</span><br><span class="line">                 (undefined) external _OBJC_CLASS_$_NSObject (from libobjc)</span><br><span class="line">                 (undefined) external _OBJC_METACLASS_$_NSObject (from libobjc)</span><br><span class="line">                 (undefined) external ___CFConstantStringClassReference (from CoreFoundation)</span><br><span class="line">                 (undefined) external __objc_empty_cache (from libobjc)</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPop (from libobjc)</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPush (from libobjc)</span><br><span class="line">                 (undefined) external _objc_msgSend (from libobjc)</span><br><span class="line">                 (undefined) external dyld_stub_binder (from libSystem)</span><br><span class="line">0000000100000000 (__TEXT,__text) [referenced dynamically] external __mh_execute_header</span><br><span class="line">0000000100000ea0 (__TEXT,__text) external _main</span><br><span class="line">0000000100000f20 (__TEXT,__text) non-external -[Boy say]</span><br><span class="line">0000000100001130 (__DATA,__objc_data) external _OBJC_METACLASS_$_Boy</span><br><span class="line">0000000100001158 (__DATA,__objc_data) external _OBJC_CLASS_$_Boy</span><br></pre></td></tr></table></figure>
+<p>重点关注 <code>undefined</code> 符号进行对比。再用👇命令看看符号所需的库的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun otool -L a.out</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a.out:</span><br><span class="line">	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 1560.12.0)</span><br><span class="line">	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.200.5)</span><br><span class="line">	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 1560.12.0)</span><br><span class="line">	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)</span><br></pre></td></tr></table></figure>
+<p>从输出结果来看，这些 <code>undefined</code> 符号需要的两个库分别是 <code>libSystem</code> 和 <code>libobjc</code>。</p>
+<h4 id="step-6"><a href="#step-6" class="headerlink" title="step 6"></a>step 6</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(export DYLD_PRINT_LIBRARIES=; ./a.out)</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br></pre></td><td class="code"><pre><span class="line">dyld: loaded: /Users/miaoyongxiang/Desktop/./a.out</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation</span><br><span class="line">dyld: loaded: /usr/lib/libSystem.B.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation</span><br><span class="line">dyld: loaded: /usr/lib/libobjc.A.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libauto.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration</span><br><span class="line">dyld: loaded: /usr/lib/libarchive.2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libDiagnosticMessagesClient.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libicucore.A.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libxml2.2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libz.1.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices</span><br><span class="line">dyld: loaded: /usr/lib/liblangid.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit</span><br><span class="line">dyld: loaded: /usr/lib/libCRFSuite.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libc++.1.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libc++abi.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcache.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcommonCrypto.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcompiler_rt.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcopyfile.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcorecrypto.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libdispatch.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libdyld.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libkeymgr.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/liblaunch.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libmacho.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libquarantine.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libremovefile.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_asl.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_blocks.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_c.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_configuration.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_coreservices.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_darwin.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_dnssd.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_info.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_m.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_malloc.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_networkextension.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_notify.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_sandbox.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_secinit.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_kernel.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_platform.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_pthread.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_symptoms.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_trace.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libunwind.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libxpc.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Security.framework/Versions/A/Security</span><br><span class="line">dyld: loaded: /usr/lib/libenergytrace.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libbsm.0.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libkxld.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AppleFSCompression.framework/Versions/A/AppleFSCompression</span><br><span class="line">dyld: loaded: /usr/lib/libOpenScriptingUtil.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcoretls.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcoretls_cfhelpers.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libpam.2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libsqlite3.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libxar.1.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libbz2.1.0.dylib</span><br><span class="line">dyld: loaded: /usr/lib/liblzma.5.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libnetwork.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libapple_nghttp2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libpcap.A.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/FSEvents</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Metadata</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/OSServices.framework/Versions/A/OSServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SearchKit.framework/Versions/A/SearchKit</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/LaunchServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/DictionaryServices.framework/Versions/A/DictionaryServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SharedFileList.framework/Versions/A/SharedFileList</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/NetFS.framework/Versions/A/NetFS</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/NetAuth.framework/Versions/A/NetAuth</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/login.framework/Versions/A/Frameworks/loginsupport.framework/Versions/A/loginsupport</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/TCC.framework/Versions/A/TCC</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/CoreNLP.framework/Versions/A/CoreNLP</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/MetadataUtilities.framework/Versions/A/MetadataUtilities</span><br><span class="line">dyld: loaded: /usr/lib/libmecabra.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreText.framework/Versions/A/CoreText</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/ImageIO</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ColorSync.framework/Versions/A/ColorSync</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/ATS</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ColorSyncLegacy.framework/Versions/A/ColorSyncLegacy</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/HIServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/LangAnalysis.framework/Versions/A/LangAnalysis</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A/PrintCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/QD.framework/Versions/A/QD</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/SpeechSynthesis.framework/Versions/A/SpeechSynthesis</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate</span><br><span class="line">dyld: loaded: /usr/lib/libcompression.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Metal.framework/Versions/A/Metal</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/MetalPerformanceShaders</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/MultitouchSupport.framework/Versions/A/MultitouchSupport</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vImage.framework/Versions/A/vImage</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/vecLib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvMisc.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvDSP.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLinearAlgebra.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparseBLAS.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libQuadrature.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBNNS.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparse.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/GPUWrangler.framework/Versions/A/GPUWrangler</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/IOAccelerator.framework/Versions/A/IOAccelerator</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/IOPresentment.framework/Versions/A/IOPresentment</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/DSExternalDisplay.framework/Versions/A/DSExternalDisplay</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCoreFSCache.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSCore.framework/Versions/A/MPSCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Versions/A/MPSImage</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Versions/A/MPSNeuralNetwork</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSMatrix.framework/Versions/A/MPSMatrix</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Versions/A/MPSRayIntersector</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/MetalTools.framework/Versions/A/MetalTools</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AggregateDictionary.framework/Versions/A/AggregateDictionary</span><br><span class="line">dyld: loaded: /usr/lib/libMobileGestalt.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/GraphVisualizer.framework/Versions/A/GraphVisualizer</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/FaceCore.framework/Versions/A/FaceCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenCL.framework/Versions/A/OpenCL</span><br><span class="line">dyld: loaded: /usr/lib/libFosl_dynamic.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/OTSVG.framework/Versions/A/OTSVG</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Resources/libFontParser.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Resources/libFontRegistry.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libJPEG.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libTIFF.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libPng.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libGIF.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libJP2.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libRadiance.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AppleJPEG.framework/Versions/A/AppleJPEG</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGFXShared.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGLU.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGLImage.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCVMSPluginSupport.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCoreVMClient.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcups.2.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Kerberos.framework/Versions/A/Kerberos</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/GSS.framework/Versions/A/GSS</span><br><span class="line">dyld: loaded: /usr/lib/libresolv.9.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libiconv.2.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/Heimdal.framework/Versions/A/Heimdal</span><br><span class="line">dyld: loaded: /usr/lib/libheimdal-asn1.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/CommonAuth.framework/Versions/A/CommonAuth</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenDirectory.framework/Versions/A/Frameworks/CFOpenDirectory.framework/Versions/A/CFOpenDirectory</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/APFS.framework/Versions/A/APFS</span><br><span class="line">dyld: loaded: /usr/lib/libutil.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcharset.1.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreAudio.framework/Versions/A/CoreAudio</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/AudioToolbox.framework/Versions/A/AudioToolbox</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AppleSauce.framework/Versions/A/AppleSauce</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AssertionServices.framework/Versions/A/AssertionServices</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/BaseBoard.framework/Versions/A/BaseBoard</span><br><span class="line">dyld: loaded: /usr/lib/libmecab.1.0.0.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libgermantok.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libThaiTokenizer.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libChineseTokenizer.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/LanguageModeling.framework/Versions/A/LanguageModeling</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/CoreEmoji.framework/Versions/A/CoreEmoji</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/Lexicon.framework/Versions/A/Lexicon</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/LinguisticData.framework/Versions/A/LinguisticData</span><br><span class="line">dyld: loaded: /usr/lib/libcmph.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreData.framework/Versions/A/CoreData</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Versions/A/BackgroundTaskManagement</span><br><span class="line">dyld: loaded: /usr/lib/libxslt.1.dylib</span><br><span class="line">dyld: loaded: /System/Library/CoreServices/Encodings/libSimplifiedChineseConverter.dylib</span><br><span class="line">2019-03-22 13:59:21.000 a.out[2048:178438] hi there again!</span><br></pre></td></tr></table></figure>
+<p>可见，加载的库非常多，并且 <code>.dylib</code> 类动态链接的库也占很大一部分。</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://objccn.io/issue-6-3/" target="_blank" rel="noopener">https://objccn.io/issue-6-3/</a></p>
+<p><a href="https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/intro.3.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/intro.3.html</a></p>
+<p><a href="https://opensource.apple.com/tarballs/" target="_blank" rel="noopener">https://opensource.apple.com/tarballs/</a></p>
+<p><a href="https://blog.cnbluebox.com/blog/2017/06/20/dyldyu-objc/" target="_blank" rel="noopener">https://blog.cnbluebox.com/blog/2017/06/20/dyldyu-objc/</a></p>
+<p><a href="https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html" target="_blank" rel="noopener">https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html</a></p>
+<p><a href="http://blog.cnbang.net/tech/3219/" target="_blank" rel="noopener">http://blog.cnbang.net/tech/3219/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/20/Self-adaptive-UITableViewCell-Height/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1949,222 +2113,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/11/operating-system-basics/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="smilingmiao">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="smilingmiao">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/11/operating-system-basics/" itemprop="url">操作系统部分基础知识</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:58:46+08:00">
-                2018-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）</p>
-</blockquote>
-<h4 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h4><p>Concurrent 并发：同一时间段内执行多条指令<br>Parallel 并行：同一时刻执行多条指令</p>
-<h4 id="读写数据"><a href="#读写数据" class="headerlink" title="读写数据"></a>读写数据</h4><p>读写数据操作不是由 CPU 负责，而是由 CUP 发一条指令给磁盘控制器，等待着由控制器来完成，这用到了 CUP 的中断。当控制器完成操作后通知 CUP，让 CUP 接着进行相应未完成的操作。控制器有一块缓存区，用于临时存放从磁盘读入的数据。</p>
-<h4 id="中断源和中断"><a href="#中断源和中断" class="headerlink" title="中断源和中断"></a>中断源和中断</h4><p>中断源：引起中断的事件叫中断源。</p>
-<p>中断：中断发生时，保持中断状态（处理程序的入口地址）的值，通过任务完成时返回中断限量值来继续执行任务。中断分为多种优先级，可以嵌套。</p>
-<p>Trap：自陷，是程序的自我中断，是一种主动发生的情况。</p>
-<p>系统通过 polling，即 CUP 轮询的方式来查看中断源，进行需要执行的任务。（这是一种老式的处理方式）</p>
-<p>现在通常使用保存在 RAM 高地址上的限制变量来方便地获取到中断发生的入口地址。</p>
-<h4 id="RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access"><a href="#RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access" class="headerlink" title="RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)"></a>RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)</h4><p>RAM，断电即丢失数据<br>SRAM：静态 RAM<br>DRAM：动态 RAM</p>
-<p>ROM：一次写入，反复读取。分为一次性固话，光擦除，电擦除。</p>
-<p>DMA：直接访问内存，包括磁盘、U盘、硬盘等都是这样的处理方式。</p>
-<blockquote>
-<p>速度（由高到低）</p>
-</blockquote>
-<p>Disk - Memory - Cache - Register</p>
-<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>操作系统是一个全时运行的程序，管理控制系统资源，合理组织计算机工作流程，方便用户使用计算机程序集合。</p>
-<p><strong>分时系统和实时系统</strong></p>
-<p>分时系统：通用系统<br>交互性：多道<br>及时性：独占性</p>
-<p>实时操作系统：专用系统<br>时间要求非常严格，分为硬实时和软实时<br>交互性：多道<br>及时性：独占性</p>
-<p>卫生发射等对时间精确要求严格的任务使用实时系统，一般来说使用双工，即两台一模一样的计算机同时工作，同一时间执行相同的指令，相当于备份。</p>
-<p><strong>双模式</strong><br>1.用户模式/用户态  2.kernel模式/管理态</p>
-<p><strong>指令</strong><br>1.特权指令  2.非特权指令</p>
-<p><strong>PCB</strong><br>PCB（Process Control Block）包括了 Base Address 和 Address Length</p>
-<h4 id="操作系统服务"><a href="#操作系统服务" class="headerlink" title="操作系统服务"></a>操作系统服务</h4><ul>
-<li>用户接口 <ul>
-<li>Command Line Interface (<strong>CLI</strong>)</li>
-<li>Graphics User Interface (<strong>GUI</strong>) </li>
-<li>Batch （批处理）</li>
-</ul>
-</li>
-<li>Program execution</li>
-<li>I/O operations</li>
-<li>File-system manipulation</li>
-<li>Communications</li>
-<li>Error detection</li>
-</ul>
-<p><strong>系统调用（system call）</strong></p>
-<p>所有库函数都是由系统调用的</p>
-<ul>
-<li>fork</li>
-<li>exec</li>
-</ul>
-<h4 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h4><p>程序是指令的集合，进程 = 程序 + 数据 + PCB</p>
-<p>进程：是具有独立功能的程序，关于某个数据集合的一次运行过程。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">区别</th>
-<th style="text-align:center">进程</th>
-<th style="text-align:center">程序</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">相同点</td>
-<td style="text-align:center">Ready waiting  Running</td>
-<td style="text-align:center">Ready waiting  Running</td>
-</tr>
-<tr>
-<td style="text-align:center">不同点</td>
-<td style="text-align:center">动态、生命周期、进程=程序+数据+PCB、一个进程可包含多个程序</td>
-<td style="text-align:center">静态、永久存在、一个程序可以对应多个进程</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>三个基本状态<ul>
-<li>Running 正在运行的状态</li>
-<li>Waiting 等待事件发生</li>
-<li>Ready 准备就绪的状态</li>
-</ul>
-</li>
-<li>PCB ( process control block ) 是一个程序控制块，它有结构主存区，包含进程执行所有信息，系统通过 PCB 感知进程，是进程存在的唯一标志。它随进程的创建而发生，随进程的消亡而消亡。PCB 可以保存中断等一系列状态信息。进程运行时候进入系统里面，创建相应的 PCB，PCB 在系统的队列里排队，受系统调度控制程序。</li>
-</ul>
-<h4 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h4><ul>
-<li>new 创建</li>
-<li>ready 就绪等待，除 CUP 外一切资源都分配完成</li>
-<li>waiting 还没有准备好，无法执行事情</li>
-<li>running 获得 CPU 并且运行</li>
-<li>terminate 终止</li>
-</ul>
-<blockquote>
-<p><strong>一个进程创建另外一个进程，分配资源（分配内存，创建 PCB）然后放到就绪队列。</strong></p>
-</blockquote>
-<h4 id="撤销进程"><a href="#撤销进程" class="headerlink" title="撤销进程"></a>撤销进程</h4><ul>
-<li>回收 PCB</li>
-<li>回收资源，例如：内存、输入输出</li>
-</ul>
-<h4 id="编译、链接、装载"><a href="#编译、链接、装载" class="headerlink" title="编译、链接、装载"></a>编译、链接、装载</h4><ul>
-<li><p>编译器将源代码编译成汇编代码，汇编器将汇编代码转换成多个可执行文件，链接器将可执行文件链接成单个可执行程序，装载器再将可执行程序加载到内存并准备执行。内存中的程序将会获得操作系统的调用运行。</p>
-</li>
-<li><p>在汇编器将汇编代码转换成多个可执行文件时，会将源代码中的符号地址绑定为可重定位的地址，在链接的过程中，将可重定位的地址映射为绝对地址。</p>
-</li>
-</ul>
-<p>下期再见。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2215,7 +2163,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
