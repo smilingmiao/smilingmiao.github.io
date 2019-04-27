@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="smilingmiao">
 <meta property="og:description" content="Git 概述 Git 是一个分布式版本控制软件，最初由林纳斯·托瓦兹创作，于 2005 年以 GPL 发布。林纳斯·托瓦兹自嘲地取了这个名字 “git”，该词源自英国俚语，意思大约是“混账”。完整的学习资料可以在 这里 找到。软件可以在 这里 找到。  Git 配置 Git 配置分为三种：local 和 global 以及 system1234567891011## 添加配置git config">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-29T18:30:53.702Z">
+<meta property="og:updated_time" content="2019-04-27T14:04:37.635Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git">
 <meta name="twitter:description" content="Git 概述 Git 是一个分布式版本控制软件，最初由林纳斯·托瓦兹创作，于 2005 年以 GPL 发布。林纳斯·托瓦兹自嘲地取了这个名字 “git”，该词源自英国俚语，意思大约是“混账”。完整的学习资料可以在 这里 找到。软件可以在 这里 找到。  Git 配置 Git 配置分为三种：local 和 global 以及 system1234567891011## 添加配置git config">
@@ -418,11 +418,11 @@
 <p>再</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config —local user.email = &apos;youremail&apos;</span><br></pre></td></tr></table></figure>
 <p>添加 <code>remote</code> 仓库地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add &apos;仓库地址&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add &lt;local_repo_name&gt; &apos;仓库地址&apos;</span><br></pre></td></tr></table></figure>
 <p><code>Fetch</code> 远程分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin 远程分支名</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch &lt;remote_repo_name&gt; 远程分支名</span><br></pre></td></tr></table></figure>
 <p>创建并切换到本地分支，该本地分支与远程分支对应</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b 本地分支名 origin/远程分支名</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b 本地分支名 &lt;remote_repo_name&gt;/远程分支名</span><br></pre></td></tr></table></figure>
 <p>Pull 远程分支</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin 远程分支名</span><br></pre></td></tr></table></figure>
 <h4 id="本地与远程分支不同步"><a href="#本地与远程分支不同步" class="headerlink" title=" 本地与远程分支不同步 "></a><font color="#32CD32"> 本地与远程分支不同步 </font></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote update origin --prune</span><br><span class="line">或者</span><br><span class="line">git pull -p 再手动删本地分支</span><br></pre></td></tr></table></figure>
@@ -557,7 +557,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
