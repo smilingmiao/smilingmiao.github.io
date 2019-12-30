@@ -983,19 +983,19 @@
             <h3 id="什么是-CocoaPods-？"><a href="#什么是-CocoaPods-？" class="headerlink" title="什么是 CocoaPods ？"></a>什么是 CocoaPods ？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 54 thousand libraries and is used in over 3 million apps. CocoaPods can help you scale your projects elegantly.</span><br></pre></td></tr></table></figure>
 <p>CocoaPods 是 Swift 和 Objective-C 项目的一个依赖管理工具。它有超过 54000 个库，已经被应用于超过三百万个 app。CocoaPods 能帮助你优雅地扩展你的项目。</p>
 <p><a href="https://www.youtube.com/watch?v=iEAjvNRdZa0&amp;spfreload=10" target="_blank" rel="noopener">这里</a> 有个视频可以帮助你更好的理解和使用 <a href="https://cocoapods.org/" target="_blank" rel="noopener">CocoaPods</a></p>
-<h3 id="替换-ruby-源"><a href="#替换-ruby-源" class="headerlink" title="替换 ruby 源"></a>替换 ruby 源</h3><p>为什么要替换？因为你在中国大陆。所以要乖乖用<a href="https://gems.ruby-china.com/" target="_blank" rel="noopener">国内的源</a></p>
+<h3 id="替换-ruby-源"><a href="#替换-ruby-源" class="headerlink" title="替换 ruby 源"></a>替换 ruby 源</h3><p>因为在国内，所以用<a href="https://gems.ruby-china.com/" target="_blank" rel="noopener">国内的源</a></p>
 <p>在终端输入 <code>gem sources -l</code> 看一下，如果显示一片空白，那就输入下面的命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/</span><br></pre></td></tr></table></figure>
 <p>或者如果显示的是<code>https://rubygems.org/</code> 那就输入下面的命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/</span><br></pre></td></tr></table></figure>
 <p><strong>这个时候你在终端输入<code>gem sources -l</code> 一定是显示的<code>https://gems.ruby-china.com/</code> 了</strong></p>
 <h3 id="安装-CocoaPods"><a href="#安装-CocoaPods" class="headerlink" title="安装 CocoaPods"></a>安装 CocoaPods</h3><p>当你在终端输入<code>gem install cocoapods</code> 回车的时候，显示的一定是报错信息。你可能看到是权限不足，于是你在网上搜到了要加上<code>sudo</code>，然后输入<code>sudo gem install cocoapods</code> 时候发现还是报错，信息还是权限不足。这个时候两个办法：</p>
-<p>1 关闭系统的 SIP 解决。这不在本文讨论的重点，但还是说一下。SIP（System Integrity Protection） 就是系统完整性保护，你可以自己手动开启和关闭。</p>
+<p>1 关闭系统的 SIP 解决。系统完整性保护（SIP，System Integrity Protection） ，你可以自己手动开启和关闭。</p>
 <p>具体步骤：</p>
 <ul>
-<li><p>⌘ + R 进入恢复模式，打开终端输入 <code>csrutil disable</code> 关闭 SIP。</p>
+<li><p>⌘ + R 进入恢复模式，打开终端输入 <code>sudo csrutil disable</code> 关闭 SIP。</p>
 </li>
-<li><p>⌘ + R 进入恢复模式，打开终端输入 <code>csrutil enable</code> 开启 SIP。</p>
+<li><p>⌘ + R 进入恢复模式，打开终端输入 <code>sudo csrutil enable</code> 开启 SIP。</p>
 </li>
 </ul>
 <p>2 不给 RubyGems 特权 <a href="https://guides.cocoapods.org/using/getting-started.html#getting-started" target="_blank" rel="noopener">Sudo-less installation</a></p>
@@ -1007,7 +1007,7 @@
 <ul>
 <li><p>在终端输入<code>sudo gem install cocoapods --user-install</code></p>
 </li>
-<li><p>在 tom 目录下创建一个<code>.profile</code> 的文件，比如 <code>cocoapods.profile</code>。直接打开终端输入 <code>touch cocoapods.profile</code> 即可。</p>
+<li><p>🍉在 tom 目录下创建一个<code>.profile</code> 的文件，比如 <code>cocoapods.profile</code>。直接打开终端输入 <code>touch cocoapods.profile</code> 即可。</p>
 </li>
 <li><p>在 <code>cocoapods.profile</code> 文件中填入 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME=$HOME/.gem</span><br><span class="line">export PATH=$GEM_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
@@ -1037,6 +1037,11 @@
 </ul>
 </li>
 </ul>
+<p>🍓</p>
+<p>更更新：</p>
+<p>上面的 🍉 → 🍓都忽略</p>
+<p>只要在<code>.zshrc</code>文件中加入一行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH="$PATH:/Users/smilingmiao/.gem/ruby/2.6.0/bin"</span><br></pre></td></tr></table></figure>
 <p>  Done.</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://www.jianshu.com/p/bba968ca3957" target="_blank" rel="noopener">https://www.jianshu.com/p/bba968ca3957</a></p>
 <p>下期再见。</p>
