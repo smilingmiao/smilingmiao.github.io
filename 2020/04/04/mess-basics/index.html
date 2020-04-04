@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="有个需求，希望我们在应用内打出去电话时，让我们的 app 显示在最前面，将打电话界面置于后面。大概这类需求太少，网上并没找到任何资料。本来我是想着在拨出去电话时候先通过方法： 1- (void)openURL:(NSURL*)url options:(NSDictionary&amp;lt;UIApplicationOpenExternalURLOptionsKey, id&amp;gt; *)options c">
+<meta name="description" content="作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 /etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat /etc/paths 命令可以看到所有的 path 123456➜  ~ cat /etc/paths/usr/local/bin/usr/bin/bin/usr/sbin/sbin 执行 echo $PATH 后可以">
 <meta property="og:type" content="article">
-<meta property="og:title" content="让通话界面进入后台">
-<meta property="og:url" content="https://github.com/smilingmiao/2019/04/27/let-calling-to-background/index.html">
+<meta property="og:title" content="一些基础大杂汇">
+<meta property="og:url" content="https://github.com/smilingmiao/2020/04/04/mess-basics/index.html">
 <meta property="og:site_name" content="smilingmiao">
-<meta property="og:description" content="有个需求，希望我们在应用内打出去电话时，让我们的 app 显示在最前面，将打电话界面置于后面。大概这类需求太少，网上并没找到任何资料。本来我是想着在拨出去电话时候先通过方法： 1- (void)openURL:(NSURL*)url options:(NSDictionary&amp;lt;UIApplicationOpenExternalURLOptionsKey, id&amp;gt; *)options c">
+<meta property="og:description" content="作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 /etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat /etc/paths 命令可以看到所有的 path 123456➜  ~ cat /etc/paths/usr/local/bin/usr/bin/bin/usr/sbin/sbin 执行 echo $PATH 后可以">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-17T17:05:46.000Z">
+<meta property="og:updated_time" content="2020-04-04T12:49:32.699Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="让通话界面进入后台">
-<meta name="twitter:description" content="有个需求，希望我们在应用内打出去电话时，让我们的 app 显示在最前面，将打电话界面置于后面。大概这类需求太少，网上并没找到任何资料。本来我是想着在拨出去电话时候先通过方法： 1- (void)openURL:(NSURL*)url options:(NSDictionary&amp;lt;UIApplicationOpenExternalURLOptionsKey, id&amp;gt; *)options c">
+<meta name="twitter:title" content="一些基础大杂汇">
+<meta name="twitter:description" content="作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 /etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat /etc/paths 命令可以看到所有的 path 123456➜  ~ cat /etc/paths/usr/local/bin/usr/bin/bin/usr/sbin/sbin 执行 echo $PATH 后可以">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/smilingmiao/2019/04/27/let-calling-to-background/">
+  <link rel="canonical" href="https://github.com/smilingmiao/2020/04/04/mess-basics/">
 
 
 
 
 
-  <title>让通话界面进入后台 | smilingmiao</title>
+  <title>一些基础大杂汇 | smilingmiao</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/04/27/let-calling-to-background/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2020/04/04/mess-basics/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="smilingmiao">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">让通话界面进入后台</h1>
+          <h1 class="post-title" itemprop="name headline">一些基础大杂汇</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-27T20:01:38+08:00">
-                2019-04-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-04T20:42:19+08:00">
+                2020-04-04
               </time>
             
 
@@ -299,16 +299,26 @@
       
 
       
-        <p>有个需求，希望我们在应用内打出去电话时，让我们的 app 显示在最前面，将打电话界面置于后面。大概这类需求太少，网上并没找到任何资料。本来我是想着在拨出去电话时候先通过方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)openURL:(NSURL*)url options:(NSDictionary&lt;UIApplicationOpenExternalURLOptionsKey, id&gt; *)options completionHandler:(void (^ __nullable)(BOOL success))completion</span><br></pre></td></tr></table></figure>
-<p>打开 Safari 访问一个地址，然后利用 URL Scheme 并通过 js 回调打开 app 使其在最上层。但想到切来切去用户体验很不好，于是想到可以先用一个图层覆盖到 keyWindow 再调一下自己的 Scheme 来让 app 置于最上层，通过尝试觉得可行。</p>
-<p>下面是一些实现代码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">- (void)outgoingCallback &#123;</span><br><span class="line">  </span><br><span class="line">  UIWindow *window = [[UIApplication sharedApplication] keyWindow];</span><br><span class="line">  __block UIView *tempView = [UIView new];</span><br><span class="line">  [window addSubview:tempView];</span><br><span class="line">  </span><br><span class="line">  tempView.translatesAutoresizingMaskIntoConstraints = NO;</span><br><span class="line">  [window addConstraint:[tempView.leadingAnchor constraintEqualToAnchor:window.leadingAnchor]];</span><br><span class="line">  [window addConstraint:[tempView.trailingAnchor constraintEqualToAnchor:window.trailingAnchor]];</span><br><span class="line">  [window addConstraint:[tempView.topAnchor constraintLessThanOrEqualToAnchor:window.topAnchor]];</span><br><span class="line">  [window addConstraint:[tempView.bottomAnchor constraintEqualToAnchor:window.bottomAnchor]];</span><br><span class="line">  </span><br><span class="line">  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^&#123;</span><br><span class="line">  sleep(1);</span><br><span class="line">  dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">  tempView.hidden = YES;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  NSURL *url = [NSURL URLWithString:@&quot;tinybeeee://&quot;];</span><br><span class="line">  BOOL can = [[UIApplication sharedApplication] canOpenURL:url];</span><br><span class="line">  if (can) &#123;</span><br><span class="line">  [[UIApplication sharedApplication] openURL:url options:@&#123;&#125; completionHandler:^(BOOL success) &#123;</span><br><span class="line">  [tempView removeFromSuperview];</span><br><span class="line">  tempView = nil;</span><br><span class="line">  NSLog(@&quot;====tmp vie ===== %@&quot;, tempView);</span><br><span class="line">  &#125;];</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  NSURL *url = [NSURL URLWithString:@&quot;tinybeeee://&quot;];</span><br><span class="line"></span><br><span class="line">  BOOL can = [[UIApplication sharedApplication] canOpenURL:url];</span><br><span class="line">  if (can) &#123;</span><br><span class="line">    [[UIApplication sharedApplication] openURL:url options:@&#123;&#125; completionHandler:^(BOOL success) &#123;</span><br><span class="line">      if (success) &#123;</span><br><span class="line">        NSLog(@&quot;成功。。。。&quot;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        NSLog(@&quot;失败。。。。&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    NSLog(@&quot;不能打开。。。&quot;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>URL Types 填自己的 <code>identifier</code> 和 <code>URLSchemes</code>，eg：前者我填 <code>smilingmiao</code>，后者填 <code>laughing</code> 即可。</p>
-<p>在 <code>AppDelegate</code> 中实现下面的方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options &#123;</span><br><span class="line">  NSLog(@&quot;url = %@&quot;, url.absoluteString);</span><br><span class="line">  NSLog(@&quot;options = %@&quot;, options);</span><br><span class="line">  return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在 <code>Safari</code> 地址栏输入 <code>laughing://smilingmiao?a=1&amp;b=2</code> 并回车，控制台打印如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">laughing://smilingmiao?a=1&amp;b=2</span><br><span class="line">&#123;</span><br><span class="line">    UIApplicationOpenURLOptionsOpenInPlaceKey = 0;</span><br><span class="line">    UIApplicationOpenURLOptionsSourceApplicationKey = &quot;com.apple.mobilesafari&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。</p>
+<p>从 /etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。</p>
+<p>执行 <code>cat /etc/paths</code> 命令可以看到所有的 path</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ cat /etc/paths</span><br><span class="line">/usr/local/bin</span><br><span class="line">/usr/bin</span><br><span class="line">/bin</span><br><span class="line">/usr/sbin</span><br><span class="line">/sbin</span><br></pre></td></tr></table></figure>
+<p>执行 <code>echo $PATH</code> 后可以看到以冒号<code>:</code>分割的所有 path，最后一个冒号<code>:</code>后面跟的是具体的命令路径，这里是调用 flutter 命令路径。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ echo $PATH</span><br><span class="line">/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Users/smilingmiao/development/flutter/bin</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>个人理解，最后一个冒号前的所有分号分开的每个 path 就像是“条条大路通罗马”里的大路，而具体 flutter 命令的路径就是“罗马”。</p>
+</blockquote>
+<blockquote>
+<p>usr 是 Unix System Resource 的缩写</p>
+</blockquote>
+<h4 id="export-命令"><a href="#export-命令" class="headerlink" title="export 命令"></a>export 命令</h4><p>通常我们直接在终端里面执行 export 和 source 命令后，仅在本机本次登录有效。想永远有效就直接在 <code>.zshrc</code> 文件里添加需要的环境变量。</p>
+<p>比如为添加 flutter 的 <a href="https://flutter.dev/community/china" target="_blank" rel="noopener">国内镜像</a> 设置环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PUB_HOSTED_URL=https://pub.flutter-io.cn</span><br><span class="line">export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn</span><br></pre></td></tr></table></figure>
+<p>再执行一下 <code>source ~/.zshrc</code></p>
+<h4 id="source-命令"><a href="#source-命令" class="headerlink" title="source 命令"></a>source 命令</h4><p><code>souce</code> 使得被执行文件的变量及函数加载进当前终端环境。</p>
+<h4 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h4><p>执行自己的 shell 文件，假定存放在用户根目录下的 shell 文件名为 <code>.test.sh</code>，内容为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">foo() &#123;</span><br><span class="line">	echo "hello"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先执行 <code>source ~./.test</code>，再执行 <code>foo</code> 打印出 ”hello“.</p>
 
       
     </div>
@@ -329,7 +339,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://github.com/smilingmiao/2019/04/27/let-calling-to-background/" title="让通话界面进入后台">https://github.com/smilingmiao/2019/04/27/let-calling-to-background/</a>
+    <a href="https://github.com/smilingmiao/2020/04/04/mess-basics/" title="一些基础大杂汇">https://github.com/smilingmiao/2020/04/04/mess-basics/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -351,8 +361,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/23/the-linker-load-process/" rel="next" title="链接器：动态库加载实践过程">
-                <i class="fa fa-chevron-left"></i> 链接器：动态库加载实践过程
+              <a href="/2020/03/28/find-porn-web-in-browser/" rel="next" title="使用 AppleScript 检测浏览器中不健康的网站">
+                <i class="fa fa-chevron-left"></i> 使用 AppleScript 检测浏览器中不健康的网站
               </a>
             
           </div>
@@ -360,10 +370,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/17/lambda/" rel="prev" title="lambda">
-                lambda <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -415,8 +421,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -495,6 +510,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#export-命令"><span class="nav-number">1.</span> <span class="nav-text">export 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#source-命令"><span class="nav-number">2.</span> <span class="nav-text">source 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shell"><span class="nav-number">3.</span> <span class="nav-text">shell</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
