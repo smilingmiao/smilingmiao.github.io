@@ -1,133 +1,52 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
+<link rel="stylesheet" href="/css/main.css">
 
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="CocoaPods,">
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="什么是 CocoaPods ？1CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 54 thousand libraries and is used in over 3 million apps. CocoaPods can help you scale your proj">
-<meta name="keywords" content="CocoaPods">
+  <meta name="description" content="什么是 CocoaPods ？1CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 54 thousand libraries and is used in over 3 million apps. CocoaPods can help you scale your proj">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记一次 CocoaPods 安装">
 <meta property="og:url" content="https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/index.html">
 <meta property="og:site_name" content="smilingmiao">
 <meta property="og:description" content="什么是 CocoaPods ？1CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 54 thousand libraries and is used in over 3 million apps. CocoaPods can help you scale your proj">
-<meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/cocoapods-installation.png">
 <meta property="og:image" content="https://github.com/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/gem-which-cocoapods.png">
-<meta property="og:updated_time" content="2020-04-08T09:13:59.038Z">
+<meta property="article:published_time" content="2018-11-14T10:09:53.000Z">
+<meta property="article:modified_time" content="2020-04-08T10:50:30.798Z">
+<meta property="article:author" content="smilingmiao">
+<meta property="article:tag" content="CocoaPods">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记一次 CocoaPods 安装">
-<meta name="twitter:description" content="什么是 CocoaPods ？1CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 54 thousand libraries and is used in over 3 million apps. CocoaPods can help you scale your proj">
 <meta name="twitter:image" content="https://github.com/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/cocoapods-installation.png">
 
+<link rel="canonical" href="https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
   };
 </script>
-
-
-
-  <link rel="canonical" href="https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/">
-
-
-
-
 
   <title>记一次 CocoaPods 安装 | smilingmiao</title>
   
@@ -137,182 +56,144 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">smilingmiao</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smilingmiao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            Tags
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
-            
-            Categories
-          </a>
-        </li>
-      
-        
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
-  
+  </li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
     <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="smilingmiao">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="smilingmiao">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">记一次 CocoaPods 安装</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          记一次 CocoaPods 安装
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-14T18:09:53+08:00">
-                2018-11-14
-              </time>
-            
+              <span class="post-meta-item-text">Posted on</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
+              <time title="Created: 2018-11-14 18:09:53" itemprop="dateCreated datePublished" datetime="2018-11-14T18:09:53+08:00">2018-11-14</time>
+            </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -320,17 +201,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <h3 id="什么是-CocoaPods-？"><a href="#什么是-CocoaPods-？" class="headerlink" title="什么是 CocoaPods ？"></a>什么是 CocoaPods ？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 54 thousand libraries and is used in over 3 million apps. CocoaPods can help you scale your projects elegantly.</span><br></pre></td></tr></table></figure>
+
 <p>CocoaPods 是 Swift 和 Objective-C 项目的一个依赖管理工具。它有超过 54000 个库，已经被应用于超过三百万个 app。CocoaPods 能帮助你优雅地扩展你的项目。</p>
-<p><a href="https://www.youtube.com/watch?v=iEAjvNRdZa0&amp;spfreload=10" target="_blank" rel="noopener">这里</a> 有个视频可以帮助你更好的理解和使用 <a href="https://cocoapods.org/" target="_blank" rel="noopener">CocoaPods</a></p>
+<a id="more"></a>
+
+<p><a href="https://www.youtube.com/watch?v=iEAjvNRdZa0&spfreload=10" target="_blank" rel="noopener">这里</a> 有个视频可以帮助你更好的理解和使用 <a href="https://cocoapods.org/" target="_blank" rel="noopener">CocoaPods</a></p>
 <h3 id="替换-ruby-源"><a href="#替换-ruby-源" class="headerlink" title="替换 ruby 源"></a>替换 ruby 源</h3><p>因为在国内，所以用<a href="https://gems.ruby-china.com/" target="_blank" rel="noopener">国内的源</a></p>
 <p>在终端输入 <code>gem sources -l</code> 看一下，如果显示一片空白，那就输入下面的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https:&#x2F;&#x2F;gems.ruby-china.com&#x2F;</span><br></pre></td></tr></table></figure>
+
 <p>或者如果显示的是<code>https://rubygems.org/</code> 那就输入下面的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https:&#x2F;&#x2F;gems.ruby-china.com&#x2F; --remove https:&#x2F;&#x2F;rubygems.org&#x2F;</span><br></pre></td></tr></table></figure>
+
 <p><strong>这个时候你在终端输入<code>gem sources -l</code> 一定是显示的<code>https://gems.ruby-china.com/</code> 了</strong></p>
 <h3 id="安装-CocoaPods"><a href="#安装-CocoaPods" class="headerlink" title="安装 CocoaPods"></a>安装 CocoaPods</h3><p>当你在终端输入<code>gem install cocoapods</code> 回车的时候，显示的一定是报错信息。你可能看到是权限不足，于是你在网上搜到了要加上<code>sudo</code>，然后输入<code>sudo gem install cocoapods</code> 时候发现还是报错，信息还是权限不足。这个时候两个办法：</p>
 <p>1 关闭系统的 SIP 解决。系统完整性保护（SIP，System Integrity Protection） ，你可以自己手动开启和关闭。</p>
@@ -343,9 +226,11 @@
 </ul>
 <p>2 不给 RubyGems 特权 <a href="https://guides.cocoapods.org/using/getting-started.html#getting-started" target="_blank" rel="noopener">Sudo-less installation</a></p>
 <p>If you do <em>not</em> want to grant RubyGems admin privileges for this process, you can tell RubyGems to install into your user directory by passing either the <code>--user-install</code> flag to <code>gem install</code> or by configuring the RubyGems environment. The latter is in our opinion the best solution. To do this, create or edit the <code>.profile</code> file in your home directory and add or amend it to include these lines:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME=$HOME/.gem</span><br><span class="line">export PATH=$GEM_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME&#x3D;$HOME&#x2F;.gem</span><br><span class="line">export PATH&#x3D;$GEM_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+
 <p>Note that if you choose to use the <code>--user-install</code> option, you will still have to configure your <code>.profile</code> file to set the <code>PATH</code> or use the command prepended by the full path. You can find out where a gem is installed with <code>gem which cocoapods</code>. E.g.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ gem install cocoapods --user-install</span><br><span class="line">$ gem which cocoapods</span><br><span class="line">/Users/eloy/.gem/ruby/2.0.0/gems/cocoapods-0.29.0/lib/cocoapods.rb</span><br><span class="line">$ /Users/eloy/.gem/ruby/2.0.0/bin/pod install</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ gem install cocoapods --user-install</span><br><span class="line">$ gem which cocoapods</span><br><span class="line">&#x2F;Users&#x2F;eloy&#x2F;.gem&#x2F;ruby&#x2F;2.0.0&#x2F;gems&#x2F;cocoapods-0.29.0&#x2F;lib&#x2F;cocoapods.rb</span><br><span class="line">$ &#x2F;Users&#x2F;eloy&#x2F;.gem&#x2F;ruby&#x2F;2.0.0&#x2F;bin&#x2F;pod install</span><br></pre></td></tr></table></figure>
+
 <p>上面归纳一下步骤就是：</p>
 <ul>
 <li><p>在终端输入<code>sudo gem install cocoapods --user-install</code></p>
@@ -353,18 +238,23 @@
 <li><p>🍉在 tom 目录下创建一个<code>.profile</code> 的文件，比如 <code>cocoapods.profile</code>。直接打开终端输入 <code>touch cocoapods.profile</code> 即可。</p>
 </li>
 <li><p>在 <code>cocoapods.profile</code> 文件中填入 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME=$HOME/.gem</span><br><span class="line">export PATH=$GEM_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME&#x3D;$HOME&#x2F;.gem</span><br><span class="line">export PATH&#x3D;$GEM_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>终端输入 <code>gem which cocoapods</code> 命令后会出现 CocoaPods 的目录位置，比如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/tom/.gem/ruby/2.3.0/gems/cocoapods-1.5.3/lib/cocoapods.rb</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;Users&#x2F;tom&#x2F;.gem&#x2F;ruby&#x2F;2.3.0&#x2F;gems&#x2F;cocoapods-1.5.3&#x2F;lib&#x2F;cocoapods.rb</span><br></pre></td></tr></table></figure>
+
 <p>这时候你只需要用版本号之前的路径 <code>/Users/tom/.gem/ruby/2.3.0</code> 把文件 <code>cocoapods.profile</code> 中第一行的 $HOME/.gem 替换掉即可。比如替换后为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME=/Users/tom/.gem/ruby/2.3.0</span><br><span class="line">export PATH=$GEM_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GEM_HOME&#x3D;&#x2F;Users&#x2F;tom&#x2F;.gem&#x2F;ruby&#x2F;2.3.0</span><br><span class="line">export PATH&#x3D;$GEM_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 <p>也可看<a href="https://github.com/rubygems/rubygems/issues/1310">这里</a> 的讨论</p>
 <p>终于可以执行一下 pod setup 了，不过你需要到这个目录 bin 下执行</p>
-<img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/cocoapods-installation.png">
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/tom/.gem/ruby/2.3.0/bin/pod setup</span><br></pre></td></tr></table></figure>
+<img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/cocoapods-installation.png" class="">
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;Users&#x2F;tom&#x2F;.gem&#x2F;ruby&#x2F;2.3.0&#x2F;bin&#x2F;pod setup</span><br></pre></td></tr></table></figure>
+
 <p>以后操作 update 或者 install 等等都需要 <code>/Users/tom/.gem/ruby/2.3.0/bin/pod</code> 后接具体命令参数。虽然这样挺麻烦的，但是我还是喜欢这种，改成全局的未免是什么好事，这样其实能加深一些理解。</p>
 <p>更新：</p>
 <p>用了几天还是觉得每次执行<code>pod</code>命令出现<code>zsh: command not found: pod</code>然后再执行<code>/Users/tom/.gem/ruby/2.3.0/bin/pod + 命令</code>很麻烦。花二十分钟解决了一下这个问题。原因是：当前命令的<a href="https://baike.baidu.com/item/%E8%BD%AF%E9%93%BE%E6%8E%A5" target="_blank" rel="noopener">软链接</a>（例如 Windows 桌面的快捷方式）已经创建，但是软链接所在的<code>*/bin</code>路径还没有被 export。比如<code>/Users/tom/.gem/ruby/2.3.0/bin/</code>还没被 export。一句话描述：还没有配置环境变量。</p>
@@ -373,7 +263,8 @@
 <ul>
 <li>在终端输入<code>gem which cocoapods</code></li>
 </ul>
-<img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/gem-which-cocoapods.png">
+<img src="/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/gem-which-cocoapods.png" class="">
+
 <ul>
 <li>执行<code>ln -s /Users/smilingmiao/.gem/ruby/2.3.0/bin/pod /usr/local/bin</code></li>
 <li>再执行<code>source ~/.zshrc</code></li>
@@ -385,290 +276,192 @@
 <p>上面的 🍉 → 🍓都忽略</p>
 <p>只要在<code>.zshrc</code>文件中加入一行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH="$PATH:/Users/smilingmiao/.gem/ruby/2.6.0/bin"</span><br></pre></td></tr></table></figure>
+
+
+
 <p>– EOF –</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://www.jianshu.com/p/bba968ca3957" target="_blank" rel="noopener">https://www.jianshu.com/p/bba968ca3957</a></p>
 
-      
     </div>
+
     
     
     
 
-    
-
-    
-
-    
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:</strong>
-    smilingmiao
-  </li>
-  <li class="post-copyright-link">
-    <strong>Post link:</strong>
-    <a href="https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/" title="记一次 CocoaPods 安装">https://github.com/smilingmiao/2018/11/14/ji-yi-ci-cocoapods-an-zhuang/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice: </strong>
-    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
-  </li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/CocoaPods/" rel="tag"># CocoaPods</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CocoaPods/" rel="tag"># CocoaPods</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/11/mysql-part-one/" rel="prev" title="MySQL">
-                MySQL <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/11/mysql-part-one/" rel="next" title="MySQL">
+      MySQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
 
 
           </div>
           
 
-
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">smilingmiao</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">17</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">categories</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
-                  <span class="site-state-item-name">tags</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-            <div class="links-of-author motion-element">
-                
-                  <span class="links-of-author-item">
-                    <a href="https://github.com/smilingmiao" target="_blank" title="GitHub">
-                      
-                        <i class="fa fa-fw fa-github"></i>GitHub</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://weibo.com/u/6709909308" target="_blank" title="Weibo">
-                      
-                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="mailto:smilingmiao@icloud.com" target="_blank" title="E-Mail">
-                      
-                        <i class="fa fa-fw fa-mail"></i>E-Mail</a>
-                  </span>
-                
-            </div>
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-CocoaPods-？"><span class="nav-number">1.</span> <span class="nav-text">什么是 CocoaPods ？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#替换-ruby-源"><span class="nav-number">2.</span> <span class="nav-text">替换 ruby 源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-CocoaPods"><span class="nav-number">3.</span> <span class="nav-text">安装 CocoaPods</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number"></span> <span class="nav-text">Reference</span></a></li></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-CocoaPods-？"><span class="nav-number">1.</span> <span class="nav-text">什么是 CocoaPods ？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#替换-ruby-源"><span class="nav-number">2.</span> <span class="nav-text">替换 ruby 源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-CocoaPods"><span class="nav-number">3.</span> <span class="nav-text">安装 CocoaPods</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number"></span> <span class="nav-text">Reference</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smilingmiao"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">smilingmiao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smilingmiao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smilingmiao"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6709909308" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6709909308" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:smilingmiao@icloud.com" title="E-Mail → mailto:smilingmiao@icloud.com" rel="noopener" target="_blank"><i class="mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+</div>
+
+        
 
 
 
 
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -686,111 +479,8 @@
 
 
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
 
 
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
 
   
 
