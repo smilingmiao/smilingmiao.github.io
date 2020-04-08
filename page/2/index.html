@@ -187,6 +187,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -613,6 +633,7 @@
 
 
 
+<p>– EOF –</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://maryrosecook.com/blog/post/git-from-the-inside-out" target="_blank" rel="noopener">https://maryrosecook.com/blog/post/git-from-the-inside-out</a><br><a href="http://gitbook.liuhui998.com/8_2.html" target="_blank" rel="noopener">http://gitbook.liuhui998.com/8_2.html</a></p>
 
           
@@ -773,6 +794,7 @@
 <h1 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h1><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">radixSort</span><span class="params">(unsorted array: <span class="keyword">inout</span> [Int])</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> array.<span class="built_in">count</span> &gt; <span class="number">1</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> length = maxLength(array)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 待排序数组中的元素如果全是正整数的情况只需要 0到9 十个基数桶就行，</span></span><br><span class="line">        <span class="comment">// 但现实情况往往需要考虑边界情况，也就是同时存在正负数的情况，此时就</span></span><br><span class="line">        <span class="comment">// 需要额外的 -9到-1 九个桶，所以总共需要 19 个桶</span></span><br><span class="line">        <span class="keyword">let</span> <span class="built_in">count</span> = <span class="number">19</span>, indexer = <span class="number">9</span></span><br><span class="line">        <span class="keyword">var</span> mode = <span class="number">10</span>, divisor = <span class="number">1</span></span><br><span class="line">        <span class="keyword">var</span> lastSorted = array</span><br><span class="line">        <span class="keyword">var</span> buckets = <span class="type">Array</span>(repeating: [], <span class="built_in">count</span>: <span class="built_in">count</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> length &gt; <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> e <span class="keyword">in</span> lastSorted &#123;</span><br><span class="line">                <span class="comment">// +indexer 是为了保证下标不为负数</span></span><br><span class="line">                buckets[e % mode / divisor + indexer].append(e)</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            lastSorted.removeAll()</span><br><span class="line">            <span class="keyword">for</span> bucket <span class="keyword">in</span> buckets &#123;</span><br><span class="line">                <span class="keyword">if</span> bucket.isEmpty &#123;</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">for</span> e <span class="keyword">in</span> bucket &#123;</span><br><span class="line">                    lastSorted.append(e <span class="keyword">as</span>! <span class="type">Int</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            mode *= <span class="number">10</span></span><br><span class="line">            divisor *= <span class="number">10</span></span><br><span class="line">            length -= <span class="number">1</span></span><br><span class="line">            buckets.removeAll()</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(lastSorted)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">maxLength</span><span class="params">(<span class="number">_</span> array: [Int])</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="comment">// 取最大值</span></span><br><span class="line">        <span class="keyword">var</span> <span class="built_in">max</span> = array[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> e <span class="keyword">in</span> array &#123;</span><br><span class="line">            <span class="keyword">if</span> e &gt; <span class="built_in">max</span> &#123;</span><br><span class="line">                <span class="built_in">max</span> = e</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 最大值位数</span></span><br><span class="line">        <span class="keyword">var</span> positiveMaxLength = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">max</span> != <span class="number">0</span> &#123;</span><br><span class="line">            positiveMaxLength += <span class="number">1</span></span><br><span class="line">            <span class="built_in">max</span> = <span class="built_in">max</span> / <span class="number">10</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 取最小值</span></span><br><span class="line">        <span class="keyword">var</span> <span class="built_in">min</span> = array[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> e <span class="keyword">in</span> array &#123;</span><br><span class="line">            <span class="keyword">if</span> e &lt; <span class="built_in">min</span> &#123;</span><br><span class="line">                <span class="built_in">min</span> = e</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 最小值位数</span></span><br><span class="line">        <span class="keyword">var</span> negativeMaxLength = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">min</span> != <span class="number">0</span> &#123;</span><br><span class="line">            negativeMaxLength += <span class="number">1</span></span><br><span class="line">            <span class="built_in">min</span> = <span class="built_in">min</span> * <span class="number">10</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> positiveMaxLength &gt; negativeMaxLength ? positiveMaxLength : negativeMaxLength</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">shellSort</span><span class="params">(unsorted array: <span class="keyword">inout</span> [Int])</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> array.<span class="built_in">count</span> &gt; <span class="number">1</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">var</span> gap = array.<span class="built_in">count</span> / <span class="number">2</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> gap &gt; <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> ..&lt; array.<span class="built_in">count</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> i + gap &gt;= array.<span class="built_in">count</span> &#123;</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> array[i] &lt; array[i + gap] &#123;</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                <span class="built_in">swap</span>(&amp;array, i, i + gap, gap)</span><br><span class="line">            &#125;</span><br><span class="line">            gap /= <span class="number">2</span></span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="built_in">print</span>(array)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int], <span class="number">_</span> start: Int, <span class="number">_</span> end: Int, <span class="number">_</span> gap: Int)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> temp = array[start]</span><br><span class="line">        array[start] = array[end]</span><br><span class="line">        array[end] = temp</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> gap == <span class="number">1</span> &amp;&amp; start &gt; <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> array[start - <span class="number">1</span>] &gt; array[start] &#123;</span><br><span class="line">                <span class="built_in">swap</span>(&amp;array, start - <span class="number">1</span>, start, gap)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">heapSort</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int])</span></span> -&gt; [<span class="type">Int</span>] &#123;</span><br><span class="line">        <span class="keyword">guard</span> array.<span class="built_in">count</span> &gt; <span class="number">1</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> array</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> array = array</span><br><span class="line">        build_max_heap(&amp;array)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">0</span> ... array.<span class="built_in">count</span> - <span class="number">1</span>).reversed() &#123;</span><br><span class="line">            <span class="built_in">swap</span>(&amp;array, <span class="number">0</span>, i)</span><br><span class="line">            heapify(&amp;array, <span class="number">0</span>, i)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> array</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 建大顶堆</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">build_max_heap</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int])</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">0</span> ... array.<span class="built_in">count</span> / <span class="number">2</span> - <span class="number">1</span>).reversed() &#123;</span><br><span class="line">            heapify(&amp;array, i, array.<span class="built_in">count</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">heapify</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int], <span class="number">_</span> index: Int, <span class="number">_</span> len: Int)</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> dad = index</span><br><span class="line">        <span class="keyword">var</span> son = index * <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> son &lt; len &#123;</span><br><span class="line">            <span class="keyword">if</span> son + <span class="number">1</span> &lt; len &amp;&amp; array[son + <span class="number">1</span>] &gt; array[son] &#123;</span><br><span class="line">                son += <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> array[dad] &gt; array[son] &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">swap</span>(&amp;array, dad, son)</span><br><span class="line">                dad = son</span><br><span class="line">                son = dad * <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">swap</span><span class="params">(<span class="number">_</span> array: <span class="keyword">inout</span> [Int], <span class="number">_</span> a: Int, <span class="number">_</span> b: Int)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> temp = array[a]</span><br><span class="line">        array[a] = array[b]</span><br><span class="line">        array[b] = temp</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>– EOF –</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://www.youtube.com/channel/UCaqGoweuUdGFGEJA3fl6slg" target="_blank" rel="noopener">https://www.youtube.com/channel/UCaqGoweuUdGFGEJA3fl6slg</a></p>
 
           
@@ -906,8 +928,8 @@
 <img src="/2018/12/21/about-hash/code.png">
 <p>点击一下 click Action 后出现下面图的情况，证明 NSSet 会调用<code>hash</code>算法，而 NSArray 并不会。</p>
 <img src="/2018/12/21/about-hash/hash_function.png">
-<p>写文章实在不容易，真的服各位坚持写博客的。知道和表达出来真的完全是两码事儿。</p>
-<p>下期再见。</p>
+<p>写文章实在不容易，真的佩服坚持写博客的博主。知道和表达出来真的完全是两码事儿。</p>
+<p>– EOF –</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B8" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B8</a></p>
 <p><a href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8</a></p>
 <p><a href="https://bestswifter.com/hashtable/" target="_blank" rel="noopener">https://bestswifter.com/hashtable/</a></p>
@@ -1089,6 +1111,7 @@
 <p>Seq — Sequence numbers.</p>
 <p>ISN(c) — Initial Sequence Numbers( Client End ).</p>
 <p>ISN(s) — initial Sequence Numbers( Server End ).</p>
+<p>– EOF –</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Transmission_Control_Protocol</a></p>
 <p><a href="ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_9.html" target="_blank" rel="noopener">ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_9.html</a></p>
 
@@ -1301,12 +1324,10 @@
 <li>回收资源，例如：内存、输入输出</li>
 </ul>
 <h4 id="编译、链接、装载"><a href="#编译、链接、装载" class="headerlink" title="编译、链接、装载"></a>编译、链接、装载</h4><ul>
-<li><p>编译器将源代码编译成汇编代码，汇编器将汇编代码转换成多个可执行文件，链接器将可执行文件链接成单个可执行程序，装载器再将可执行程序加载到内存并准备执行。内存中的程序将会获得操作系统的调用运行。</p>
-</li>
-<li><p>在汇编器将汇编代码转换成多个可执行文件时，会将源代码中的符号地址绑定为可重定位的地址，在链接的过程中，将可重定位的地址映射为绝对地址。</p>
-</li>
+<li>编译器将源代码编译成汇编代码，汇编器将汇编代码转换成多个可执行文件，链接器将可执行文件链接成单个可执行程序，装载器再将可执行程序加载到内存并准备执行。内存中的程序将会获得操作系统的调用运行。</li>
+<li>在汇编器将汇编代码转换成多个可执行文件时，会将源代码中的符号地址绑定为可重定位的地址，在链接的过程中，将可重定位的地址映射为绝对地址。</li>
 </ul>
-<p>下期再见。</p>
+<p>– EOF –</p>
 
           
         
@@ -1453,7 +1474,7 @@
 <p>使用 SQL 语句查询数据，首先我们调一下显示的 <code>mode</code>，分别有 <code>.mode.line</code> 和 <code>.mode.column</code> 以及 <code>.mode.list</code>。按个人喜好的格式显示即可。</p>
 <p>当然了，你还可以使用 <code>.header on</code> 或者 <code>.header off</code> 来显示或者隐藏表中的列名。</p>
 <img src="/2018/12/11/mysql-part-one/step09.png">
-<p>下期再见。</p>
+<p>– EOF –</p>
 
           
         
@@ -1635,9 +1656,8 @@
 <p>上面的 🍉 → 🍓都忽略</p>
 <p>只要在<code>.zshrc</code>文件中加入一行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH="$PATH:/Users/smilingmiao/.gem/ruby/2.6.0/bin"</span><br></pre></td></tr></table></figure>
-<p>  Done.</p>
+<p>– EOF –</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://www.jianshu.com/p/bba968ca3957" target="_blank" rel="noopener">https://www.jianshu.com/p/bba968ca3957</a></p>
-<p>下期再见。</p>
 
           
         
@@ -1730,15 +1750,24 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">1</span>
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">tags</span>
-                
+                </a>
               </div>
             
 
@@ -1756,19 +1785,13 @@
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://twitter.com/smilingmiao" target="_blank" title="Twitter">
-                      
-                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.weibo.com/6709909308/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                    <a href="https://weibo.com/u/6709909308" target="_blank" title="Weibo">
                       
                         <i class="fa fa-fw fa-weibo"></i>Weibo</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:smiling.miao@qq.com" target="_blank" title="E-Mail">
+                    <a href="mailto:smilingmiao@icloud.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-mail"></i>E-Mail</a>
                   </span>

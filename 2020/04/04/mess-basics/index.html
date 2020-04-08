@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="命令行集,">
 
 
 
@@ -80,13 +80,14 @@
 
 
 <meta name="description" content="作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 /etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat /etc/paths 命令可以看到各种命令的脚本存放文件。 123456➜  ~ cat /etc/paths/usr/local/bin/usr/bin/bin/usr/sbin/sbin  usr 是 Unix S">
+<meta name="keywords" content="命令行集">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一些基础大杂汇">
 <meta property="og:url" content="https://github.com/smilingmiao/2020/04/04/mess-basics/index.html">
 <meta property="og:site_name" content="smilingmiao">
 <meta property="og:description" content="作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 /etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat /etc/paths 命令可以看到各种命令的脚本存放文件。 123456➜  ~ cat /etc/paths/usr/local/bin/usr/bin/bin/usr/sbin/sbin  usr 是 Unix S">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-05T19:05:06.279Z">
+<meta property="og:updated_time" content="2020-04-08T09:16:15.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一些基础大杂汇">
 <meta name="twitter:description" content="作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 /etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat /etc/paths 命令可以看到各种命令的脚本存放文件。 123456➜  ~ cat /etc/paths/usr/local/bin/usr/bin/bin/usr/sbin/sbin  usr 是 Unix S">
@@ -190,6 +191,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -272,6 +293,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/开发环境/" itemprop="url" rel="index">
+                    <span itemprop="name">开发环境</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -329,14 +372,15 @@
 <h4 id="source"><a href="#source" class="headerlink" title="source"></a>source</h4><p><code>souce</code> 使得被执行文件的变量及函数加载进当前终端环境。</p>
 <h4 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h4><p>执行自己的 shell 文件，假定存放在用户根目录下的 shell 文件名为 <code>.test.sh</code>，内容为</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">foo() &#123;</span><br><span class="line">	echo "hello"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>先执行 <code>source ~./.test</code>，再执行 <code>foo</code> 打印出 ”hello“.</p>
+<p>先执行 <code>source ~./.test</code>，再执行 <code>foo</code> 就可以打印出 ”hello“.</p>
 <h4 id="xcrun"><a href="#xcrun" class="headerlink" title="xcrun"></a>xcrun</h4><p>先说 <code>xcrun simctl</code>，一看就知道是控制模拟器的，直接在终端执行 <code>xcrun simctl</code> 就可以看到可以使用的所有<code>子命令</code>了。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ xcrun simctl</span><br><span class="line">usage: simctl [--set &lt;path&gt;] [--profiles &lt;path&gt;] &lt;subcommand&gt; ...</span><br><span class="line">       simctl help [subcommand]</span><br><span class="line">Command line utility to control the Simulator</span><br><span class="line"></span><br><span class="line">For subcommands that require a &lt;device&gt; argument, you may specify a device UDID</span><br><span class="line">or the special "booted" string which will cause simctl to pick a booted device.</span><br><span class="line">If multiple devices are booted when the "booted" device is selected, simctl</span><br><span class="line">will choose one of them.</span><br><span class="line"></span><br><span class="line">Subcommands:</span><br><span class="line">	create              Create a new device.</span><br><span class="line">	clone               Clone an existing device.</span><br><span class="line">	upgrade             Upgrade a device to a newer runtime.</span><br><span class="line">	delete              Delete spcified devices, unavailable devices, or all devices.</span><br><span class="line">	pair                Create a new watch and phone pair.</span><br><span class="line">	unpair              Unpair a watch and phone pair.</span><br><span class="line">	pair_activate       Set a given pair as active.</span><br><span class="line">	erase               Erase a device's contents and settings.</span><br><span class="line">	boot                Boot a device.</span><br><span class="line">	shutdown            Shutdown a device.</span><br><span class="line">	rename              Rename a device.</span><br><span class="line">	getenv              Print an environment variable from a running device.</span><br><span class="line">	openurl             Open a URL in a device.</span><br><span class="line">	addmedia            Add photos, live photos, videos, or contacts to the library of a device.</span><br><span class="line">	install             Install an app on a device.</span><br><span class="line">	uninstall           Uninstall an app from a device.</span><br><span class="line">	get_app_container   Print the path of the installed app's container</span><br><span class="line">	launch              Launch an application by identifier on a device.</span><br><span class="line">	terminate           Terminate an application by identifier on a device.</span><br><span class="line">	spawn               Spawn a process by executing a given executable on a device.</span><br><span class="line">	list                List available devices, device types, runtimes, or device pairs.</span><br><span class="line">	icloud_sync         Trigger iCloud sync on a device.</span><br><span class="line">	pbsync              Sync the pasteboard content from one pasteboard to another.</span><br><span class="line">	pbcopy              Copy standard input onto the device pasteboard.</span><br><span class="line">	pbpaste             Print the contents of the device's pasteboard to standard output.</span><br><span class="line">	help                Prints the usage for a given subcommand.</span><br><span class="line">	io                  Set up a device IO operation.</span><br><span class="line">	diagnose            Collect diagnostic information and logs.</span><br><span class="line">	logverbose          enable or disable verbose logging for a device</span><br><span class="line">	status_bar          Set or clear status bar overrides</span><br><span class="line">	ui                  Get or Set UI options</span><br><span class="line">	push                Send a simulated push notification</span><br><span class="line">	privacy             Grant, revoke, or reset privacy and permissions</span><br><span class="line">	keychain            Manipulate a device's keychain</span><br></pre></td></tr></table></figure>
 <p>执行 <code>xcrun simctl list devices iOS</code> 可以看到目前电脑上的所有模拟器，以及运行状态</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">~ xcrun simctl list devices iOS</span><br><span class="line">== Devices ==</span><br><span class="line">-- iOS 13.4 --</span><br><span class="line">    iPhone 8 (B3738A6E-2CA5-43BE-88A9-939339231389) (Shutdown)</span><br><span class="line">    iPhone 8 Plus (6358977D-7D38-479B-B58C-0F1FFE597838) (Shutdown)</span><br><span class="line">    iPhone 11 (8E8490BE-B6FC-40EB-BB4B-15D182E21233) (Shutdown)</span><br><span class="line">    iPhone 11 Pro (964DFF45-2DDB-4C70-AA94-0AC1A08084CB) (Shutdown)</span><br><span class="line">    iPhone 11 Pro Max (24E7078C-4656-4C95-8848-522B286AF7B5) (Shutdown)</span><br><span class="line">    iPad Pro (9.7-inch) (B1217AAB-2B7A-42D0-9DD0-C10A70FA34BC) (Shutdown)</span><br><span class="line">    iPad (7th generation) (A0121545-6727-44C9-93DA-97C1BD8C4CB2) (Shutdown)</span><br><span class="line">    iPad Pro (11-inch) (2nd generation) (A905D7F2-F028-4642-81A9-448AF9C2DC1B) (Shutdown)</span><br><span class="line">    iPad Pro (12.9-inch) (4th generation) (959CE868-E85B-4C64-87BE-E0E04A34EFC2) (Shutdown)</span><br><span class="line">    iPad Air (3rd generation) (ED6079DD-2949-42A7-884A-F981F377CF9C) (Shutdown)</span><br></pre></td></tr></table></figure>
 <p>上面的命令后面加个 <code>-j</code> 打印出 JSON 格式的数据，并可以看到更多的属性信息</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ xcrun simctl list devices iOS -j</span><br><span class="line">&#123;</span><br><span class="line">  "devices" : &#123;</span><br><span class="line">    "com.apple.CoreSimulator.SimRuntime.tvOS-13-4" : [</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line">    "com.apple.CoreSimulator.SimRuntime.watchOS-6-2" : [</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line">    "com.apple.CoreSimulator.SimRuntime.iOS-13-4" : [</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/B3738A6E-2CA5-43BE-88A9-939339231389\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/B3738A6E-2CA5-43BE-88A9-939339231389",</span><br><span class="line">        "udid" : "B3738A6E-2CA5-43BE-88A9-939339231389",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-8",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPhone 8"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/6358977D-7D38-479B-B58C-0F1FFE597838\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/6358977D-7D38-479B-B58C-0F1FFE597838",</span><br><span class="line">        "udid" : "6358977D-7D38-479B-B58C-0F1FFE597838",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-8-Plus",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPhone 8 Plus"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/8E8490BE-B6FC-40EB-BB4B-15D182E21233\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/8E8490BE-B6FC-40EB-BB4B-15D182E21233",</span><br><span class="line">        "udid" : "8E8490BE-B6FC-40EB-BB4B-15D182E21233",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPhone 11"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/964DFF45-2DDB-4C70-AA94-0AC1A08084CB\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/964DFF45-2DDB-4C70-AA94-0AC1A08084CB",</span><br><span class="line">        "udid" : "964DFF45-2DDB-4C70-AA94-0AC1A08084CB",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPhone 11 Pro"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/24E7078C-4656-4C95-8848-522B286AF7B5\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/24E7078C-4656-4C95-8848-522B286AF7B5",</span><br><span class="line">        "udid" : "24E7078C-4656-4C95-8848-522B286AF7B5",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPhone 11 Pro Max"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/B1217AAB-2B7A-42D0-9DD0-C10A70FA34BC\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/B1217AAB-2B7A-42D0-9DD0-C10A70FA34BC",</span><br><span class="line">        "udid" : "B1217AAB-2B7A-42D0-9DD0-C10A70FA34BC",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--9-7-inch-",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPad Pro (9.7-inch)"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/A0121545-6727-44C9-93DA-97C1BD8C4CB2\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/A0121545-6727-44C9-93DA-97C1BD8C4CB2",</span><br><span class="line">        "udid" : "A0121545-6727-44C9-93DA-97C1BD8C4CB2",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPad--7th-generation-",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPad (7th generation)"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/A905D7F2-F028-4642-81A9-448AF9C2DC1B\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/A905D7F2-F028-4642-81A9-448AF9C2DC1B",</span><br><span class="line">        "udid" : "A905D7F2-F028-4642-81A9-448AF9C2DC1B",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--11-inch---2nd-generation-",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPad Pro (11-inch) (2nd generation)"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/959CE868-E85B-4C64-87BE-E0E04A34EFC2\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/959CE868-E85B-4C64-87BE-E0E04A34EFC2",</span><br><span class="line">        "udid" : "959CE868-E85B-4C64-87BE-E0E04A34EFC2",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPad-Pro--12-9-inch---4th-generation-",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPad Pro (12.9-inch) (4th generation)"</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/ED6079DD-2949-42A7-884A-F981F377CF9C\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/ED6079DD-2949-42A7-884A-F981F377CF9C",</span><br><span class="line">        "udid" : "ED6079DD-2949-42A7-884A-F981F377CF9C",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPad-Air--3rd-generation-",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPad Air (3rd generation)"</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>找到 <code>name</code> 属性为 <code>iPhone 8</code> 的设备 <code>uuid</code>，然后执行 <code>xcrun simctl boot &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot;</code> 启动 <code>iPhone 8</code> 模拟器。同理 <code>xcrun simctl shutdown &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot;</code> 关闭 <code>iPhone 8</code> 模拟器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ xcrun simctl list devices iOS -j</span><br><span class="line">&#123;</span><br><span class="line">  "devices" : &#123;</span><br><span class="line">    "com.apple.CoreSimulator.SimRuntime.tvOS-13-4" : [</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line">    "com.apple.CoreSimulator.SimRuntime.watchOS-6-2" : [</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line">    "com.apple.CoreSimulator.SimRuntime.iOS-13-4" : [</span><br><span class="line">      &#123;</span><br><span class="line">        "dataPath" : "\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/B3738A6E-2CA5-43BE-88A9-939339231389\/data",</span><br><span class="line">        "logPath" : "\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/B3738A6E-2CA5-43BE-88A9-939339231389",</span><br><span class="line">        "udid" : "B3738A6E-2CA5-43BE-88A9-939339231389",</span><br><span class="line">        "isAvailable" : true,</span><br><span class="line">        "deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-8",</span><br><span class="line">        "state" : "Shutdown",</span><br><span class="line">        "name" : "iPhone 8"</span><br><span class="line">      &#125;,</span><br><span class="line">      ...</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="启动-关闭一个模拟器"><a href="#启动-关闭一个模拟器" class="headerlink" title="启动/关闭一个模拟器"></a>启动/关闭一个模拟器</h5><p>先找到具体型号模拟器的 uuid，然后执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 启动 iPhone 8 模拟器</span><br><span class="line">xcrun simctl boot "B3738A6E-2CA5-43BE-88A9-939339231389"</span><br><span class="line">// 关闭 iPhone 8 模拟器</span><br><span class="line">xcrun simctl shutdown "B3738A6E-2CA5-43BE-88A9-939339231389</span><br></pre></td></tr></table></figure>
 <h5 id="启动一个应用"><a href="#启动一个应用" class="headerlink" title="启动一个应用"></a>启动一个应用</h5><p><code>xcrun simctl launch &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot; com.apple.shortcuts</code></p>
 <h5 id="关闭一个应用"><a href="#关闭一个应用" class="headerlink" title="关闭一个应用"></a>关闭一个应用</h5><p><code>xcrun simctl terminate &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot; com.apple.shortcuts</code></p>
 <h5 id="录制模拟器视频"><a href="#录制模拟器视频" class="headerlink" title="录制模拟器视频"></a>录制模拟器视频</h5><p><code>xcrun simctl io booted recordVideo Desktop/demo_video.mov</code></p>
@@ -346,8 +390,27 @@
 <h4 id="flutter-pub"><a href="#flutter-pub" class="headerlink" title="flutter pub"></a>flutter pub</h4><p>根据 <a href="https://flutter.dev/community/china" target="_blank" rel="noopener">Using Flutter in China</a> 设置好镜像，在 flutter 项目中 pubspec.yaml 文件中添加需要的 package，然后<strong>不要</strong>在 Android Studio 中点 Flutter package get，因为会一直卡住拉取不下来。正确的做法是在终端 cd 到 flutter 项目的根目录，然后执行 <code>flutter pub get</code>，几秒钟就好了。</p>
 <h5 id="flutter-run"><a href="#flutter-run" class="headerlink" title="flutter run"></a>flutter run</h5><p>进入 flutter 项目的根目录，执行 <code>flutter run</code>，按照提示操作，这样就得到一个 URL 可以用来在 Android Studio 中的 Dart DevTools 界面了。</p>
 <h4 id="配置-Android-环境变量"><a href="#配置-Android-环境变量" class="headerlink" title="配置 Android 环境变量"></a>配置 Android 环境变量</h4><p>参考 Android <a href="https://developer.android.google.cn/studio/command-line/variables" target="_blank" rel="noopener">官网</a> 的介绍，首先找到 Android sdk 的存放路径。之后在 <code>.zshrc</code> 文件中添加环境变量，如下</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> Android Studio sdk</span><br><span class="line">export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"</span><br><span class="line">export PATH="$PATH:$ANDROID_SDK_ROOT/tools"</span><br><span class="line">export PATH="$PATH:$ANDROID_SDK_ROOT/tools/bin"</span><br><span class="line">export PATH="$PATH:$ANDROID_SDK_ROOT/platform-tools"</span><br><span class="line">export PATH="$PATH:$ANDROID_SDK_ROOT/emulator"</span><br></pre></td></tr></table></figure>
-<p><code>source .zshrc</code> 一下，这样就把 <code>emulator</code> 等命令都配置好了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> Android Studio sdk</span><br><span class="line">export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"</span><br><span class="line">export PATH="$PATH:$ANDROID_SDK_ROOT/emulator"</span><br></pre></td></tr></table></figure>
+<p><code>source .zshrc</code> 一下，这样就把 <code>emulator</code> 命令配置好了。</p>
+<font color="red">更新</font>
+
+<p>实际操作过程中，执行 <code>emulator -list-avds</code> 时输出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ emulator -list-avds</span><br><span class="line">Nexus_4_API_23</span><br><span class="line">Pixel_3_XL_API_29</span><br><span class="line">Pixel_API_24</span><br></pre></td></tr></table></figure>
+<p>再执行 <code>emulator -avd Nexus_4_API_23</code> 时输出如下错误❌</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ emulator -avd Nexus_4_API_23</span><br><span class="line">[4348067264]:ERROR:android/android-emu/android/qt/qt_setup.cpp:28:Qt library not found at ../emulator/lib64/qt/lib</span><br><span class="line">Could not launch '/Users/smilingmiao/../emulator/qemu/darwin-x86_64/qemu-system-i386': No such file or directory</span><br></pre></td></tr></table></figure>
+<p>经过一番 Google 后，在<a href="https://medium.com/js-features/launch-android-emulator-from-console-failure-eb43a1115cb5" target="_blank" rel="noopener">这里</a>找到了答案，实际就是更改个命令所在路径。</p>
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> 将 `export PATH="$PATH:$ANDROID_SDK_ROOT/emulator"` 改为：</span><br><span class="line"><span class="meta">&gt;</span> export PATH="$PATH:$ANDROID_SDK_ROOT/tools/emulator"</span><br><span class="line"><span class="meta">&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>这样确实是修好了。</p>
+<p><strong><font color="red">不过</font></strong>，我把之前的 AVD 都删掉了，又创建了新的 AVD，于是又需要再把👆上面变更的改回去。🤦</p>
+<p>否则，<code>command not found: emulator</code>。</p>
+<h4 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h4><p><strong>alias命令</strong>用来设置指令的别名。我们可以使用该命令可以将一些较长的命令进行简化。使用alias时，用户必须使用单引号<code>&#39;&#39;</code>将原来的命令引起来，防止特殊字符导致错误。具体查看👉 <a href="https://man.linuxde.net/alias" target="_blank" rel="noopener">这里</a></p>
+<p>emulator 作为命令开头，这个单词实在太长了，用别名把命令精简一下偷懒</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alias e='emulator'</span><br><span class="line">alias evd='emulator -avd'</span><br><span class="line">alias els='emulator -list-avds'</span><br></pre></td></tr></table></figure>
+<p>于是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ els</span><br><span class="line">Pixel_3a_XL_API_29</span><br><span class="line">Pixel_XL_API_R</span><br></pre></td></tr></table></figure>
+<p>– EOF –</p>
 
       
     </div>
@@ -380,6 +443,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/命令行集/" rel="tag"># 命令行集</a>
+          
+        </div>
       
 
       
@@ -482,15 +551,24 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">1</span>
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">tags</span>
-                
+                </a>
               </div>
             
 
@@ -508,19 +586,13 @@
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://twitter.com/smilingmiao" target="_blank" title="Twitter">
-                      
-                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.weibo.com/6709909308/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                    <a href="https://weibo.com/u/6709909308" target="_blank" title="Weibo">
                       
                         <i class="fa fa-fw fa-weibo"></i>Weibo</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:smiling.miao@qq.com" target="_blank" title="E-Mail">
+                    <a href="mailto:smilingmiao@icloud.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-mail"></i>E-Mail</a>
                   </span>
@@ -549,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#export-命令"><span class="nav-number">1.</span> <span class="nav-text">export 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#source"><span class="nav-number">2.</span> <span class="nav-text">source</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shell"><span class="nav-number">3.</span> <span class="nav-text">shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xcrun"><span class="nav-number">4.</span> <span class="nav-text">xcrun</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动一个应用"><span class="nav-number">4.1.</span> <span class="nav-text">启动一个应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关闭一个应用"><span class="nav-number">4.2.</span> <span class="nav-text">关闭一个应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#录制模拟器视频"><span class="nav-number">4.3.</span> <span class="nav-text">录制模拟器视频</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flutter-pub"><span class="nav-number">5.</span> <span class="nav-text">flutter pub</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#flutter-run"><span class="nav-number">5.1.</span> <span class="nav-text">flutter run</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-Android-环境变量"><span class="nav-number">6.</span> <span class="nav-text">配置 Android 环境变量</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#export-命令"><span class="nav-number">1.</span> <span class="nav-text">export 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#source"><span class="nav-number">2.</span> <span class="nav-text">source</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shell"><span class="nav-number">3.</span> <span class="nav-text">shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xcrun"><span class="nav-number">4.</span> <span class="nav-text">xcrun</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动-关闭一个模拟器"><span class="nav-number">4.1.</span> <span class="nav-text">启动/关闭一个模拟器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动一个应用"><span class="nav-number">4.2.</span> <span class="nav-text">启动一个应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关闭一个应用"><span class="nav-number">4.3.</span> <span class="nav-text">关闭一个应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#录制模拟器视频"><span class="nav-number">4.4.</span> <span class="nav-text">录制模拟器视频</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flutter-pub"><span class="nav-number">5.</span> <span class="nav-text">flutter pub</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#flutter-run"><span class="nav-number">5.1.</span> <span class="nav-text">flutter run</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-Android-环境变量"><span class="nav-number">6.</span> <span class="nav-text">配置 Android 环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置别名"><span class="nav-number">7.</span> <span class="nav-text">设置别名</span></a></li></ol></div>
             
 
           </div>
