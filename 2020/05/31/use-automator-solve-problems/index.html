@@ -20,14 +20,19 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="smilingmiao">
-<meta property="og:url" content="https://github.com/smilingmiao/archives/2020/04/index.html">
+  <meta name="description" content="要解决的问题：平时用 Markdown 写字需要给一些字加颜色，或者既加粗又加颜色。 分析问题要把「文字」变成「文字」，只要把「文字」变成 &lt;font size&#x3D;3 color&#x3D;#CF443A&gt; 文字 &lt;&#x2F;font&gt; 三部分组合起来就行。 解决方法使用 Automator 将选中的文本替换为加 HTML 标签格式的文本返回。 第一步：打开 Automator 并选取「快速操">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Automator 解决问题">
+<meta property="og:url" content="https://github.com/smilingmiao/2020/05/31/use-automator-solve-problems/index.html">
 <meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="要解决的问题：平时用 Markdown 写字需要给一些字加颜色，或者既加粗又加颜色。 分析问题要把「文字」变成「文字」，只要把「文字」变成 &lt;font size&#x3D;3 color&#x3D;#CF443A&gt; 文字 &lt;&#x2F;font&gt; 三部分组合起来就行。 解决方法使用 Automator 将选中的文本替换为加 HTML 标签格式的文本返回。 第一步：打开 Automator 并选取「快速操">
+<meta property="article:published_time" content="2020-05-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-31T15:15:40.576Z">
 <meta property="article:author" content="smilingmiao">
+<meta property="article:tag" content="随手笔记">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://github.com/smilingmiao/archives/2020/04/">
+<link rel="canonical" href="https://github.com/smilingmiao/2020/05/31/use-automator-solve-problems/">
 
 
 <script id="page-configurations">
@@ -35,12 +40,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'default'
   };
 </script>
 
-  <title>Archive | smilingmiao</title>
+  <title>使用 Automator 解决问题 | smilingmiao</title>
   
 
 
@@ -149,50 +154,99 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 18 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2020/05/31/use-automator-solve-problems/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 Automator 解决问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-31 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-31T00:00:00+08:00">2020-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <h4 id="要解决的问题："><a href="#要解决的问题：" class="headerlink" title="要解决的问题："></a>要解决的问题：</h4><p>平时用 <strong>Markdown</strong> 写字需要给一些字加<font size=3 color=#CF443A>颜色</font>，或者<strong><font size=3 color=#CF443A>既加粗又加颜色</font></strong>。</p>
+<h4 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h4><p>要把「文字」变成「<font size=3 color=#CF443A>文字</font>」，只要把「文字」变成 <code>&lt;font size=3 color=#CF443A&gt;</code> <code>文字</code> <code>&lt;/font&gt;</code> 三部分组合起来就行。</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>使用 <strong><font size=3 color=#CF443A>Automator</font></strong> 将选中的文本替换为加 HTML 标签格式的文本返回。</p>
+<p><strong>第一步</strong>：打开 Automator 并选取「快速操作」</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 「工作流程收到当前」选取「文本」</li>
+<li><input checked="" disabled="" type="checkbox"> 「位于」选择「访达.app」</li>
+<li><input checked="" disabled="" type="checkbox"> 勾选「用输出内容替换所选文本」</li>
+</ul>
+<p><strong>第二步</strong>：在左侧菜单栏顶部搜索框里输入「apple script」，将搜索结果「运行 Apple Script」拖入右侧需要的位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">on run &#123;input&#125;</span><br><span class="line"></span><br><span class="line">	tell application &quot;System Events&quot;</span><br><span class="line">		try</span><br><span class="line">			set the clipboard to &quot;&quot; -- 清空剪贴板</span><br><span class="line">		on error err_message</span><br><span class="line">			display dialog err_message</span><br><span class="line">		end try</span><br><span class="line">	end tell</span><br><span class="line">	</span><br><span class="line">	set output to &quot;&lt;font size&#x3D;3 color&#x3D;#CF443A&gt;&quot; &amp; input &amp; &quot;&lt;&#x2F;font&gt;&quot; -- 给输入的文字前后加标签</span><br><span class="line">	</span><br><span class="line">	return output -- 返回输出结果</span><br><span class="line">	</span><br><span class="line">end run</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其实能做的事情远远不止这些，而且上面不止能使用 Apple Script，还能使用 Shell、JavaScript 等。</p>
+</blockquote>
+<p>第三步：保存。比如保存成名为 <code>color-to-red</code>。</p>
+<p>第四步：在任意编辑器中，选中一些文字，右键 - 服务 - <code>color-to-red</code>。此时文字应该已经变成想要的颜色了。</p>
+<p><strong>改进一下</strong>：其实上面第四步这样挺麻烦的，操作一下要点三次鼠标，如果换成快捷键就好了。</p>
+<blockquote>
+<p>打开设置 - 键盘 - 快捷键 - 服务，找到 <code>color-to-red</code> ，然后录入对应的快捷键。这样在编辑器里选中文字，按快捷键就搞定了。</p>
+</blockquote>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-04-04T20:42:19+08:00"
-              content="2020-04-04">
-          04-04
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/" rel="tag"># 随手笔记</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/04/04/mess-basics/" itemprop="url">
-            <span itemprop="name">一些基础大杂汇</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/04/mess-basics/" rel="prev" title="一些基础大杂汇">
+      <i class="fa fa-chevron-left"></i> 一些基础大杂汇
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -245,6 +299,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#要解决的问题："><span class="nav-number">1.</span> <span class="nav-text">要解决的问题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析问题"><span class="nav-number">2.</span> <span class="nav-text">分析问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方法"><span class="nav-number">3.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
