@@ -155,6 +155,145 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2020/06/28/graphic-math-basics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/28/graphic-math-basics/" class="post-title-link" itemprop="url">图形学数学基础知识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-28 00:57:27" itemprop="dateCreated datePublished" datetime="2020-06-28T00:57:27+08:00">2020-06-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">图形学</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><del>辛辛苦苦写了两小时公式，typora 上是支持的啊，怎么网页不支持。</del></p>
+<p>几个三角函数公式</p>
+<img src="/2020/06/28/graphic-math-basics/1.png" class="">
+
+
+
+<p>here we go!</p>
+<img src="/2020/06/28/graphic-math-basics/coordinate.png" class="">
+
+<p>如图所示，可得</p>
+<img src="/2020/06/28/graphic-math-basics/2.png" class="">
+
+
+
+<p>结合上面的三角函数公式求解得出：</p>
+<img src="/2020/06/28/graphic-math-basics/3.png" class="">
+
+
+
+<p>由此可得矩阵</p>
+<img src="/2020/06/28/graphic-math-basics/4.png" class="">
+
+
+
+<p>凑为齐次坐标</p>
+<img src="/2020/06/28/graphic-math-basics/5.png" class="">
+
+
+
+<p>类比到三维下，上面的矩阵稍加修改即可代表 XOY 组成的平面绕 <strong>Z</strong> 轴进行旋转的情况，由于绕 <strong>Z</strong> 轴旋转，因此 Z’ = Z，可得：</p>
+<img src="/2020/06/28/graphic-math-basics/6.png" class="">
+
+<p>可得齐次坐标下的矩阵</p>
+<img src="/2020/06/28/graphic-math-basics/7.png" class="">
+
+<blockquote>
+<p>可见，在三维空间中，绕 Z 轴旋转的决定因子在位置【0】【1】【4】【5】（行为主，并且以 0 为起始位置）</p>
+</blockquote>
+<p>我们发现，上面的矩阵稍加变型即可表示 YOZ 平面绕 <strong>X</strong> 轴进行的旋转，可得：</p>
+<img src="/2020/06/28/graphic-math-basics/8.png" class="">
+
+<p>可得齐次坐标下的矩阵</p>
+<img src="/2020/06/28/graphic-math-basics/9.png" class="">
+
+<blockquote>
+<p>可见，在三维空间中，绕 Z 轴旋转的决定因子在位置【5】【6】【9】【10】（行为主，并且以 0 为起始位置）</p>
+</blockquote>
+<p>根据法向量遵循的右手定则，结合 XOY 平面、YOZ 平面都旋转完了，现在就剩 ZOX 平面了。ZOX 绕 <strong>Y</strong> 轴旋转，那么类比 YOZ 平面旋转的情况，在 ZOX 中，1）Z 相当于 YOZ 中的 Y；2）X 相当于 YOZ 中的 Z；</p>
+<img src="/2020/06/28/graphic-math-basics/10.png" class="">
+
+<p>可得齐次坐标下的矩阵</p>
+<img src="/2020/06/28/graphic-math-basics/11.png" class="">
+
+<blockquote>
+<p>可见，在三维空间中，绕 Z 轴旋转的决定因子在位置【0】【2】【8】【10】（行为主，并且以 0 为起始位置）</p>
+</blockquote>
+<p>根据上面的结果，绕 X、Y、Z 分别旋转的矩阵如下：</p>
+<img src="/2020/06/28/graphic-math-basics/12.png" class="">
+
+<p>由于矩阵乘法不满足交换律，如果要用 R 表示将矩阵按顺序分别绕 X、Y、Z 进行一定的旋转的话，由于计算机是从右往左计算的，所以</p>
+<img src="/2020/06/28/graphic-math-basics/13.png" class="">
+
+<p>计算结果：</p>
+<img src="/2020/06/28/graphic-math-basics/14.png" class="">
+
+
+
+
+
+
+
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://math.stackexchange.com/questions/2992347/rotation-matrix-if-x-y-z-the-angles-through-which-x-y-and-z-axis-have-been-rota" target="_blank" rel="noopener">https://math.stackexchange.com/questions/2992347/rotation-matrix-if-x-y-z-the-angles-through-which-x-y-and-z-axis-have-been-rota</a></p>
+<p><a href="https://blog.csdn.net/csxiaoshui/article/details/65446125" target="_blank" rel="noopener">https://blog.csdn.net/csxiaoshui/article/details/65446125</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
     <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2020/05/31/use-automator-solve-problems/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -761,75 +900,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
-    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/01/iOS-Tips-in-Development/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="smilingmiao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="smilingmiao">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/01/iOS-Tips-in-Development/" class="post-title-link" itemprop="url">iOS 开发 Tips 集合</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-01 00:00:00" itemprop="dateCreated datePublished" datetime="2019-03-01T00:00:00+08:00">2019-03-01</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p><b><font size=5 color=#F00056> 主要记录一些开发中遇到的小知识 </font></b></p>
-</blockquote>
-<h5 id="HTTPS-证书配置相关"><a href="#HTTPS-证书配置相关" class="headerlink" title="HTTPS 证书配置相关"></a>HTTPS 证书配置相关</h5><p>服务端给的 .pem 格式的证书（xxx.pem），通过以下命令转换</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform PEM -in xxx.pem -outform DER -out certificate.cer</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/01/iOS-Tips-in-Development/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -901,20 +971,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
