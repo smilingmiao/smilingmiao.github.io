@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统部分基础知识">
+<meta property="og:url" content="https://github.com/smilingmiao/2018/12/11/operating-system-basics/index.html">
+<meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-12-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-17T16:18:49.000Z">
+<meta property="article:author" content="smilingmiao">
+<meta property="article:tag" content="随手笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/smilingmiao/2018/12/11/operating-system-basics/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+
+  <title>操作系统部分基础知识 | smilingmiao</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="smilingmiao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smilingmiao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/11/operating-system-basics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统部分基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-12-11 00:00:00" itemprop="dateCreated datePublished" datetime="2018-12-11T00:00:00+08:00">2018-12-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>很早之前的笔记，比较零散的放在电脑上，今天归整到一起。（貌似中间电脑搞坏还丢了一些，又没备份）</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h4><p>Concurrent 并发：同一时间段内执行多条指令<br>Parallel 并行：同一时刻执行多条指令</p>
+<h4 id="读写数据"><a href="#读写数据" class="headerlink" title="读写数据"></a>读写数据</h4><p>读写数据操作不是由 CPU 负责，而是由 CUP 发一条指令给磁盘控制器，等待着由控制器来完成，这用到了 CUP 的中断。当控制器完成操作后通知 CUP，让 CUP 接着进行相应未完成的操作。控制器有一块缓存区，用于临时存放从磁盘读入的数据。</p>
+<h4 id="中断源和中断"><a href="#中断源和中断" class="headerlink" title="中断源和中断"></a>中断源和中断</h4><p>中断源：引起中断的事件叫中断源。</p>
+<p>中断：中断发生时，保持中断状态（处理程序的入口地址）的值，通过任务完成时返回中断限量值来继续执行任务。中断分为多种优先级，可以嵌套。</p>
+<p>Trap：自陷，是程序的自我中断，是一种主动发生的情况。</p>
+<p>系统通过 polling，即 CUP 轮询的方式来查看中断源，进行需要执行的任务。（这是一种老式的处理方式）</p>
+<p>现在通常使用保存在 RAM 高地址上的限制变量来方便地获取到中断发生的入口地址。</p>
+<h4 id="RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access"><a href="#RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access" class="headerlink" title="RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)"></a>RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)</h4><p>RAM，断电即丢失数据<br>SRAM：静态 RAM<br>DRAM：动态 RAM</p>
+<p>ROM：一次写入，反复读取。分为一次性固话，光擦除，电擦除。</p>
+<p>DMA：直接访问内存，包括磁盘、U盘、硬盘等都是这样的处理方式。</p>
+<blockquote>
+<p>速度（由高到低）</p>
+</blockquote>
+<p>Disk - Memory - Cache - Register</p>
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>操作系统是一个全时运行的程序，管理控制系统资源，合理组织计算机工作流程，方便用户使用计算机程序集合。</p>
+<p><strong>分时系统和实时系统</strong></p>
+<p>分时系统：通用系统<br>交互性：多道<br>及时性：独占性</p>
+<p>实时操作系统：专用系统<br>时间要求非常严格，分为硬实时和软实时<br>交互性：多道<br>及时性：独占性</p>
+<p>卫生发射等对时间精确要求严格的任务使用实时系统，一般来说使用双工，即两台一模一样的计算机同时工作，同一时间执行相同的指令，相当于备份。</p>
+<p><strong>双模式</strong><br>1.用户模式&#x2F;用户态  2.kernel模式&#x2F;管理态</p>
+<p><strong>指令</strong><br>1.特权指令  2.非特权指令</p>
+<p><strong>PCB</strong><br>PCB（Process Control Block）包括了 Base Address 和 Address Length</p>
+<h4 id="操作系统服务"><a href="#操作系统服务" class="headerlink" title="操作系统服务"></a>操作系统服务</h4><ul>
+<li>用户接口 <ul>
+<li>Command Line Interface (<strong>CLI</strong>)</li>
+<li>Graphics User Interface (<strong>GUI</strong>) </li>
+<li>Batch （批处理）</li>
+</ul>
+</li>
+<li>Program execution</li>
+<li>I&#x2F;O operations</li>
+<li>File-system manipulation</li>
+<li>Communications</li>
+<li>Error detection</li>
+</ul>
+<p><strong>系统调用（system call）</strong></p>
+<p>所有库函数都是由系统调用的</p>
+<ul>
+<li>fork</li>
+<li>exec</li>
+</ul>
+<h4 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h4><p>程序是指令的集合，进程 &#x3D; 程序 + 数据 + PCB</p>
+<p>进程：是具有独立功能的程序，关于某个数据集合的一次运行过程。</p>
+<table>
+<thead>
+<tr>
+<th align="center">区别</th>
+<th align="center">进程</th>
+<th align="center">程序</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">相同点</td>
+<td align="center">Ready waiting  Running</td>
+<td align="center">Ready waiting  Running</td>
+</tr>
+<tr>
+<td align="center">不同点</td>
+<td align="center">动态、生命周期、进程&#x3D;程序+数据+PCB、一个进程可包含多个程序</td>
+<td align="center">静态、永久存在、一个程序可以对应多个进程</td>
+</tr>
+</tbody></table>
+<ul>
+<li>三个基本状态<ul>
+<li>Running 正在运行的状态</li>
+<li>Waiting 等待事件发生</li>
+<li>Ready 准备就绪的状态</li>
+</ul>
+</li>
+<li>PCB ( process control block ) 是一个程序控制块，它有结构主存区，包含进程执行所有信息，系统通过 PCB 感知进程，是进程存在的唯一标志。它随进程的创建而发生，随进程的消亡而消亡。PCB 可以保存中断等一系列状态信息。进程运行时候进入系统里面，创建相应的 PCB，PCB 在系统的队列里排队，受系统调度控制程序。</li>
+</ul>
+<h4 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h4><ul>
+<li>new 创建</li>
+<li>ready 就绪等待，除 CUP 外一切资源都分配完成</li>
+<li>waiting 还没有准备好，无法执行事情</li>
+<li>running 获得 CPU 并且运行</li>
+<li>terminate 终止</li>
+</ul>
+<blockquote>
+<p><strong>一个进程创建另外一个进程，分配资源（分配内存，创建 PCB）然后放到就绪队列。</strong></p>
+</blockquote>
+<h4 id="撤销进程"><a href="#撤销进程" class="headerlink" title="撤销进程"></a>撤销进程</h4><ul>
+<li>回收 PCB</li>
+<li>回收资源，例如：内存、输入输出</li>
+</ul>
+<h4 id="编译、链接、装载"><a href="#编译、链接、装载" class="headerlink" title="编译、链接、装载"></a>编译、链接、装载</h4><ul>
+<li>编译器将源代码编译成汇编代码，汇编器将汇编代码转换成多个可执行文件，链接器将可执行文件链接成单个可执行程序，装载器再将可执行程序加载到内存并准备执行。内存中的程序将会获得操作系统的调用运行。</li>
+<li>在汇编器将汇编代码转换成多个可执行文件时，会将源代码中的符号地址绑定为可重定位的地址，在链接的过程中，将可重定位的地址映射为绝对地址。</li>
+</ul>
+<p>– EOF –</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/" rel="tag"># 随手笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/11/three-way-handshake/" rel="prev" title="三次握手四次挥手">
+      <i class="fa fa-chevron-left"></i> 三次握手四次挥手
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/11/mysql-part-one/" rel="next" title="MySQL">
+      MySQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">并发与并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%95%B0%E6%8D%AE"><span class="nav-number">2.</span> <span class="nav-text">读写数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E6%BA%90%E5%92%8C%E4%B8%AD%E6%96%AD"><span class="nav-number">3.</span> <span class="nav-text">中断源和中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RAM-Random-Access-Memory-amp-ROM-Read-Only-Memory-amp-DMA-Direct-Memory-Access"><span class="nav-number">4.</span> <span class="nav-text">RAM(Random Access Memory) &amp; ROM(Read Only Memory) &amp; DMA(Direct Memory Access)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1"><span class="nav-number">6.</span> <span class="nav-text">操作系统服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">7.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">8.</span> <span class="nav-text">进程的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%92%A4%E9%94%80%E8%BF%9B%E7%A8%8B"><span class="nav-number">9.</span> <span class="nav-text">撤销进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD"><span class="nav-number">10.</span> <span class="nav-text">编译、链接、装载</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smilingmiao"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">smilingmiao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smilingmiao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smilingmiao"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6709909308" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6709909308" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:smilingmiao@icloud.com" title="E-Mail → mailto:smilingmiao@icloud.com" rel="noopener" target="_blank"><i class="mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

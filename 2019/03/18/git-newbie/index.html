@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Git 概述 Git 是一个分布式版本控制软件，最初由林纳斯·托瓦兹创作，于 2005 年以 GPL 发布。林纳斯·托瓦兹自嘲地取了这个名字 “git”，该词源自英国俚语，意思大约是“混账”。完整的学习资料可以在 这里 找到。软件可以在 这里 找到。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git">
+<meta property="og:url" content="https://github.com/smilingmiao/2019/03/18/git-newbie/index.html">
+<meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="Git 概述 Git 是一个分布式版本控制软件，最初由林纳斯·托瓦兹创作，于 2005 年以 GPL 发布。林纳斯·托瓦兹自嘲地取了这个名字 “git”，该词源自英国俚语，意思大约是“混账”。完整的学习资料可以在 这里 找到。软件可以在 这里 找到。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-03-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-31T15:19:47.000Z">
+<meta property="article:author" content="smilingmiao">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/smilingmiao/2019/03/18/git-newbie/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+
+  <title>Git | smilingmiao</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="smilingmiao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smilingmiao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/18/git-newbie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-18 00:00:00" itemprop="dateCreated datePublished" datetime="2019-03-18T00:00:00+08:00">2019-03-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="Git-概述"><a href="#Git-概述" class="headerlink" title=" Git 概述 "></a><font color=#32CD32> Git 概述 </font></h4><p><strong>Git</strong> 是一个<strong>分布式版本控制软件</strong>，最初由林纳斯·托瓦兹创作，于 2005 年以 GPL 发布。林纳斯·托瓦兹自嘲地取了这个名字 “git”，该词源自英国俚语，意思大约是“混账”。完整的学习资料可以在 <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">这里</a> 找到。软件可以在 <a target="_blank" rel="noopener" href="https://git-scm.com/downloads">这里</a> 找到。</p>
+<span id="more"></span>
+
+<h4 id="Git-配置"><a href="#Git-配置" class="headerlink" title=" Git 配置 "></a><font color=#32CD32> Git 配置 </font></h4><h6 id="Git-配置分为三种：local-和-global-以及-system"><a href="#Git-配置分为三种：local-和-global-以及-system" class="headerlink" title="Git 配置分为三种：local 和 global 以及 system"></a>Git 配置分为三种：<code>local</code> 和 <code>global</code> 以及 <code>system</code></h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## 添加配置</span><br><span class="line">git config [--local | --global | --system] user.name &#x27;Your name&#x27;</span><br><span class="line">git config [--local | --global | --system] user.email &#x27;Your email&#x27;</span><br><span class="line"></span><br><span class="line">## 查看配置</span><br><span class="line">git config --list [--local | --global | --system]</span><br><span class="line"></span><br><span class="line">## 区别</span><br><span class="line">local: 作用于本仓库</span><br><span class="line">global: 作用于当前用户的所有仓库</span><br><span class="line">system: 作用于本系统的所有用户的所有仓库</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是，<code>git config</code> 遵循最小配置原则，也就是如果同时设置了 <code>local</code> 和 <code>global</code> 的话，那么只有 <code>local</code> 会起作用。</p>
+<h4 id="创建-Git-仓库"><a href="#创建-Git-仓库" class="headerlink" title=" 创建 Git 仓库 "></a><font color=#32CD32> 创建 Git 仓库 </font></h4><h6 id="建仓库分为两种场景："><a href="#建仓库分为两种场景：" class="headerlink" title="建仓库分为两种场景："></a>建仓库分为两种场景：</h6><ul>
+<li>将已有的项目使用 Git 管理</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd 项目所在文件夹</span><br><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>新建项目并用 Git 管理</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd 将要存放项目的文件夹</span><br><span class="line">git init project_directory</span><br><span class="line">cd project_directory</span><br></pre></td></tr></table></figure>
+
+<h4 id="Git-文件重命名"><a href="#Git-文件重命名" class="headerlink" title=" Git 文件重命名 "></a><font color=#32CD32> Git 文件重命名 </font></h4><h6 id="重命名比较简单，直接执行"><a href="#重命名比较简单，直接执行" class="headerlink" title="重命名比较简单，直接执行"></a>重命名比较简单，直接执行</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git mv original_filename new_filename</span><br></pre></td></tr></table></figure>
+
+<h4 id="Git-删除不想要的分支"><a href="#Git-删除不想要的分支" class="headerlink" title=" Git 删除不想要的分支 "></a><font color=#32CD32> Git 删除不想要的分支 </font></h4><h6 id="找到分支名，执行删除命令"><a href="#找到分支名，执行删除命令" class="headerlink" title="找到分支名，执行删除命令"></a>找到分支名，执行删除命令</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -av</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -D branch_name</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改-commit-message"><a href="#修改-commit-message" class="headerlink" title=" 修改 commit message "></a><font color=#32CD32> 修改 commit message </font></h4><ul>
+<li>修改最新的 <code>commit message</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit --amend</span><br></pre></td></tr></table></figure>
+
+<p>​	在交互式界面中修改完 <code>commit message</code> 保存退出来即可。</p>
+<ul>
+<li>修改旧的 <code>commit message</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i base_commit_id</span><br></pre></td></tr></table></figure>
+
+<p>​	在交互式界面中根据 <code>Comment</code> 提示信息基于 base commit 执行 reword 修改，保存退出。</p>
+<h4 id="整理-commit"><a href="#整理-commit" class="headerlink" title=" 整理 commit "></a><font color=#32CD32> 整理 commit </font></h4><ul>
+<li>整理连续的几个 commit</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i base_commit_id</span><br></pre></td></tr></table></figure>
+
+<p>​	在交互式界面中基于 base commit 执行 squash 修改，保存退出。</p>
+<ul>
+<li>整理间隔的几个 commit</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i base_commit_id</span><br></pre></td></tr></table></figure>
+
+<p>​	在交互式界面中，将 base_commit_id 复制到首行，并且把需要和 base_commit 合并的 commit_id 剪切到首行下面。然后执行 squash 操作，保存退出。</p>
+<h4 id="比较暂存区和-HEAD-指向文件的差异"><a href="#比较暂存区和-HEAD-指向文件的差异" class="headerlink" title=" 比较暂存区和 HEAD 指向文件的差异 "></a><font color=#32CD32> 比较暂存区和 HEAD 指向文件的差异 </font></h4><p>这里是比较的暂存区和 HEAD 指向分支最新 <code>commit</code> 的区别</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+
+<h4 id="比较工作区和暂存区的差异"><a href="#比较工作区和暂存区的差异" class="headerlink" title=" 比较工作区和暂存区的差异 "></a><font color=#32CD32> 比较工作区和暂存区的差异 </font></h4><ul>
+<li>比较全部的差异</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>比较某几个文件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff -- fileA fileB fileC fileD</span><br></pre></td></tr></table></figure>
+
+<h4 id="暂存区恢复成和-HEAD-一样"><a href="#暂存区恢复成和-HEAD-一样" class="headerlink" title=" 暂存区恢复成和 HEAD 一样 "></a><font color=#32CD32> 暂存区恢复成和 HEAD 一样 </font></h4><ul>
+<li>通过重置 HEAD 使得暂存区 Stage 内容恢复到工作区</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>检查是否恢复成功</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+
+<h4 id="工作区的文件恢复为与暂存区一样"><a href="#工作区的文件恢复为与暂存区一样" class="headerlink" title=" 工作区的文件恢复为与暂存区一样 "></a><font color=#32CD32> 工作区的文件恢复为与暂存区一样 </font></h4><ul>
+<li>先查看状态</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据提示丢弃掉工作区的内容</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout --filename</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>检查一下是否恢复成功</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --filename</span><br></pre></td></tr></table></figure>
+
+<h4 id="取消暂存区部分文件的更改"><a href="#取消暂存区部分文件的更改" class="headerlink" title=" 取消暂存区部分文件的更改 "></a><font color=#32CD32> 取消暂存区部分文件的更改 </font></h4><ul>
+<li>和【暂存区恢复成和 HEAD 一样】略有不同</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD --fileA fileB fileC fileD</span><br></pre></td></tr></table></figure>
+
+<h4 id="消除最近几次提交"><a href="#消除最近几次提交" class="headerlink" title=" 消除最近几次提交 "></a><font color=#32CD32> 消除最近几次提交 </font></h4><ul>
+<li>使用 —hard 命令</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard specific_commit_id</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 <code>gitk</code> 或者 <code>git log</code> 查看</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitk --all</span><br></pre></td></tr></table></figure>
+
+<h4 id="比较不同提交的差异"><a href="#比较不同提交的差异" class="headerlink" title=" 比较不同提交的差异 "></a><font color=#32CD32> 比较不同提交的差异 </font></h4><p>比较两个分支的差异</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff branch1 branch2</span><br></pre></td></tr></table></figure>
+
+<p>比较两个分支的同一个文件的差异</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff branch1 branch2 --filename</span><br></pre></td></tr></table></figure>
+
+<p>​	或者</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff 分支1的commit_id 分支2的commit_id</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除文件"><a href="#删除文件" class="headerlink" title=" 删除文件 "></a><font color=#32CD32> 删除文件 </font></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm filename</span><br></pre></td></tr></table></figure>
+
+<p>备注：可以使用 <code>git reset —hard HEAD</code> 可以让工作区和暂存区恢复成与 HEAD 一样。</p>
+<h4 id="临时加塞紧急任务，保存好当前的状态"><a href="#临时加塞紧急任务，保存好当前的状态" class="headerlink" title=" 临时加塞紧急任务，保存好当前的状态 "></a><font color=#32CD32> 临时加塞紧急任务，保存好当前的状态 </font></h4><p>将当前未完成的工作区以及暂存区的状态暂时存储起来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br></pre></td></tr></table></figure>
+
+<p>查看当前存储的状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash list</span><br></pre></td></tr></table></figure>
+
+<p>临时紧急任务完成后，再把存储起来的状态恢复出来。这里有 <code>apply</code> 和 <code>pop</code> 两种方式，区别是：apply 的话，原来 stash 的状态还保留，pop 的话就会把把状态从原来的 stash 中删除。</p>
+<h4 id="添加忽略文件"><a href="#添加忽略文件" class="headerlink" title=" 添加忽略文件 "></a><font color=#32CD32> 添加忽略文件 </font></h4><p>使用 <code>vim</code> 命令新建并编辑 <code>.gitignore</code> 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .gitignore</span><br></pre></td></tr></table></figure>
+
+<p>添加需要忽略的文件，<a href="https://github.com/github/gitignore">这里</a> 有各种语言的模板，复制下来加到自己的 .gitignore 里面即可。</p>
+<p>eg:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.dSYM</span><br></pre></td></tr></table></figure>
+
+<p>如果是已经提交仓库的文件想要执行忽略操作，可以先把文件名添加到 <code>.gitignore</code>，然后再这么做：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached filename</span><br></pre></td></tr></table></figure>
+
+<h4 id="本地备份"><a href="#本地备份" class="headerlink" title=" 本地备份 "></a><font color=#32CD32> 本地备份 </font></h4><p>进入到存在备份文件的目录下，执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --bare file:///path_of_source/.git name_of_backup.git</span><br></pre></td></tr></table></figure>
+
+<p><code>file:///</code> 是文件协议，即 scheme。</p>
+<p><strong>当前开发的项目与远端关联</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add name_of_what_you_like file:///path_of_destination/name_of_backup.git</span><br></pre></td></tr></table></figure>
+
+<h4 id="同步本地仓库到-GitHub"><a href="#同步本地仓库到-GitHub" class="headerlink" title=" 同步本地仓库到 GitHub "></a><font color=#32CD32> 同步本地仓库到 GitHub </font></h4><p>先配置一下公私钥，具体操作前往 <a target="_blank" rel="noopener" href="https://help.github.com/en">GitHub Help</a> 搜索 <code>ssh</code> 来寻找需要的答案</p>
+<p>在 GitHub 建一个空仓库，并复制仓库的 ssh 地址，在终端执行下面的命令来把本地和 GitHub 的仓库关联起来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add github git@github.com:smilingmiao/Python.git</span><br></pre></td></tr></table></figure>
+
+<p>再执行 <code>push</code> 操作，把本地的文件推到 GitHub</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push github --all</span><br></pre></td></tr></table></figure>
+
+<p>不出意外的话，这个时候会出现 <code>master</code> 分支 <code>push</code> 失败的错误提示，这个时候照着提示操作 <code>fetch</code> 一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch github master</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge --allow-unrelated-histories github/master</span><br></pre></td></tr></table></figure>
+
+<p>进入交互界面可以改也可以不改，保存退出。</p>
+<p>然后再执行 <code>push</code> 操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push github master</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><h4 id="Git-拉取远程分支到本地"><a href="#Git-拉取远程分支到本地" class="headerlink" title=" Git 拉取远程分支到本地 "></a><font color=#32CD32> Git 拉取远程分支到本地 </font></h4><p>初始化仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<p>如果是 local 配置的话，先</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config —local user.name  = &#x27;yourname&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>再</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config —local user.email = &#x27;youremail&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>添加 <code>remote</code> 仓库地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add &lt;local_repo_name&gt; &#x27;仓库地址&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><code>Fetch</code> 远程分支</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch &lt;remote_repo_name&gt; 远程分支名</span><br></pre></td></tr></table></figure>
+
+<p>创建并切换到本地分支，该本地分支与远程分支对应</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b 本地分支名 &lt;remote_repo_name&gt;/远程分支名</span><br></pre></td></tr></table></figure>
+
+<p>Pull 远程分支</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin 远程分支名</span><br></pre></td></tr></table></figure>
+
+<h4 id="本地与远程分支不同步"><a href="#本地与远程分支不同步" class="headerlink" title=" 本地与远程分支不同步 "></a><font color=#32CD32> 本地与远程分支不同步 </font></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote update origin --prune</span><br><span class="line">或者</span><br><span class="line">git pull -p 再手动删本地分支</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Addition"><a href="#Addition" class="headerlink" title="Addition"></a>Addition</h4><h4 id="Command-line-instructions"><a href="#Command-line-instructions" class="headerlink" title="Command line instructions"></a>Command line instructions</h4><p>You can also upload existing files from your computer using the instructions below.</p>
+<h5 id="Git-global-setup"><a href="#Git-global-setup" class="headerlink" title="Git global setup"></a>Git global setup</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;zhangsan&quot;</span><br><span class="line">git config --global user.email &quot;zhangsan@test.com&quot;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Create-a-new-repository"><a href="#Create-a-new-repository" class="headerlink" title="Create a new repository"></a>Create a new repository</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone git@192.168.20.223:zhangsan/demo.git</span><br><span class="line">cd demo</span><br><span class="line">touch README.md</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m &quot;add README&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<h5 id="Push-an-existing-folder"><a href="#Push-an-existing-folder" class="headerlink" title="Push an existing folder"></a>Push an existing folder</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd existing_folder</span><br><span class="line">git init</span><br><span class="line">git remote add origin git@192.168.20.223:zhangsan/demo.git</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;Initial commit&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<h5 id="Push-an-existing-Git-repository"><a href="#Push-an-existing-Git-repository" class="headerlink" title="Push an existing Git repository"></a>Push an existing Git repository</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd existing_repo</span><br><span class="line">git remote rename origin old-origin</span><br><span class="line">git remote add origin git@192.168.20.223:zhangsan/demo.git</span><br><span class="line">git push -u origin --all</span><br><span class="line">git push -u origin --tags</span><br></pre></td></tr></table></figure>
+
+
+
+<p>– EOF –</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/16/mac-tips-set/" rel="prev" title="Mac Tips 集合">
+      <i class="fa fa-chevron-left"></i> Mac Tips 集合
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/20/Self-adaptive-UITableViewCell-Height/" rel="next" title="UITableViewCell 自适应高度">
+      UITableViewCell 自适应高度 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text"> Git 概述 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text"> Git 配置 </span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Git-%E9%85%8D%E7%BD%AE%E5%88%86%E4%B8%BA%E4%B8%89%E7%A7%8D%EF%BC%9Alocal-%E5%92%8C-global-%E4%BB%A5%E5%8F%8A-system"><span class="nav-number">2.0.1.</span> <span class="nav-text">Git 配置分为三种：local 和 global 以及 system</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-Git-%E4%BB%93%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text"> 创建 Git 仓库 </span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%BB%BA%E4%BB%93%E5%BA%93%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="nav-number">3.0.1.</span> <span class="nav-text">建仓库分为两种场景：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D"><span class="nav-number">4.</span> <span class="nav-text"> Git 文件重命名 </span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%87%8D%E5%91%BD%E5%90%8D%E6%AF%94%E8%BE%83%E7%AE%80%E5%8D%95%EF%BC%8C%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C"><span class="nav-number">4.0.1.</span> <span class="nav-text">重命名比较简单，直接执行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-%E5%88%A0%E9%99%A4%E4%B8%8D%E6%83%B3%E8%A6%81%E7%9A%84%E5%88%86%E6%94%AF"><span class="nav-number">5.</span> <span class="nav-text"> Git 删除不想要的分支 </span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%89%BE%E5%88%B0%E5%88%86%E6%94%AF%E5%90%8D%EF%BC%8C%E6%89%A7%E8%A1%8C%E5%88%A0%E9%99%A4%E5%91%BD%E4%BB%A4"><span class="nav-number">5.0.1.</span> <span class="nav-text">找到分支名，执行删除命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-commit-message"><span class="nav-number">6.</span> <span class="nav-text"> 修改 commit message </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E7%90%86-commit"><span class="nav-number">7.</span> <span class="nav-text"> 整理 commit </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E6%9A%82%E5%AD%98%E5%8C%BA%E5%92%8C-HEAD-%E6%8C%87%E5%90%91%E6%96%87%E4%BB%B6%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">8.</span> <span class="nav-text"> 比较暂存区和 HEAD 指向文件的差异 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E5%B7%A5%E4%BD%9C%E5%8C%BA%E5%92%8C%E6%9A%82%E5%AD%98%E5%8C%BA%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">9.</span> <span class="nav-text"> 比较工作区和暂存区的差异 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%82%E5%AD%98%E5%8C%BA%E6%81%A2%E5%A4%8D%E6%88%90%E5%92%8C-HEAD-%E4%B8%80%E6%A0%B7"><span class="nav-number">10.</span> <span class="nav-text"> 暂存区恢复成和 HEAD 一样 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E7%9A%84%E6%96%87%E4%BB%B6%E6%81%A2%E5%A4%8D%E4%B8%BA%E4%B8%8E%E6%9A%82%E5%AD%98%E5%8C%BA%E4%B8%80%E6%A0%B7"><span class="nav-number">11.</span> <span class="nav-text"> 工作区的文件恢复为与暂存区一样 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%96%E6%B6%88%E6%9A%82%E5%AD%98%E5%8C%BA%E9%83%A8%E5%88%86%E6%96%87%E4%BB%B6%E7%9A%84%E6%9B%B4%E6%94%B9"><span class="nav-number">12.</span> <span class="nav-text"> 取消暂存区部分文件的更改 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E9%99%A4%E6%9C%80%E8%BF%91%E5%87%A0%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="nav-number">13.</span> <span class="nav-text"> 消除最近几次提交 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E4%B8%8D%E5%90%8C%E6%8F%90%E4%BA%A4%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">14.</span> <span class="nav-text"> 比较不同提交的差异 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">15.</span> <span class="nav-text"> 删除文件 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%B4%E6%97%B6%E5%8A%A0%E5%A1%9E%E7%B4%A7%E6%80%A5%E4%BB%BB%E5%8A%A1%EF%BC%8C%E4%BF%9D%E5%AD%98%E5%A5%BD%E5%BD%93%E5%89%8D%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">16.</span> <span class="nav-text"> 临时加塞紧急任务，保存好当前的状态 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6"><span class="nav-number">17.</span> <span class="nav-text"> 添加忽略文件 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%A4%87%E4%BB%BD"><span class="nav-number">18.</span> <span class="nav-text"> 本地备份 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%88%B0-GitHub"><span class="nav-number">19.</span> <span class="nav-text"> 同步本地仓库到 GitHub </span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0"><span class="nav-number"></span> <span class="nav-text">更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-%E6%8B%89%E5%8F%96%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="nav-number">1.</span> <span class="nav-text"> Git 拉取远程分支到本地 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%B8%8E%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF%E4%B8%8D%E5%90%8C%E6%AD%A5"><span class="nav-number">2.</span> <span class="nav-text"> 本地与远程分支不同步 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Addition"><span class="nav-number">3.</span> <span class="nav-text">Addition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-line-instructions"><span class="nav-number">4.</span> <span class="nav-text">Command line instructions</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Git-global-setup"><span class="nav-number">4.1.</span> <span class="nav-text">Git global setup</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Create-a-new-repository"><span class="nav-number">4.2.</span> <span class="nav-text">Create a new repository</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Push-an-existing-folder"><span class="nav-number">4.3.</span> <span class="nav-text">Push an existing folder</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Push-an-existing-Git-repository"><span class="nav-number">4.4.</span> <span class="nav-text">Push an existing Git repository</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smilingmiao"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">smilingmiao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smilingmiao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smilingmiao"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6709909308" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6709909308" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:smilingmiao@icloud.com" title="E-Mail → mailto:smilingmiao@icloud.com" rel="noopener" target="_blank"><i class="mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

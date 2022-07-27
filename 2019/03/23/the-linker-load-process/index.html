@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="step 1现有三个文件，代码分别如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链接器：动态库加载实践过程">
+<meta property="og:url" content="https://github.com/smilingmiao/2019/03/23/the-linker-load-process/index.html">
+<meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="step 1现有三个文件，代码分别如下：">
+<meta property="og:locale">
+<meta property="og:image" content="https://github.com/2019/03/23/the-linker-load-process/compile-derived.png">
+<meta property="og:image" content="https://github.com/2019/03/23/the-linker-load-process/link-derived.png">
+<meta property="article:published_time" content="2019-03-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-17T16:22:45.000Z">
+<meta property="article:author" content="smilingmiao">
+<meta property="article:tag" content="随手笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/2019/03/23/the-linker-load-process/compile-derived.png">
+
+<link rel="canonical" href="https://github.com/smilingmiao/2019/03/23/the-linker-load-process/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+
+  <title>链接器：动态库加载实践过程 | smilingmiao</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="smilingmiao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smilingmiao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2019/03/23/the-linker-load-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          链接器：动态库加载实践过程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2019-03-23T00:00:00+08:00">2019-03-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="step-1"><a href="#step-1" class="headerlink" title="step 1"></a>step 1</h4><p>现有三个文件，代码分别如下：</p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Boy.h</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">@interface Boy : NSObject</span><br><span class="line">- (void)say;</span><br><span class="line">@end </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Boy.m</span><br><span class="line">#import &quot;Boy.h&quot;</span><br><span class="line">@implementation Boy</span><br><span class="line">- (void)say</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;hi there again!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// main.m</span><br><span class="line">#import &quot;Boy.h&quot;</span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        Boy *boy = [[Boy alloc] init];</span><br><span class="line">        [boy say];</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="step-2"><a href="#step-2" class="headerlink" title="step 2"></a>step 2</h4><p>编译 <code>.m</code> 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun clang -c Boy.m main.m</span><br></pre></td></tr></table></figure>
+
+<p>产物</p>
+<img src="/2019/03/23/the-linker-load-process/compile-derived.png" class="">
+
+<h4 id="step-3"><a href="#step-3" class="headerlink" title="step 3"></a>step 3</h4><p>将编译后的 <code>.o</code> 文件链接起来生成 <code>a.out</code> 可执行文件（<code>a.out</code> 是编译器的默认名字）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun clang main.o Boy.o -Wl,`xcrun --show-sdk-path`/System/Library/Frameworks/Foundation.framework/Foundation</span><br></pre></td></tr></table></figure>
+
+<p>产物</p>
+<img src="/2019/03/23/the-linker-load-process/link-derived.png" class="">
+
+
+
+<h4 id="step-4"><a href="#step-4" class="headerlink" title="step 4"></a>step 4</h4><p>使用 <code>nm</code> 命令查看符号表规定的符号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nm main.o</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                 U _OBJC_CLASS_$_Boy</span><br><span class="line">0000000000000000 T _main</span><br><span class="line">                 U _objc_autoreleasePoolPop</span><br><span class="line">                 U _objc_autoreleasePoolPush</span><br><span class="line">                 U _objc_msgSend</span><br></pre></td></tr></table></figure>
+
+<p>看得人云里雾里，只看到了些符号，似乎缺少一些信息。比如 <code>U</code> 和 <code>T</code> 分别代表什么，再试试别的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun nm -nm main.o</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                 (undefined) external _OBJC_CLASS_$_Boy</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPop</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPush</span><br><span class="line">                 (undefined) external _objc_msgSend</span><br><span class="line">0000000000000000 (__TEXT,__text) external _main</span><br></pre></td></tr></table></figure>
+
+<p>除了把 <code>U</code> 替换成我们能看懂的单词 <code>undefined-未定义</code> 以及 <code>T</code> 变成 <code>TEXT</code> 外，还在原来的信息上又多了 <code>external</code> 代表 “非私有”。<code>external _main</code> 表示 <code>main()</code> 函数处理 0 地址，记录在 <code>TEXT</code> 段 <code>__text</code> 里。</p>
+<p>再看下 <code>Boy.o</code> 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun nm -nm Boy.o</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">                 (undefined) external _NSLog</span><br><span class="line">                 (undefined) external _OBJC_CLASS_$_NSObject</span><br><span class="line">                 (undefined) external _OBJC_METACLASS_$_NSObject</span><br><span class="line">                 (undefined) external ___CFConstantStringClassReference</span><br><span class="line">                 (undefined) external __objc_empty_cache</span><br><span class="line">0000000000000000 (__TEXT,__text) non-external -[Boy say]</span><br><span class="line">0000000000000060 (__DATA,__objc_const) non-external l_OBJC_METACLASS_RO_$_Boy</span><br><span class="line">00000000000000a8 (__DATA,__objc_const) non-external l_OBJC_$_INSTANCE_METHODS_Boy</span><br><span class="line">00000000000000c8 (__DATA,__objc_const) non-external l_OBJC_CLASS_RO_$_Boy</span><br><span class="line">0000000000000110 (__DATA,__objc_data) external _OBJC_METACLASS_$_Boy</span><br><span class="line">0000000000000138 (__DATA,__objc_data) external _OBJC_CLASS_$_Boy</span><br></pre></td></tr></table></figure>
+
+<p>上面的 <code>undefined</code> 符号表示该文件类未定义，因此在目标文件和 <code>Foundation framework</code> 动态链接库进行链接时候，链接器会尝试解析所有的 <code>undefined</code> 符号。</p>
+<h4 id="step-5"><a href="#step-5" class="headerlink" title="step 5"></a>step 5</h4><p>使用 <code>nm</code> 命令查看一下 <code>a.out</code> 符号表，对比着 <code>Boy.o</code> 看看连接器解析符号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xcrun nm -nm a.out</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">                 (undefined) external _NSLog (from Foundation)</span><br><span class="line">                 (undefined) external _OBJC_CLASS_$_NSObject (from libobjc)</span><br><span class="line">                 (undefined) external _OBJC_METACLASS_$_NSObject (from libobjc)</span><br><span class="line">                 (undefined) external ___CFConstantStringClassReference (from CoreFoundation)</span><br><span class="line">                 (undefined) external __objc_empty_cache (from libobjc)</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPop (from libobjc)</span><br><span class="line">                 (undefined) external _objc_autoreleasePoolPush (from libobjc)</span><br><span class="line">                 (undefined) external _objc_msgSend (from libobjc)</span><br><span class="line">                 (undefined) external dyld_stub_binder (from libSystem)</span><br><span class="line">0000000100000000 (__TEXT,__text) [referenced dynamically] external __mh_execute_header</span><br><span class="line">0000000100000ea0 (__TEXT,__text) external _main</span><br><span class="line">0000000100000f20 (__TEXT,__text) non-external -[Boy say]</span><br><span class="line">0000000100001130 (__DATA,__objc_data) external _OBJC_METACLASS_$_Boy</span><br><span class="line">0000000100001158 (__DATA,__objc_data) external _OBJC_CLASS_$_Boy</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>重点关注 <code>undefined</code> 符号进行对比。再用👇命令看看符号所需的库的路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xcrun otool -L a.out</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a.out:</span><br><span class="line">	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 1560.12.0)</span><br><span class="line">	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.200.5)</span><br><span class="line">	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 1560.12.0)</span><br><span class="line">	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>从输出结果来看，这些 <code>undefined</code> 符号需要的两个库分别是 <code>libSystem</code> 和 <code>libobjc</code>。</p>
+<h4 id="step-6"><a href="#step-6" class="headerlink" title="step 6"></a>step 6</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(export DYLD_PRINT_LIBRARIES=; ./a.out)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br></pre></td><td class="code"><pre><span class="line">dyld: loaded: /Users/miaoyongxiang/Desktop/./a.out</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation</span><br><span class="line">dyld: loaded: /usr/lib/libSystem.B.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation</span><br><span class="line">dyld: loaded: /usr/lib/libobjc.A.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libauto.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration</span><br><span class="line">dyld: loaded: /usr/lib/libarchive.2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libDiagnosticMessagesClient.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libicucore.A.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libxml2.2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libz.1.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices</span><br><span class="line">dyld: loaded: /usr/lib/liblangid.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit</span><br><span class="line">dyld: loaded: /usr/lib/libCRFSuite.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libc++.1.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libc++abi.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcache.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcommonCrypto.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcompiler_rt.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcopyfile.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libcorecrypto.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libdispatch.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libdyld.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libkeymgr.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/liblaunch.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libmacho.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libquarantine.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libremovefile.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_asl.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_blocks.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_c.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_configuration.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_coreservices.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_darwin.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_dnssd.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_info.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_m.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_malloc.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_networkextension.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_notify.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_sandbox.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_secinit.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_kernel.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_platform.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_pthread.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_symptoms.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libsystem_trace.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libunwind.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libxpc.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Security.framework/Versions/A/Security</span><br><span class="line">dyld: loaded: /usr/lib/libenergytrace.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libbsm.0.dylib</span><br><span class="line">dyld: loaded: /usr/lib/system/libkxld.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AppleFSCompression.framework/Versions/A/AppleFSCompression</span><br><span class="line">dyld: loaded: /usr/lib/libOpenScriptingUtil.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcoretls.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcoretls_cfhelpers.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libpam.2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libsqlite3.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libxar.1.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libbz2.1.0.dylib</span><br><span class="line">dyld: loaded: /usr/lib/liblzma.5.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libnetwork.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libapple_nghttp2.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libpcap.A.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/FSEvents</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Metadata</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/OSServices.framework/Versions/A/OSServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SearchKit.framework/Versions/A/SearchKit</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/LaunchServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/DictionaryServices.framework/Versions/A/DictionaryServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SharedFileList.framework/Versions/A/SharedFileList</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/NetFS.framework/Versions/A/NetFS</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/NetAuth.framework/Versions/A/NetAuth</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/login.framework/Versions/A/Frameworks/loginsupport.framework/Versions/A/loginsupport</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/TCC.framework/Versions/A/TCC</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/CoreNLP.framework/Versions/A/CoreNLP</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/MetadataUtilities.framework/Versions/A/MetadataUtilities</span><br><span class="line">dyld: loaded: /usr/lib/libmecabra.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreText.framework/Versions/A/CoreText</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/ImageIO</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ColorSync.framework/Versions/A/ColorSync</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/ATS</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ColorSyncLegacy.framework/Versions/A/ColorSyncLegacy</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/HIServices</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/LangAnalysis.framework/Versions/A/LangAnalysis</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A/PrintCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/QD.framework/Versions/A/QD</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/SpeechSynthesis.framework/Versions/A/SpeechSynthesis</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate</span><br><span class="line">dyld: loaded: /usr/lib/libcompression.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Metal.framework/Versions/A/Metal</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/MetalPerformanceShaders</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/MultitouchSupport.framework/Versions/A/MultitouchSupport</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vImage.framework/Versions/A/vImage</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/vecLib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvMisc.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvDSP.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLinearAlgebra.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparseBLAS.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libQuadrature.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBNNS.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparse.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/GPUWrangler.framework/Versions/A/GPUWrangler</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/IOAccelerator.framework/Versions/A/IOAccelerator</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/IOPresentment.framework/Versions/A/IOPresentment</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/DSExternalDisplay.framework/Versions/A/DSExternalDisplay</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCoreFSCache.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSCore.framework/Versions/A/MPSCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Versions/A/MPSImage</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Versions/A/MPSNeuralNetwork</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSMatrix.framework/Versions/A/MPSMatrix</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Versions/A/MPSRayIntersector</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/MetalTools.framework/Versions/A/MetalTools</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AggregateDictionary.framework/Versions/A/AggregateDictionary</span><br><span class="line">dyld: loaded: /usr/lib/libMobileGestalt.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/GraphVisualizer.framework/Versions/A/GraphVisualizer</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/FaceCore.framework/Versions/A/FaceCore</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenCL.framework/Versions/A/OpenCL</span><br><span class="line">dyld: loaded: /usr/lib/libFosl_dynamic.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/OTSVG.framework/Versions/A/OTSVG</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Resources/libFontParser.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Resources/libFontRegistry.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libJPEG.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libTIFF.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libPng.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libGIF.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libJP2.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libRadiance.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AppleJPEG.framework/Versions/A/AppleJPEG</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGFXShared.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGLU.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGLImage.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCVMSPluginSupport.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libCoreVMClient.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcups.2.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/Kerberos.framework/Versions/A/Kerberos</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/GSS.framework/Versions/A/GSS</span><br><span class="line">dyld: loaded: /usr/lib/libresolv.9.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libiconv.2.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/Heimdal.framework/Versions/A/Heimdal</span><br><span class="line">dyld: loaded: /usr/lib/libheimdal-asn1.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/CommonAuth.framework/Versions/A/CommonAuth</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/OpenDirectory.framework/Versions/A/Frameworks/CFOpenDirectory.framework/Versions/A/CFOpenDirectory</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/APFS.framework/Versions/A/APFS</span><br><span class="line">dyld: loaded: /usr/lib/libutil.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libcharset.1.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreAudio.framework/Versions/A/CoreAudio</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/AudioToolbox.framework/Versions/A/AudioToolbox</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AppleSauce.framework/Versions/A/AppleSauce</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/AssertionServices.framework/Versions/A/AssertionServices</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/BaseBoard.framework/Versions/A/BaseBoard</span><br><span class="line">dyld: loaded: /usr/lib/libmecab.1.0.0.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libgermantok.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libThaiTokenizer.dylib</span><br><span class="line">dyld: loaded: /usr/lib/libChineseTokenizer.dylib</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/LanguageModeling.framework/Versions/A/LanguageModeling</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/CoreEmoji.framework/Versions/A/CoreEmoji</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/Lexicon.framework/Versions/A/Lexicon</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/LinguisticData.framework/Versions/A/LinguisticData</span><br><span class="line">dyld: loaded: /usr/lib/libcmph.dylib</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/CoreData.framework/Versions/A/CoreData</span><br><span class="line">dyld: loaded: /System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement</span><br><span class="line">dyld: loaded: /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Versions/A/BackgroundTaskManagement</span><br><span class="line">dyld: loaded: /usr/lib/libxslt.1.dylib</span><br><span class="line">dyld: loaded: /System/Library/CoreServices/Encodings/libSimplifiedChineseConverter.dylib</span><br><span class="line">2019-03-22 13:59:21.000 a.out[2048:178438] hi there again!</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可见，加载的库非常多，并且 <code>.dylib</code> 类动态链接的库也占很大一部分。</p>
+<p>– EOF –</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a target="_blank" rel="noopener" href="https://objccn.io/issue-6-3/">https://objccn.io/issue-6-3/</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/intro.3.html">https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/intro.3.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://opensource.apple.com/tarballs/">https://opensource.apple.com/tarballs/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.cnbluebox.com/blog/2017/06/20/dyldyu-objc/">https://blog.cnbluebox.com/blog/2017/06/20/dyldyu-objc/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html">https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.cnbang.net/tech/3219/">http://blog.cnbang.net/tech/3219/</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7221141/any-difference-between-wl-option-and-xlinker-option-syntax-for-gcc">https://stackoverflow.com/questions/7221141/any-difference-between-wl-option-and-xlinker-option-syntax-for-gcc</a></p>
+<p><a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-7.3.0/gcc/Link-Options.html#Link-Options">https://gcc.gnu.org/onlinedocs/gcc-7.3.0/gcc/Link-Options.html#Link-Options</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/" rel="tag"># 随手笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/20/Self-adaptive-UITableViewCell-Height/" rel="prev" title="UITableViewCell 自适应高度">
+      <i class="fa fa-chevron-left"></i> UITableViewCell 自适应高度
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/27/let-calling-to-background/" rel="next" title="让通话界面进入后台">
+      让通话界面进入后台 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#step-1"><span class="nav-number">1.</span> <span class="nav-text">step 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-2"><span class="nav-number">2.</span> <span class="nav-text">step 2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-3"><span class="nav-number">3.</span> <span class="nav-text">step 3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-4"><span class="nav-number">4.</span> <span class="nav-text">step 4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-5"><span class="nav-number">5.</span> <span class="nav-text">step 5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-6"><span class="nav-number">6.</span> <span class="nav-text">step 6</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number"></span> <span class="nav-text">reference</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smilingmiao"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">smilingmiao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smilingmiao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smilingmiao"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6709909308" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6709909308" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:smilingmiao@icloud.com" title="E-Mail → mailto:smilingmiao@icloud.com" rel="noopener" target="_blank"><i class="mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

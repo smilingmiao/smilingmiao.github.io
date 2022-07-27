@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="环境变量作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 &#x2F;etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat &#x2F;etc&#x2F;paths 命令可以看到各种命令的脚本存放文件。 123456➜  ~ cat &#x2F;etc&#x2F;paths&#x2F;usr&#x2F;local&#x2F;bin&#x2F;usr&#x2F;bin&#x2F;bin&#x2F;usr&#x2F;sbin&#x2F;sbin   us">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些基础大杂汇">
+<meta property="og:url" content="https://github.com/smilingmiao/2020/04/04/mess-basics/index.html">
+<meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="环境变量作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。 从 &#x2F;etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。 执行 cat &#x2F;etc&#x2F;paths 命令可以看到各种命令的脚本存放文件。 123456➜  ~ cat &#x2F;etc&#x2F;paths&#x2F;usr&#x2F;local&#x2F;bin&#x2F;usr&#x2F;bin&#x2F;bin&#x2F;usr&#x2F;sbin&#x2F;sbin   us">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-04-04T12:42:19.000Z">
+<meta property="article:modified_time" content="2020-06-27T17:27:43.000Z">
+<meta property="article:author" content="smilingmiao">
+<meta property="article:tag" content="命令行集">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/smilingmiao/2020/04/04/mess-basics/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+
+  <title>一些基础大杂汇 | smilingmiao</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="smilingmiao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smilingmiao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2020/04/04/mess-basics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一些基础大杂汇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-04 20:42:19" itemprop="dateCreated datePublished" datetime="2020-04-04T20:42:19+08:00">2020-04-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" itemprop="url" rel="index"><span itemprop="name">开发环境</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h4><p>作为一名程序员，总是绕不开设置环境变量，今天稍微总结一点。</p>
+<p>从 &#x2F;etc 说起，这里的 etc 不是缩写，是abbr. 等等，及其他 (et cetera) 的意思。</p>
+<p>执行 <code>cat /etc/paths</code> 命令可以看到各种命令的脚本存放文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ cat /etc/paths</span><br><span class="line">/usr/local/bin</span><br><span class="line">/usr/bin</span><br><span class="line">/bin</span><br><span class="line">/usr/sbin</span><br><span class="line">/sbin</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>usr 是 Unix System Resource 的缩写</p>
+</blockquote>
+<span id="more"></span>
+
+<p>例如，执行一下 <code>ls /bin/</code>，可以看到，我们常用的很多命令都里面。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ ls /bin</span><br><span class="line">[         csh       echo      ksh       mkdir     rm        sync      zsh</span><br><span class="line">bash      dash      ed        launchctl mv        rmdir     tcsh</span><br><span class="line">cat       date      expr      link      pax       sh        test</span><br><span class="line">chmod     dd        hostname  ln        ps        sleep     unlink</span><br><span class="line">cp        df        kill      ls        pwd       stty      wait4path</span><br></pre></td></tr></table></figure>
+
+<p>可以依次执行 <code>ls /sbin</code>，<code>ls /usr/bin</code>，<code>ls /usr/sbin</code> 以及 <code>ls /usr/local/bin</code> 查看各个路径下的命令脚本文件，不再赘述。</p>
+<p><strong>PATH</strong> 属于系统环境变量，很多时候一些应用程序依赖它。</p>
+<p>执行 <code>echo $PATH</code> 后可以看到 <strong>PATH</strong> 中的以冒号<code>:</code>分割的所有命令路径。最后一个冒号<code>:</code>后面跟的是 <code>flutter</code> 命令路径。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ echo $PATH</span><br><span class="line">/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Users/smilingmiao/development/flutter/bin</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="export-命令"><a href="#export-命令" class="headerlink" title="export 命令"></a>export 命令</h4><p>通常我们直接在终端里面执行 export 和 source 命令后，仅在本机本次登录有效。想永远有效就直接在 <code>.zshrc</code> 文件里添加变量。</p>
+<ul>
+<li>比如为添加 flutter 的 <a target="_blank" rel="noopener" href="https://flutter.dev/community/china">国内镜像</a></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PUB_HOSTED_URL=https://pub.flutter-io.cn</span><br><span class="line">export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn</span><br></pre></td></tr></table></figure>
+
+<p>再执行一下 <code>source ~/.zshrc</code></p>
+<ul>
+<li>添加 flutter sdk 命令到系统环境变量 <strong>PATH</strong> 中</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&quot;$PATH:$HOME/development/flutter/bin&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>PATH=&quot;$PATH:$HOME/development/flutter/bin&quot;</code> 表示在保留原来的 PATH 环境情况下，再追加路径 $HOME&#x2F;development&#x2F;flutter&#x2F;bin 作为新的 <strong>PATH</strong> 环境变量。</p>
+<blockquote>
+<p>其中，<code>=</code> 代表设置，<code>:</code> 代表<strong>追加</strong></p>
+</blockquote>
+<h4 id="source"><a href="#source" class="headerlink" title="source"></a>source</h4><p><code>souce</code> 使得被执行文件的变量及函数加载进当前终端环境。</p>
+<h4 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h4><p>执行自己的 shell 文件，假定存放在用户根目录下的 shell 文件名为 <code>.test.sh</code>，内容为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">foo() &#123;</span><br><span class="line">	echo &quot;hello&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先执行 <code>source ~./.test</code>，再执行 <code>foo</code> 就可以打印出 ”hello“.</p>
+<h4 id="xcrun"><a href="#xcrun" class="headerlink" title="xcrun"></a>xcrun</h4><p>先说 <code>xcrun simctl</code>，一看就知道是控制模拟器的，直接在终端执行 <code>xcrun simctl</code> 就可以看到可以使用的所有<code>子命令</code>了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ xcrun simctl</span><br><span class="line">usage: simctl [--set &lt;path&gt;] [--profiles &lt;path&gt;] &lt;subcommand&gt; ...</span><br><span class="line">       simctl help [subcommand]</span><br><span class="line">Command line utility to control the Simulator</span><br><span class="line"></span><br><span class="line">For subcommands that require a &lt;device&gt; argument, you may specify a device UDID</span><br><span class="line">or the special &quot;booted&quot; string which will cause simctl to pick a booted device.</span><br><span class="line">If multiple devices are booted when the &quot;booted&quot; device is selected, simctl</span><br><span class="line">will choose one of them.</span><br><span class="line"></span><br><span class="line">Subcommands:</span><br><span class="line">	create              Create a new device.</span><br><span class="line">	clone               Clone an existing device.</span><br><span class="line">	upgrade             Upgrade a device to a newer runtime.</span><br><span class="line">	delete              Delete spcified devices, unavailable devices, or all devices.</span><br><span class="line">	pair                Create a new watch and phone pair.</span><br><span class="line">	unpair              Unpair a watch and phone pair.</span><br><span class="line">	pair_activate       Set a given pair as active.</span><br><span class="line">	erase               Erase a device&#x27;s contents and settings.</span><br><span class="line">	boot                Boot a device.</span><br><span class="line">	shutdown            Shutdown a device.</span><br><span class="line">	rename              Rename a device.</span><br><span class="line">	getenv              Print an environment variable from a running device.</span><br><span class="line">	openurl             Open a URL in a device.</span><br><span class="line">	addmedia            Add photos, live photos, videos, or contacts to the library of a device.</span><br><span class="line">	install             Install an app on a device.</span><br><span class="line">	uninstall           Uninstall an app from a device.</span><br><span class="line">	get_app_container   Print the path of the installed app&#x27;s container</span><br><span class="line">	launch              Launch an application by identifier on a device.</span><br><span class="line">	terminate           Terminate an application by identifier on a device.</span><br><span class="line">	spawn               Spawn a process by executing a given executable on a device.</span><br><span class="line">	list                List available devices, device types, runtimes, or device pairs.</span><br><span class="line">	icloud_sync         Trigger iCloud sync on a device.</span><br><span class="line">	pbsync              Sync the pasteboard content from one pasteboard to another.</span><br><span class="line">	pbcopy              Copy standard input onto the device pasteboard.</span><br><span class="line">	pbpaste             Print the contents of the device&#x27;s pasteboard to standard output.</span><br><span class="line">	help                Prints the usage for a given subcommand.</span><br><span class="line">	io                  Set up a device IO operation.</span><br><span class="line">	diagnose            Collect diagnostic information and logs.</span><br><span class="line">	logverbose          enable or disable verbose logging for a device</span><br><span class="line">	status_bar          Set or clear status bar overrides</span><br><span class="line">	ui                  Get or Set UI options</span><br><span class="line">	push                Send a simulated push notification</span><br><span class="line">	privacy             Grant, revoke, or reset privacy and permissions</span><br><span class="line">	keychain            Manipulate a device&#x27;s keychain</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>xcrun simctl list devices iOS</code> 可以看到目前电脑上的所有模拟器，以及运行状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">~ xcrun simctl list devices iOS</span><br><span class="line">== Devices ==</span><br><span class="line">-- iOS 13.4 --</span><br><span class="line">    iPhone 8 (B3738A6E-2CA5-43BE-88A9-939339231389) (Shutdown)</span><br><span class="line">    iPhone 8 Plus (6358977D-7D38-479B-B58C-0F1FFE597838) (Shutdown)</span><br><span class="line">    iPhone 11 (8E8490BE-B6FC-40EB-BB4B-15D182E21233) (Shutdown)</span><br><span class="line">    iPhone 11 Pro (964DFF45-2DDB-4C70-AA94-0AC1A08084CB) (Shutdown)</span><br><span class="line">    iPhone 11 Pro Max (24E7078C-4656-4C95-8848-522B286AF7B5) (Shutdown)</span><br><span class="line">    iPad Pro (9.7-inch) (B1217AAB-2B7A-42D0-9DD0-C10A70FA34BC) (Shutdown)</span><br><span class="line">    iPad (7th generation) (A0121545-6727-44C9-93DA-97C1BD8C4CB2) (Shutdown)</span><br><span class="line">    iPad Pro (11-inch) (2nd generation) (A905D7F2-F028-4642-81A9-448AF9C2DC1B) (Shutdown)</span><br><span class="line">    iPad Pro (12.9-inch) (4th generation) (959CE868-E85B-4C64-87BE-E0E04A34EFC2) (Shutdown)</span><br><span class="line">    iPad Air (3rd generation) (ED6079DD-2949-42A7-884A-F981F377CF9C) (Shutdown)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>上面的命令后面加个 <code>-j</code> 打印出 JSON 格式的数据，并可以看到更多的属性信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ xcrun simctl list devices iOS -j</span><br><span class="line">&#123;</span><br><span class="line">  &quot;devices&quot; : &#123;</span><br><span class="line">    &quot;com.apple.CoreSimulator.SimRuntime.tvOS-13-4&quot; : [</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line">    &quot;com.apple.CoreSimulator.SimRuntime.watchOS-6-2&quot; : [</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line">    &quot;com.apple.CoreSimulator.SimRuntime.iOS-13-4&quot; : [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;dataPath&quot; : &quot;\/Users\/smilingmiao\/Library\/Developer\/CoreSimulator\/Devices\/B3738A6E-2CA5-43BE-88A9-939339231389\/data&quot;,</span><br><span class="line">        &quot;logPath&quot; : &quot;\/Users\/smilingmiao\/Library\/Logs\/CoreSimulator\/B3738A6E-2CA5-43BE-88A9-939339231389&quot;,</span><br><span class="line">        &quot;udid&quot; : &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot;,</span><br><span class="line">        &quot;isAvailable&quot; : true,</span><br><span class="line">        &quot;deviceTypeIdentifier&quot; : &quot;com.apple.CoreSimulator.SimDeviceType.iPhone-8&quot;,</span><br><span class="line">        &quot;state&quot; : &quot;Shutdown&quot;,</span><br><span class="line">        &quot;name&quot; : &quot;iPhone 8&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      ...</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="启动-x2F-关闭一个模拟器"><a href="#启动-x2F-关闭一个模拟器" class="headerlink" title="启动&#x2F;关闭一个模拟器"></a>启动&#x2F;关闭一个模拟器</h5><p>先找到具体型号模拟器的 uuid，然后执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 启动 iPhone 8 模拟器</span><br><span class="line">xcrun simctl boot &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot;</span><br><span class="line">// 关闭 iPhone 8 模拟器</span><br><span class="line">xcrun simctl shutdown &quot;B3738A6E-2CA5-43BE-88A9-939339231389</span><br></pre></td></tr></table></figure>
+
+<h5 id="启动一个应用"><a href="#启动一个应用" class="headerlink" title="启动一个应用"></a>启动一个应用</h5><p><code>xcrun simctl launch &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot; com.apple.shortcuts</code></p>
+<h5 id="关闭一个应用"><a href="#关闭一个应用" class="headerlink" title="关闭一个应用"></a>关闭一个应用</h5><p><code>xcrun simctl terminate &quot;B3738A6E-2CA5-43BE-88A9-939339231389&quot; com.apple.shortcuts</code></p>
+<h5 id="录制模拟器视频"><a href="#录制模拟器视频" class="headerlink" title="录制模拟器视频"></a>录制模拟器视频</h5><p><code>xcrun simctl io booted recordVideo Desktop/demo_video.mov</code></p>
+<p>按 control + C 结束录制，生成的 demo_video.mov 文件在桌面。</p>
+<p>…</p>
+<p>…</p>
+<h4 id="flutter-pub"><a href="#flutter-pub" class="headerlink" title="flutter pub"></a>flutter pub</h4><p>根据 <a target="_blank" rel="noopener" href="https://flutter.dev/community/china">Using Flutter in China</a> 设置好镜像，在 flutter 项目中 pubspec.yaml 文件中添加需要的 package，然后<strong>不要</strong>在 Android Studio 中点 Flutter package get，因为会一直卡住拉取不下来。正确的做法是在终端 cd 到 flutter 项目的根目录，然后执行 <code>flutter pub get</code>，几秒钟就好了。</p>
+<h5 id="flutter-run"><a href="#flutter-run" class="headerlink" title="flutter run"></a>flutter run</h5><p>进入 flutter 项目的根目录，执行 <code>flutter run</code>，按照提示操作，这样就得到一个 URL 可以用来在 Android Studio 中的 Dart DevTools 界面了。</p>
+<h4 id="配置-Android-环境变量"><a href="#配置-Android-环境变量" class="headerlink" title="配置 Android 环境变量"></a>配置 Android 环境变量</h4><p>参考 Android <a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/command-line/variables">官网</a> 的介绍，首先找到 Android sdk 的存放路径。之后在 <code>.zshrc</code> 文件中添加环境变量，如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Android Studio sdk</span></span><br><span class="line">export ANDROID_SDK_ROOT=&quot;$HOME/Library/Android/sdk&quot;</span><br><span class="line">export PATH=&quot;$PATH:$ANDROID_SDK_ROOT/emulator&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>source .zshrc</code> 一下，这样就把 <code>emulator</code> 命令配置好了。</p>
+<p><font color="red">更新</font></p>
+<p>实际操作过程中，执行 <code>emulator -list-avds</code> 时输出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ emulator -list-avds</span><br><span class="line">Nexus_4_API_23</span><br><span class="line">Pixel_3_XL_API_29</span><br><span class="line">Pixel_API_24</span><br></pre></td></tr></table></figure>
+
+<p>再执行 <code>emulator -avd Nexus_4_API_23</code> 时输出如下错误❌</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ emulator -avd Nexus_4_API_23</span><br><span class="line">[4348067264]:ERROR:android/android-emu/android/qt/qt_setup.cpp:28:Qt library not found at ../emulator/lib64/qt/lib</span><br><span class="line">Could not launch &#x27;/Users/smilingmiao/../emulator/qemu/darwin-x86_64/qemu-system-i386&#x27;: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>经过一番 Google 后，在<a target="_blank" rel="noopener" href="https://medium.com/js-features/launch-android-emulator-from-console-failure-eb43a1115cb5">这里</a>找到了答案，实际就是更改个命令所在路径。</p>
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将 `export PATH=&quot;$PATH:$ANDROID_SDK_ROOT/emulator&quot;` 改为：</span><br><span class="line">export PATH=&quot;$PATH:$ANDROID_SDK_ROOT/tools/emulator&quot;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>这样确实是修好了。</p>
+<p>**<font color="red">不过</font>**，我把之前的 AVD 都删掉了，又创建了新的 AVD，于是又需要再把👆上面变更的改回去。🤦</p>
+<p>否则，<code>command not found: emulator</code>。</p>
+<h4 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h4><p><strong>alias命令</strong>用来设置指令的别名。我们可以使用该命令可以将一些较长的命令进行简化。使用alias时，用户必须使用单引号<code>&#39;&#39;</code>将原来的命令引起来，防止特殊字符导致错误。具体查看👉 <a target="_blank" rel="noopener" href="https://man.linuxde.net/alias">这里</a></p>
+<p>emulator 作为命令开头，这个单词实在太长了，用别名把命令精简一下偷懒</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alias e=&#x27;emulator&#x27;</span><br><span class="line">alias evd=&#x27;emulator -avd&#x27;</span><br><span class="line">alias els=&#x27;emulator -list-avds&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>于是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ els</span><br><span class="line">Pixel_3a_XL_API_29</span><br><span class="line">Pixel_XL_API_R</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="自动化测试"><a href="#自动化测试" class="headerlink" title="自动化测试"></a>自动化测试</h4><p><strong>adb 命令 - Android Deubg Bridge</strong></p>
+<p><strong>查看所有 Android 设备</strong></p>
+<p><code>adb devices</code></p>
+<p><strong>查看 app 入口</strong></p>
+<p><code>adb logcat | grep -i displayed</code></p>
+<blockquote>
+<p>注：-i 是忽略大小写的，只要是 displayed 这个单词都会被匹配到</p>
+</blockquote>
+<p>这一步可以获取到 app 入口的 activity 包名路径。例如打开谷歌地图后终端出现：<code>com.google.android.apps.maps/com.google.android.maps.MapsActivity</code></p>
+<p><strong>查看 app 界面元素</strong></p>
+<p><code>adb shell dumpsys activity top</code></p>
+<p><strong>启动应用</strong></p>
+<p><code>adb shell am start -n com.google.android.apps.maps/com.google.android.maps.MapsActivity -S</code></p>
+<blockquote>
+<p>注：am 是 Activity Manager 的缩写。-S 代表 stop，放在此命令中就是启动前先杀死。</p>
+</blockquote>
+<p><strong>清理特定包缓存数据</strong></p>
+<p><code>adb shell pm clear com.google.android.apps.maps</code></p>
+<p><strong>获取界面的元素</strong></p>
+<p><code>adb shell uiautomator dump</code></p>
+<p>UI hierchary dumped to: &#x2F;sdcard&#x2F;window_dump.xml</p>
+<p>再连接 cat 命令查看 dump 下来的文件内容</p>
+<p><code>adb shell &#39;uiautomator dump &amp;&amp; cat /sdcard/window_dump.xml&#39;</code></p>
+<p>这样就显示了当前界面的所有控件配置信息。</p>
+<p>输入 <code>adb shell</code> 了解更多命令</p>
+<h4 id="命令-tree"><a href="#命令-tree" class="headerlink" title="命令 tree"></a>命令 tree</h4><p>Linux tree 命令用于以树状图列出目录的内容。</p>
+<p>执行 tree 指令，它会列出指定目录下的所有文件，包括子目录里的文件。</p>
+<p>执行 <code>tree --help</code> 会列出所有的 option，不再赘述。</p>
+<p>有时候想找个文件，但是直接执行 <code>tree </code> 的话，结果太多在终端里显示不完，此时可以用 tree 命令将整个文件结构输出到一个文件里，然后再打开文件通过关键字查路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tree -f &gt; ~/Desktop/文件名.扩展名</span><br><span class="line">或</span><br><span class="line">tree -f -o ~/Desktop/文件名.扩展名</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>-f 代表 full path</p>
+</blockquote>
+<h4 id="杂七杂八的命令"><a href="#杂七杂八的命令" class="headerlink" title="杂七杂八的命令"></a>杂七杂八的命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat a.txt | pbcopy   # 将a.txt文件类容写入剪切板，相当于 cmd + C </span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbpaste              # 将刚刚存入剪切板的a.txt内容复制到终端，相当于 cmd + v</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command + enter 		 # 在全屏和退出全屏之间切换</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which + 任意命令开头 + tab # 查看命令的全部或 alias</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r + 任意命令开头 + tab     # 查看命令并选择和执行</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">control + command + F	# 进入或退出全屏</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="ffmpeg-相关命令"><a href="#ffmpeg-相关命令" class="headerlink" title="ffmpeg 相关命令"></a>ffmpeg 相关命令</h4><h5 id="video-转-GIF，详见-这里"><a href="#video-转-GIF，详见-这里" class="headerlink" title="video 转 GIF，详见 这里"></a>video 转 GIF，详见 <a target="_blank" rel="noopener" href="https://gist.github.com/SheldonWangRJT/8d3f44a35c8d1386a396b9b49b43c385#explanation">这里</a></h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.mov -pix_fmts rgb8 -r 10 output.gif &amp;&amp; gifsicle -O3 output.gif -o output.gif</span><br></pre></td></tr></table></figure>
+
+<h6 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h6><ol>
+<li>Convert the file to gif using <code>ffmpeg</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- input path argument `-i`</span><br><span class="line">- pixel format argument `-pix_fmt`</span><br><span class="line">- removing some frames using framerate argument `-r`</span><br><span class="line">- end `ffmpeg` with new path/to/filename</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>Optimize the same output file with third option <code>-O3</code> and rewrite the generated gif file from last step</li>
+<li>Notes: using <code>&amp;&amp;</code> to make sure the conversion sucess before optimizing</li>
+</ol>
+<p>更新：</p>
+<p>ffmpeg -i input.mov -pix_fmt rgb8 -r 10 output.gif</p>
+<p>由于转换时，gifsicle 老出问题，所以直接就用上面这条</p>
+<h4 id="Git-相关"><a href="#Git-相关" class="headerlink" title="Git 相关"></a>Git 相关</h4><h5 id="GitLab-服务器主机重装后的问题"><a href="#GitLab-服务器主机重装后的问题" class="headerlink" title="GitLab 服务器主机重装后的问题"></a>GitLab 服务器主机重装后的问题</h5><h5 id="具体问题"><a href="#具体问题" class="headerlink" title="具体问题"></a>具体问题</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span><br><span class="line">@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @</span><br><span class="line">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span><br><span class="line">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!</span><br><span class="line">Someone could be eavesdropping on you right now (man-in-the-middle attack)!</span><br><span class="line">It is also possible that a host key has just been changed.</span><br></pre></td></tr></table></figure>
+
+<p>分析可能就是服务器证书变更了，和本地的指纹不对应了。只有清除当前机器里关于远程服务器的缓存和公钥信息。</p>
+<h5 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -R 192.168.xxx.xxx（自建 GitLab 服务器地址）</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Carthage"><a href="#Carthage" class="headerlink" title="Carthage"></a>Carthage</h4><p>LLDB 出现 “Couldn’t IRGen expression”，解决方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">carthage update --platform macOS --no-use-binaries</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h4><p>最近从不同渠道抓了些数据，渠道字段为 <code>app</code>，抓取时间为 <code>times</code>，所有渠道的数据到写到一张名为 <code>spiderapp_202005</code> 的表里了。现在想统计一下 2020 年 5 月 14 日 各个渠道抓到的数量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	COUNT( * ) AS &#x27;总量&#x27;,</span><br><span class="line">	SUM( CASE WHEN app = &#x27;渠道1&#x27; THEN 1 ELSE 0 END ) AS &#x27;渠道1&#x27;,</span><br><span class="line">	SUM( CASE WHEN app = &#x27;渠道2&#x27; THEN 1 ELSE 0 END ) AS &#x27;渠道2&#x27;,</span><br><span class="line">	SUM( CASE WHEN app = &#x27;渠道3&#x27; THEN 1 ELSE 0 END ) AS &#x27;渠道3&#x27;</span><br><span class="line">FROM</span><br><span class="line">	`spiderapp_202005` </span><br><span class="line">WHERE</span><br><span class="line">	AND times &gt; &#x27;2020-05-14 00:00:00&#x27; </span><br><span class="line">	AND times &lt; &#x27;2020-05-15 00:00:00&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果为</p>
+<table>
+<thead>
+<tr>
+<th>总量</th>
+<th>渠道1</th>
+<th>渠道2</th>
+<th>渠道3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>288</td>
+<td>40</td>
+<td>191</td>
+<td>57</td>
+</tr>
+</tbody></table>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/06ee358ad5c0">https://www.jianshu.com/p/06ee358ad5c0</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ouyang_peng/article/details/81536396">https://blog.csdn.net/ouyang_peng/article/details/81536396</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/command-line">https://developer.android.google.cn/studio/command-line</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/command-line/variables">Android 配置环境变量</a></p>
+<p>– EOF –</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C%E9%9B%86/" rel="tag"># 命令行集</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/28/find-porn-web-in-browser/" rel="prev" title="使用 AppleScript 检测浏览器中不健康的网站">
+      <i class="fa fa-chevron-left"></i> 使用 AppleScript 检测浏览器中不健康的网站
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/31/use-automator-solve-problems/" rel="next" title="使用 Automator 解决问题">
+      使用 Automator 解决问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#export-%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">export 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#source"><span class="nav-number">3.</span> <span class="nav-text">source</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shell"><span class="nav-number">4.</span> <span class="nav-text">shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xcrun"><span class="nav-number">5.</span> <span class="nav-text">xcrun</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-x2F-%E5%85%B3%E9%97%AD%E4%B8%80%E4%B8%AA%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">启动&#x2F;关闭一个模拟器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E5%BA%94%E7%94%A8"><span class="nav-number">5.2.</span> <span class="nav-text">启动一个应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E4%B8%80%E4%B8%AA%E5%BA%94%E7%94%A8"><span class="nav-number">5.3.</span> <span class="nav-text">关闭一个应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%95%E5%88%B6%E6%A8%A1%E6%8B%9F%E5%99%A8%E8%A7%86%E9%A2%91"><span class="nav-number">5.4.</span> <span class="nav-text">录制模拟器视频</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flutter-pub"><span class="nav-number">6.</span> <span class="nav-text">flutter pub</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#flutter-run"><span class="nav-number">6.1.</span> <span class="nav-text">flutter run</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-Android-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">7.</span> <span class="nav-text">配置 Android 环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D"><span class="nav-number">8.</span> <span class="nav-text">设置别名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95"><span class="nav-number">9.</span> <span class="nav-text">自动化测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4-tree"><span class="nav-number">10.</span> <span class="nav-text">命令 tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-number">11.</span> <span class="nav-text">杂七杂八的命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ffmpeg-%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">12.</span> <span class="nav-text">ffmpeg 相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#video-%E8%BD%AC-GIF%EF%BC%8C%E8%AF%A6%E8%A7%81-%E8%BF%99%E9%87%8C"><span class="nav-number">12.1.</span> <span class="nav-text">video 转 GIF，详见 这里</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Explanation"><span class="nav-number">12.1.1.</span> <span class="nav-text">Explanation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-%E7%9B%B8%E5%85%B3"><span class="nav-number">13.</span> <span class="nav-text">Git 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#GitLab-%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%BB%E6%9C%BA%E9%87%8D%E8%A3%85%E5%90%8E%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">13.1.</span> <span class="nav-text">GitLab 服务器主机重装后的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E9%97%AE%E9%A2%98"><span class="nav-number">13.2.</span> <span class="nav-text">具体问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="nav-number">13.3.</span> <span class="nav-text">解决方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Carthage"><span class="nav-number">14.</span> <span class="nav-text">Carthage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL"><span class="nav-number">15.</span> <span class="nav-text">MySQL</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number"></span> <span class="nav-text">参考链接</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smilingmiao"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">smilingmiao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smilingmiao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smilingmiao"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6709909308" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6709909308" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:smilingmiao@icloud.com" title="E-Mail → mailto:smilingmiao@icloud.com" rel="noopener" target="_blank"><i class="mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

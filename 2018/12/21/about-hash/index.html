@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="哈希函数哈希函数（Hash function）又叫散列算法，它在广泛应用在计算机程序中，是我们需要掌握的基础知识。可以把哈希函数看成是一个黑盒，它接收一个输入，然后通过算法对输入进行处理后输出一个结果。具体算法有好有坏，但初衷都是要将数据压缩成较短的固定长度的数据摘要，并且希望任何不同输入都有不同的输出。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于哈希函数">
+<meta property="og:url" content="https://github.com/smilingmiao/2018/12/21/about-hash/index.html">
+<meta property="og:site_name" content="smilingmiao">
+<meta property="og:description" content="哈希函数哈希函数（Hash function）又叫散列算法，它在广泛应用在计算机程序中，是我们需要掌握的基础知识。可以把哈希函数看成是一个黑盒，它接收一个输入，然后通过算法对输入进行处理后输出一个结果。具体算法有好有坏，但初衷都是要将数据压缩成较短的固定长度的数据摘要，并且希望任何不同输入都有不同的输出。">
+<meta property="og:locale">
+<meta property="og:image" content="https://github.com/2018/12/21/about-hash/code.png">
+<meta property="og:image" content="https://github.com/2018/12/21/about-hash/hash_function.png">
+<meta property="article:published_time" content="2018-12-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-17T16:19:33.000Z">
+<meta property="article:author" content="smilingmiao">
+<meta property="article:tag" content="随手笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/2018/12/21/about-hash/code.png">
+
+<link rel="canonical" href="https://github.com/smilingmiao/2018/12/21/about-hash/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+
+  <title>关于哈希函数 | smilingmiao</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="smilingmiao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smilingmiao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://github.com/smilingmiao/2018/12/21/about-hash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="smilingmiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smilingmiao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于哈希函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-12-21 00:00:00" itemprop="dateCreated datePublished" datetime="2018-12-21T00:00:00+08:00">2018-12-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h1><p><strong>哈希函数</strong>（Hash function）又叫散列算法，它在广泛应用在计算机程序中，是我们需要掌握的基础知识。可以把<strong>哈希函数</strong>看成是一个黑盒，它接收一个输入，然后通过算法对输入进行处理后输出一个结果。具体算法有好有坏，但初衷都是要将数据压缩成较短的固定长度的数据摘要，并且希望任何不同输入都有不同的输出。</p>
+<span id="more"></span>
+
+<p>维基百科是这样说的：</p>
+<blockquote>
+<p><strong>散列函数</strong>（英语：Hash function）又称<strong>散列算法</strong>、<strong>哈希函数</strong>，是一种从任何一种数据中创建小的数字“指纹”的方法。散列函数把消息或数据压缩成摘要，使得数据量变小，将数据的格式固定下来。该<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0">函数</a>将数据打乱混合，重新创建一个叫做<strong>散列值</strong>（hash values，hash codes，hash sums，或hashes）的指纹。散列值通常用一个短的随机字母和数字组成的字符串来代表。好的散列函数在输入域中很少出现<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E6%95%A3%E5%88%97%E5%86%B2%E7%AA%81&action=edit&redlink=1">散列冲突</a>。在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97%E8%A1%A8">散列表</a>和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86&action=edit&redlink=1">数据处理</a>中，不抑制冲突来区别数据，会使得<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%B0%E5%BD%95&action=edit&redlink=1">数据库记录</a>更难找到。</p>
+</blockquote>
+<h1 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h1><p><strong>哈希表</strong>也叫<strong>散列表</strong>，是根据键（Key）而直接访问在内存存储的数据结构。它通过一个键值的函数，将所需查询的数据映射到表中的一个位置来访问记录，这加快了查找速度。这个映射函数称做散列函数，存放记录的数组称做散列表。</p>
+<p>微信通讯录按照微信名的首字母从 <strong>A</strong> 到 <strong>Z</strong> 划分成不同的组，其它字符则全归在 <strong>#</strong> 组。这样张三（<strong>z</strong>hangsan）和李四（<strong>l</strong>isi）就分别被映射了 <strong>Z</strong> 组里和 <strong>L</strong> 组里。这种取微信名的首字母作为 key 进行映射的方式就算是哈希函数映射的一个模型。但这样会出现一个问题，张三和张四都会被取 Z 作为 key 进行映射，并且会被映射到同一个地方，这就是发生了哈希碰撞（collision）。防止哈希碰撞最有效的方法是扩大哈希的取值空间，也就是值域。通常解决哈希碰撞的方法是使用开放定址法和单独链表法或是再散列进行处理。</p>
+<h1 id="iOS-中的哈希函数"><a href="#iOS-中的哈希函数" class="headerlink" title="iOS 中的哈希函数"></a>iOS 中的哈希函数</h1><p>NSSet 和与之相似的 NSHashTable，以及 NSDictionary 和与之相似 NSMapTable 都有对哈希函数的使用，因而一般来说对这些集合进行读、写、查元素的时间复杂度都是 O(1)。因此这些集合类都有一个特点就是不能保存重复的元素。NSArray 和其对应的 mutable 版本进行、改、查原色就需要整体遍历来操作，因而时间复杂度 O(n)。</p>
+<p>定义一个 Object 类，有<code>name</code>和<code>gender</code>属性，重写<code>hash</code>方法。</p>
+<p>简单测试一下：在<code>hash</code>方法打上断点，运行项目，并没有语句流被断住。</p>
+<img src="/2018/12/21/about-hash/code.png" class="">
+
+<p>点击一下 click Action 后出现下面图的情况，证明 NSSet 会调用<code>hash</code>算法，而 NSArray 并不会。</p>
+<img src="/2018/12/21/about-hash/hash_function.png" class="">
+
+
+
+<p>写文章实在不容易，真的佩服坚持写博客的博主。知道和表达出来真的完全是两码事儿。</p>
+<p>– EOF –</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B8">https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B8</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8">https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8</a></p>
+<p><a target="_blank" rel="noopener" href="https://bestswifter.com/hashtable/">https://bestswifter.com/hashtable/</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/09/hash-collision-and-birthday-attack.html">http://www.ruanyifeng.com/blog/2018/09/hash-collision-and-birthday-attack.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/" rel="tag"># 随手笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/11/mysql-part-one/" rel="prev" title="MySQL">
+      <i class="fa fa-chevron-left"></i> MySQL
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/25/thought-of-algorithm/" rel="next" title="部分常见算法的思路">
+      部分常见算法的思路 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">哈希函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS-%E4%B8%AD%E7%9A%84%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">iOS 中的哈希函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smilingmiao"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">smilingmiao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smilingmiao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smilingmiao"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6709909308" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6709909308" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:smilingmiao@icloud.com" title="E-Mail → mailto:smilingmiao@icloud.com" rel="noopener" target="_blank"><i class="mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smilingmiao</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
